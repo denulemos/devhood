@@ -15,7 +15,7 @@ const config: Config = {
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
 
-  // GitHub pages deployment config.
+  // GitH  ub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'denulemos', // Usually your GitHub org/user name.
   projectName: 'devdojo-docs', // Usually your repo name.
