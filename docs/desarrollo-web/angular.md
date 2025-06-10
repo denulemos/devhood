@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Angular
+# 🔺 Angular
 
 ### **¿Qué son los modulos en Angular?**
 
