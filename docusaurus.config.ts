@@ -31,6 +31,10 @@ const config: Config = {
     locales: ['es'],
   },
 
+   stylesheets: [
+    'https://fonts.googleapis.com/css2?family=Pacifico&display=swap',
+  ],
+
   presets: [
     [
       'classic',
@@ -63,7 +67,7 @@ const config: Config = {
       title: 'DevDojo',
       logo: {
         alt: 'DevDojo Logo',
-        src: 'img/logo.svg',
+        src: 'img/favicon.ico',
       },
       items: [
         {
