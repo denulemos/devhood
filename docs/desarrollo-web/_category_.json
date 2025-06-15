@@ -1,8 +1,8 @@
 {
-  "label": "Desarrollo Web",
-  "position": 1,
+  "label": "💻 Desarrollo y Tecnologías",
+  "position": 3,
   "link": {
     "type": "generated-index",
-    "description": "En esta categoria se encuentran topicos relacionados al desarrollo web."
+    "description": "En esta categoría se encuentran tópicos relacionados con las tecnologías específicas utilizadas en el desarrollo de software."
   }
 }

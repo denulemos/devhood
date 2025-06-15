@@ -45,6 +45,8 @@ Para resumir un poco:
 - Son como contenedores de lógica, donde pones componentes, servicios, rutas, etc.
 - Aunque ahora podés usar componentes independientes, los módulos siguen siendo útiles en muchos casos.
 
+---
+
 ### **¿Qué son los componentes standalone y cuando conviene utilizarlos?**
 
 Son una característica introducida en Angular 14 que permite definir componentes sin necesidad de declararlos en un módulo (`NgModule`). En lugar de eso, los componentes standalone se definen utilizando la propiedad `standalone: true` en el decorador `@Component`, y ellos mismos pueden importar directamente otros componentes, directivas, pipes, o módulos necesarios.
@@ -107,6 +109,7 @@ Conviene usar componentes standalone en las siguientes situaciones:
 
 Los componentes standalone simplifican la arquitectura de Angular al reducir la dependencia de módulos y alinear el framework con tendencias modernas en diseño de componentes. Conviene adoptarlos cuando buscas simplicidad, modularidad y mayor flexibilidad en proyectos nuevos o en escenarios específicos como componentes reutilizables o lazy loading.
 
+---
 
 ### **¿Qué es Property Binding?**
 
@@ -148,6 +151,8 @@ Las dos hacen lo mismo si es un string, pero si estás trabajando con cosas más
 - Angular escucha y actualiza la propiedad del HTML cuando cambie el valor.
 - Te ayuda a tener una app reactiva, sin andar actualizando todo a mano.
 - Si pasás algo que no es un texto, usá sí o sí Property Binding.
+
+---
 
 ### **¿Cómo funciona la detección de cambios en Angular?**
 
@@ -200,3 +205,260 @@ ngAfterViewInit() {
   this.cdr.detectChanges(); // Forzar actualización
 }
 ```
+
+---
+
+### **¿Cuales son algunas reglas de Clean Code en Angular?**
+
+🔹 **1. Un componente, una responsabilidad**
+**❌ Malo:** un componente que muestra una lista *y* también guarda datos en el servidor.
+**✅ Bueno:** un componente que solo muestra la lista, y otro que se encarga de guardar los datos.
+
+```ts
+// ❌ Esto hace demasiado:
+@Component({...})
+export class UsuarioComponent {
+  usuarios = [];
+  guardarUsuario(usuario) {
+    // guardar en API
+  }
+}
+```
+
+```ts
+// ✅ Separado en dos componentes:
+- UsuarioListaComponent (muestra)
+- UsuarioFormularioComponent (guarda)
+```
+
+🔹 **2. Usá componentes hijos**
+Cuando un componente se vuelve grande, dividilo en partes más pequeñas:
+
+```html
+<!-- padre -->
+<app-info-personal></app-info-personal>
+<app-preferencias></app-preferencias>
+```
+
+🔹 **3. Plantillas (HTML) simples y limpias**
+**❌ Malo:**
+
+```html
+<div *ngIf="user && user.age > 18 && user.isActive">...</div>
+```
+
+**✅ Bueno:**
+
+```ts
+mostrarContenido() {
+  return this.user && this.user.age > 18 && this.user.isActive;
+}
+```
+
+```html
+<div *ngIf="mostrarContenido()">...</div>
+```
+
+
+🔹 **4. Servicios para lógica pesada**
+El componente solo debería mostrar cosas, **no** manejar llamadas a APIs.
+
+```ts
+// Servicio
+getDatos() {
+  return this.http.get('https://api.com/datos');
+}
+```
+
+```ts
+// Componente
+this.apiService.getDatos().subscribe(...);
+```
+
+🔹 **5. Desuscribirse de los Observables**
+
+```ts
+subscripcion: Subscription;
+
+ngOnInit() {
+  this.subscripcion = this.servicio.getDatos().subscribe(...);
+}
+
+ngOnDestroy() {
+  this.subscripcion.unsubscribe();
+}
+```
+
+O mejor aún, usá el `async` pipe:
+
+```html
+<div *ngIf="datos$ | async as datos">
+  {{ datos.nombre }}
+</div>
+```
+
+🔹 **6. Usá Angular CLI**
+Siempre preferí:
+
+```bash
+ng generate component usuario
+ng generate service api
+```
+
+Te asegura estructura clara y buenas prácticas.
+
+
+🔹 **7. Evitá lógica compleja en el HTML**
+Si hay mucha lógica en el template, movela al archivo `.ts`.
+
+
+🔹 **8. Usá tipado estricto y `interfaces`**
+No uses `any`. Definí tus modelos:
+
+```ts
+interface Usuario {
+  nombre: string;
+  edad: number;
+}
+```
+
+
+🔹 **9. Poné nombres claros y descriptivos**
+**❌ Malo:** `comp1`, `servicio2`
+**✅ Bueno:** `FormularioUsuarioComponent`, `AutenticacionService`
+
+
+🔹 **10. Estilo consistente con Prettier/ESLint**
+Instalá herramientas que formateen y detecten errores automáticamente.
+
+---
+
+### **¿Qué problemas de rendimiento pueden existir en Angular y cómo se solucionan?**
+
+#### 1. ⚠️ Renderizado excesivo (detección de cambios ineficiente)
+
+**Qué pasa:**
+Angular, por defecto, revisa todo el árbol de componentes cada vez que algo cambia. En apps grandes, esto puede hacer que se renderice más de lo necesario, generando lentitud.
+
+**Cómo lo solucionás:**
+
+* Activá `ChangeDetectionStrategy.OnPush` en tus componentes. Esto le dice a Angular que solo actualice el componente si cambian sus `@Input` o se dispara un evento (como un observable).
+
+```ts
+@Component({
+  selector: 'app-mi-componente',
+  template: `{{ data }}`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class MiComponente {
+  @Input() data!: string;
+}
+```
+
+* Desuscribite de los observables cuando ya no los necesites, usando `takeUntil` o el operador `async` directamente en el HTML.
+
+#### 2. 🐢 Carga innecesaria de módulos
+
+**Qué pasa:**
+Si cargás todos los módulos desde el inicio (eager loading), el usuario va a esperar más para ver algo en pantalla.
+
+**Cómo lo solucionás:**
+
+* Aplicá **lazy loading** en rutas que no se usan de entrada:
+
+```ts
+{
+  path: 'admin',
+  loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+}
+```
+
+* Si querés un balance, podés usar una **estrategia de pre-carga personalizada** para cargar algunos módulos después de la carga inicial, mientras el usuario está inactivo.
+
+#### 3. 📋 Listas largas que se renderizan lento
+
+**Qué pasa:**
+Una tabla con miles de filas puede hacer que todo se vuelva pesado, ya que Angular intenta renderizar todos los ítems del DOM.
+
+**Cómo lo solucionás:**
+
+* Usá **Virtual Scroll** del Angular CDK para renderizar solo lo visible:
+
+```html
+<cdk-virtual-scroll-viewport itemSize="50" style="height: 300px;">
+  <div *cdkVirtualFor="let item of items">{{ item }}</div>
+</cdk-virtual-scroll-viewport>
+```
+
+* Si estás trayendo todo desde una API, agregá **paginación en el backend** para evitar cargar miles de elementos de una sola.
+
+#### 4. 🖼️ Imágenes pesadas
+
+**Qué pasa:**
+Imágenes grandes o mal optimizadas pueden hacer que la página tarde en cargar, sobre todo en dispositivos móviles.
+
+**Cómo lo solucionás:**
+
+* Usá `loading="lazy"` en todas las etiquetas `<img>`:
+
+```html
+<img src="imagen.jpg" alt="Ejemplo" loading="lazy" />
+```
+
+* Comprimí y redimensioná las imágenes con herramientas como **TinyPNG**, **ImageMagick** o servicios como **Cloudinary**.
+
+#### 5. 📝 Formularios lentos
+
+**Qué pasa:**
+Si tenés formularios con muchas validaciones, lógica compleja o campos dinámicos, la app se puede trabar al escribir.
+
+**Cómo lo solucionás:**
+
+* Evitá validaciones complejas innecesarias. Usá funciones simples y validaciones asincrónicas solo si realmente las necesitás.
+
+```ts
+myForm = this.fb.group({
+  email: ['', [Validators.required, Validators.email]],
+});
+```
+
+* Dividí formularios largos en **pasos o secciones** (wizard), para no cargar todo al mismo tiempo.
+
+#### 6. 🔁 Llamadas repetidas a la API
+
+**Qué pasa:**
+Si hacés muchas llamadas iguales a la misma API desde distintos lugares, saturás el backend y hacés más lenta tu app.
+
+**Cómo lo solucionás:**
+
+* Implementá cache en los servicios, por ejemplo con `Map` y RxJS:
+
+```ts
+private cache = new Map<string, any>();
+
+getData(url: string): Observable<any> {
+  if (this.cache.has(url)) return of(this.cache.get(url));
+  return this.http.get(url).pipe(tap(data => this.cache.set(url, data)));
+}
+```
+
+* Agrupá múltiples llamadas con `forkJoin` o `combineLatest` para hacer una sola petición conjunta.
+
+#### 7. 📦 Scripts pesados y dependencias innecesarias
+
+**Qué pasa:**
+Agregar muchas librerías sin control aumenta el tamaño del bundle, haciendo más lenta la app.
+
+**Cómo lo solucionás:**
+
+* Limpiá el `package.json`: eliminá lo que no uses.
+* Importá solo los módulos necesarios:
+
+```ts
+import { MatButtonModule } from '@angular/material/button'; // No todo Angular Material
+```
+
+* Asegurate de que el **tree shaking** esté funcionando en tu build.
+
+---
+
