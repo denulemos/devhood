@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'DevDojo',
+  title: 'El rincon del Dev',
   tagline: 'Hecho por y para devs (La mayoria, humanos)',
   favicon: 'img/favicon.ico',
 
@@ -64,9 +64,9 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'DevDojo',
+      title: 'El rincon del Dev',
       logo: {
-        alt: 'DevDojo Logo',
+        alt: 'El rincon del Dev Logo',
         src: 'img/favicon.ico',
       },
       items: [
@@ -85,7 +85,7 @@ const config: Config = {
     },
     footer: {
       style: 'dark',
-      copyright: `Copyright © ${new Date().getFullYear()} DevDojo, Inc. Built with Docusaurus y mucho amor.`,
+      copyright: `Copyright © ${new Date().getFullYear()} El rincon del Dev, Inc. Built with Docusaurus y mucho <3.`,
     },
     prism: {
       theme: prismThemes.github,
