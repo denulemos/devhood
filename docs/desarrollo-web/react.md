@@ -1108,9 +1108,8 @@ El hook `useOptimistic()` es una característica introducida en React para manej
 
 Este enfoque mejora la experiencia del usuario al hacer que las actualizaciones sean instantáneas, incluso antes de recibir una confirmación del servidor.
 
----
 
-### ¿Cómo funciona `useOptimistic()`?
+#### ¿Cómo funciona `useOptimistic()`?
 
 `useOptimistic()` es un hook diseñado para trabajar con estados que podrían necesitar ser actualizados de forma optimista. Al usarlo, defines un estado inicial y una función para calcular el nuevo estado después de una actualización. React se encargará de manejar ese estado temporalmente mientras la operación real se completa.
 
@@ -1119,9 +1118,7 @@ El hook devuelve un par de valores:
 1. **`optimisticState`**: El estado actual, incluyendo cualquier cambio optimista que se haya realizado.
 2. **`setOptimisticState`**: Una función para actualizar el estado de manera optimista.
 
----
-
-### Sintaxis de `useOptimistic()`
+#### Sintaxis de `useOptimistic()`
 
 ```javascript
 const [optimisticState, setOptimisticState] = useOptimistic(initialState, reducer);
@@ -1129,12 +1126,6 @@ const [optimisticState, setOptimisticState] = useOptimistic(initialState, reduce
 
 - **`initialState`**: El estado inicial que quieres usar.
 - **`reducer`**: Una función que calcula el nuevo estado basado en el estado actual y una acción.
-
----
-
-### Ejemplo básico
-
-Aquí tienes un ejemplo de cómo usar `useOptimistic()` para manejar una lista de tareas donde las eliminaciones se manejan de forma optimista:
 
 ```javascript
 import React, { useOptimistic } from 'react';
@@ -1185,9 +1176,6 @@ function TodoList() {
 export default TodoList;
 ```
 
----
-
-### Explicación del ejemplo:
 
 1. **Estado optimista**: Usamos `useOptimistic()` para definir un estado inicial de tareas y un `reducer` que nos permite actualizar ese estado de forma declarativa.
 
@@ -1195,9 +1183,7 @@ export default TodoList;
 
 3. **Reversión manual (si es necesario)**: Si la operación asíncrona (como la petición al servidor) falla, puedes manejar la reversión al estado anterior. Este manejo de errores no se incluye en el ejemplo, pero es importante para aplicaciones reales.
 
----
-
-### ¿Cuándo usar `useOptimistic()`?
+#### ¿Cuándo usar `useOptimistic()`?
 
 Usa `useOptimistic()` cuando quieras manejar interacciones de usuario con actualizaciones rápidas en la interfaz, pero que dependen de operaciones asíncronas que podrían fallar. Algunos casos comunes incluyen:
 
@@ -1206,17 +1192,14 @@ Usa `useOptimistic()` cuando quieras manejar interacciones de usuario con actual
 - **Creación de elementos**: Mostrar nuevos elementos en la interfaz antes de recibir confirmación del servidor.
 - **Actualizaciones de likes/reacciones**: Incrementar un contador de likes instantáneamente mientras se envía la acción al servidor.
 
----
-
-### Beneficios de `useOptimistic()`
+#### Beneficios de `useOptimistic()`
 
 1. **Experiencia de usuario mejorada**: Las actualizaciones optimistas hacen que la aplicación parezca más rápida y responsiva.
 2. **Código más declarativo**: Con el uso de un `reducer`, puedes definir cómo manejar diferentes acciones de manera clara.
 3. **Integración con la API de React**: Funciona perfectamente con las características de React 18, como el concurrent rendering.
 
----
 
-### Consideraciones:
+#### Consideraciones:
 
 - **Reversión manual**: Si la operación falla, tendrás que manejar manualmente la reversión del estado optimista.
 - **No es adecuado para todas las operaciones**: Si el resultado de la operación en el servidor afecta de manera significativa la lógica de la aplicación, puede ser mejor esperar a la confirmación antes de actualizar el estado.
@@ -1596,7 +1579,6 @@ const UncontrolledInput = () => {
 
 ### **¿Qué es el modo estricto de React (React.StrictMode) y para qué sirve?**
 
-
 React.StrictMode es una herramienta de desarrollo que React proporciona para identificar posibles problemas en una aplicación. Es un componente que no afecta el comportamiento de la aplicación en producción, pero ayuda a detectar errores y advertencias en el desarrollo.
 
 1. **Identificación de problemas de ciclo de vida**: Detecta métodos de ciclo de vida obsoletos o inseguros, como `componentWillMount`, `componentWillReceiveProps`, y `componentWillUpdate`.
@@ -1874,7 +1856,6 @@ En este ejemplo, `React.memo` y `useCallback` evitan que el componente `Child` s
 ---
 
 ### **¿Qué herramientas usarías para identificar problemas de rendimiento en una aplicación React?**
-
 
 - Con **React DevTools** se puede utilizar el Profiler que nos ayuda a identificar problemas de rendimiento en la aplicación. Permite ver qué componentes se están renderizando y cuánto tiempo tardan en hacerlo, y que props se ven modificadas.
 - Se puede usar **Lighthouse** para auditar el rendimiento de la aplicación, incluyendo el tiempo de carga y el tamaño del bundle. Esta herramienta se encuentra en las DevTools de Chrome.
