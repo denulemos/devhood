@@ -10,7 +10,7 @@ const config: Config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://your-docusaurus-site.example.com',
+  url: 'https://elrincondeldev.vercel.app',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -27,9 +27,15 @@ const config: Config = {
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'es',
-    locales: ['es'],
+  defaultLocale: 'es',
+  locales: ['es'], // asegurate que SOLO esté 'es'
+  localeConfigs: {
+    es: {
+      label: 'Español',
+    },
   },
+},
+
 
    stylesheets: [
     'https://fonts.googleapis.com/css2?family=Pacifico&display=swap',
@@ -85,7 +91,7 @@ const config: Config = {
     },
     footer: {
       style: 'dark',
-      copyright: `Copyright © ${new Date().getFullYear()} El rincon del Dev, Inc. Built with Docusaurus y mucho <3.`,
+      copyright: `Copyright © ${new Date().getFullYear()} El rincon del Dev, Inc. Built with Docusaurus y mucho amor.`,
     },
     prism: {
       theme: prismThemes.github,
