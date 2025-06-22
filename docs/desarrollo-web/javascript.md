@@ -392,8 +392,6 @@ type Test2 = IsString<number>; // 'no'
 
 ### **¿Cómo funcionan los decoradores en TypeScript y en qué casos son útiles?**
 
-[Volver al indice](#typ-base)
-
 Para usar decoradores, debes habilitar la opción experimentalDecorators en el archivo tsconfig.json:
 
 ```json
