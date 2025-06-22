@@ -1,8 +1,7 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 ---
-
-# 🔺 Angular
+# ❤️ Angular
 
 ### **¿Qué son los modulos en Angular?**
 
@@ -333,7 +332,7 @@ Instalá herramientas que formateen y detecten errores automáticamente.
 
 ---
 
-### **Patrones de disenio en Angular**
+### **Patrones de diseño en Angular**
 
 **Arquitectura modular**
 
@@ -621,7 +620,21 @@ export class ProfileComponent {
 
 ---
 
-### **Que mejoras hay en la migracion de AngularJS a Angular?**
+### **¿Qué mejoras hay en la migración de AngularJS a Angular?**
+
+Migrar de AngularJS a Angular trae muchas mejoras importantes:
+
+- **Arquitectura basada en componentes:** Angular utiliza componentes reutilizables y encapsulados, lo que facilita la organización y el mantenimiento del código.
+- **Mejor rendimiento:** Angular es más rápido gracias a la compilación AOT (Ahead-of-Time), el cambio en la detección de cambios y el uso de TypeScript.
+- **Soporte para TypeScript:** Angular está escrito en TypeScript, lo que permite tipado estático, autocompletado y detección temprana de errores.
+- **Herramientas modernas:** Angular CLI automatiza tareas como la generación de componentes, servicios y la construcción del proyecto.
+- **Lazy Loading:** Permite cargar módulos bajo demanda, mejorando el tiempo de carga inicial de la aplicación.
+- **Mejor sistema de inyección de dependencias:** Más simple, potente y fácil de testear.
+- **Programación reactiva con RxJS:** Facilita el manejo de flujos de datos asíncronos y eventos complejos.
+- **Soporte para pruebas:** Angular tiene mejor integración con herramientas de testing y facilita la creación de pruebas unitarias y de integración.
+- **Actualizaciones y soporte:** Angular recibe actualizaciones frecuentes, mejoras de seguridad y nuevas funcionalidades.
+
+En resumen, migrar a Angular permite crear aplicaciones más rápidas, escalables, mantenibles y seguras, utilizando herramientas y patrones modernos.
 
 | AngularJS | Angular |
 | --- | --- |
@@ -774,7 +787,7 @@ Sin embargo, si uno planifica trabajar con WebSockets o Eventos Complejos, Obser
 
 ---
 
-### **Angular Signals**
+### **¿Qué es Angular Signals?**
 
 Angular signals es una caracteristica que aparecio con Angular 16 en donde se introducen herramientas de reacividad para mejorar la gestion de estados y deteccion de cambios. Reemplaza a algunos elementos nativos y a algunos usos de RxJs
 
@@ -1031,7 +1044,7 @@ Luego este componente es inyectado en el constructor (o mediante el inject) del 
 constructor(private userService: UserService) {}
 ```
 
-Se pueden definir distintos niveles de inyeccion, por ejemplo:
+Se pueden definir distintos niveles de inyección, por ejemplo:
 
 - **root**: El servicio esta disponible globalmente para toda la aplicacion
 - **Nivel de Módulo (providers: [] en @NgModule)**: El servicio esta disponible solo para el módulo en el que se encuentra
@@ -1071,3 +1084,197 @@ constructor(@Inject(CONFIG_TOKEN) private config: string) {
 }
 ```
 
+---
+
+### **¿Qué es el Two-Way Data Binding en Angular?**
+
+El Two-Way Data Binding es una forma de vincular datos entre el componente y la vista de manera que si cambia el valor en el HTML, también cambia en el componente, y viceversa. Es como una autopista de doble mano: lo que escribís en el input se refleja en la variable, y si la variable cambia, el input también.
+
+Se usa con la sintaxis especial `[(ngModel)]`:
+
+```html
+<input [(ngModel)]="nombre">
+```
+
+- Si escribís algo en el input, la variable `nombre` se actualiza.
+- Si cambiás el valor de `nombre` en el componente, el input también lo muestra.
+
+**¿Cuándo usarlo?**  
+Cuando necesitás que el usuario pueda modificar datos y que esos cambios se reflejen automáticamente en tu lógica (por ejemplo, formularios).
+
+---
+
+### **¿Qué es un Pipe en Angular y para qué sirve?**
+
+Un Pipe es una herramienta para transformar datos directamente en el HTML, sin tener que modificar el valor original en el componente. Es como un filtro que le da formato a lo que se muestra.
+
+Ejemplo de uso:
+
+```html
+<p>{{ fecha | date:'shortDate' }}</p>
+<p>{{ precio | currency:'USD' }}</p>
+```
+
+- `date` transforma una fecha a un formato legible.
+- `currency` muestra un número como dinero.
+
+**¿Puedo crear mis propios pipes?**  
+¡Sí! Podés crear pipes personalizados para transformar datos según tus necesidades.
+
+---
+
+### **¿Qué es un Service en Angular y por qué se usa?**
+
+Un Service es una clase donde ponés lógica que querés compartir entre varios componentes, como llamadas a APIs, manejo de datos, o utilidades. Así evitás repetir código y mantenés tus componentes más limpios.
+
+Ejemplo típico:
+
+```typescript
+@Injectable({ providedIn: 'root' })
+export class ApiService {
+  getUsuarios() {
+    return this.http.get('/api/usuarios');
+  }
+}
+```
+
+Luego lo inyectás en cualquier componente que lo necesite.
+
+---
+
+### **¿Qué es un Guard en Angular y para qué sirve?**
+
+Un Guard es como un portero para tus rutas. Decide si un usuario puede entrar a una página o no (por ejemplo, si está logueado o tiene permisos).
+
+Ejemplo básico:
+
+```typescript
+@Injectable({ providedIn: 'root' })
+export class AuthGuard implements CanActivate {
+  canActivate(): boolean {
+    return this.authService.estaLogueado();
+  }
+}
+```
+
+Y lo usás en tus rutas:
+
+```typescript
+{ path: 'admin', component: AdminComponent, canActivate: [AuthGuard] }
+```
+
+---
+
+### **¿Qué es un Resolver en Angular?**
+
+Un Resolver es una clase que se encarga de traer datos antes de que se muestre una ruta. Así, cuando el usuario entra a una página, ya tiene toda la información lista y no ve pantallas vacías o "cargando".
+
+Ejemplo:
+
+```typescript
+@Injectable({ providedIn: 'root' })
+export class UsuarioResolver implements Resolve<Usuario> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Usuario> {
+    return this.apiService.getUsuario(route.params['id']);
+  }
+}
+```
+
+Y en la ruta:
+
+```typescript
+{ path: 'usuario/:id', component: UsuarioComponent, resolve: { usuario: UsuarioResolver } }
+```
+
+---
+
+### **¿Qué es un Directive en Angular?**
+
+Una Directiva es una instrucción que le das a un elemento HTML para que cambie su comportamiento o apariencia. Hay directivas estructurales (como `*ngIf`, `*ngFor`) y de atributo (como `[ngClass]`, `[ngStyle]`).
+
+Ejemplo:
+
+```html
+<div *ngIf="mostrar">Solo se muestra si 'mostrar' es true</div>
+<ul>
+  <li *ngFor="let item of lista">{{ item }}</li>
+</ul>
+```
+
+También podés crear tus propias directivas para reutilizar lógica visual.
+
+---
+
+### **¿Qué es el Angular CLI y por qué debería usarlo?**
+
+El Angular CLI es una herramienta de línea de comandos que te ayuda a crear, desarrollar, testear y construir aplicaciones Angular de manera rápida y ordenada. Te ahorra tiempo generando componentes, servicios, módulos, y más, con buenas prácticas por defecto.
+
+Ejemplo de comandos útiles:
+
+```bash
+ng new mi-app         # Crea una nueva app Angular
+ng generate component usuario
+ng generate service api
+ng serve              # Levanta el servidor de desarrollo
+ng build              # Compila la app para producción
+```
+
+---
+
+### **¿Qué es un Input y un Output en Angular?**
+
+- **@Input:** Permite que un componente hijo reciba datos de su componente padre.
+- **@Output:** Permite que un componente hijo le envíe eventos o datos al padre.
+
+Ejemplo:
+
+```typescript
+// Hijo
+@Input() mensaje: string;
+@Output() notificar = new EventEmitter<string>();
+
+enviar() {
+  this.notificar.emit('¡Hola padre!');
+}
+```
+
+```html
+<!-- Padre -->
+<app-hijo [mensaje]="texto" (notificar)="recibir($event)"></app-hijo>
+```
+
+---
+
+### **¿Qué es el Routing en Angular?**
+
+El Routing es el sistema de navegación de Angular. Permite que tu app tenga varias "páginas" (componentes) y que el usuario navegue entre ellas sin recargar la página.
+
+Definís rutas en un archivo especial:
+
+```typescript
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'usuarios', component: UsuariosComponent },
+  { path: '**', redirectTo: '' } // Ruta para errores (404)
+];
+```
+
+Y usás `<router-outlet></router-outlet>` en tu HTML para mostrar el componente correspondiente según la ruta.
+
+---
+
+### **¿Qué es un módulo compartido (Shared Module) y para qué sirve?**
+
+Un Shared Module es un módulo donde ponés componentes, pipes y directivas que vas a usar en varios lugares de tu app. Así, evitás importar lo mismo muchas veces y mantenés tu código más organizado.
+
+Ejemplo:
+
+```typescript
+@NgModule({
+  declarations: [MiPipe, MiDirectiva],
+  exports: [MiPipe, MiDirectiva, CommonModule]
+})
+export class SharedModule {}
+```
+
+Luego lo importás en otros módulos que lo necesiten.
