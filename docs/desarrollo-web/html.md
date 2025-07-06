@@ -1,15 +1,30 @@
 ---
-sidebar_position: 3
+sidebar_position: 1
 ---
-# 🌐 HTML
+# 🩷 HTML
 
 ### **¿Cuál es la diferencia entre h1, h2, etc.?**
 
-Los elementos de encabezado h1 a h6 se utilizan para indicar la importancia del contenido que les sigue. Cuanto menor sea el número, mayor será la importancia, por lo que los elementos h2 tienen menos importancia que los elementos h1. Utiliza solo un elemento h1 por página y coloca los encabezados de menor importancia debajo de los de mayor importancia.
+Las etiquetas `h1`, `h2`, `h3`, `h4`, `h5` y `h6` se usan para poner títulos y subtítulos en una página web. Piensa en ellas como los títulos grandes y pequeños de un libro:
+
+- `h1` es el título más importante (como la portada de un libro). Solo debe haber uno por página.
+- `h2` es un subtítulo importante, debajo del `h1`.
+- `h3` es un subtítulo dentro de un `h2`, y así sucesivamente hasta `h6`.
+
+Cada número más alto (`h3`, `h4`, etc.) indica un título menos importante. Usar bien estas etiquetas ayuda a que tu página sea más fácil de leer y también ayuda a los buscadores (como Google) a entender de qué trata tu contenido.
+
+Ejemplo:
+
+```html
+<h1>Título principal</h1>
+<h2>Subtítulo</h2>
+<h3>Sub-subtítulo</h3>
+```
 
 ---
 
 ### **Vínculos Relativos en HTML**
+
 
 Los vínculos relativos son aquellos que permiten interconectar los archivos de nuestro sitio (internos, dentro de nuestro sitio o servidor).
 Si por ejemplo quiero ir de mi archivo index a mi contacto.html lo haré de la siguiente forma:
@@ -35,7 +50,6 @@ Si mi archivo contacto se encontrase dentro de una carpeta la ruta a marcar ser�
 
 ### **Vínculos Absolutos en HTML**
 
-
 Es la URL que dirige a un recurso en la web, por ejemplo, si quiero ir a google.com desde mi archivo index.html, lo haré de la siguiente forma:
 
 ```html
@@ -45,11 +59,10 @@ Es la URL que dirige a un recurso en la web, por ejemplo, si quiero ir a google.
 <a href="https://www.google.com" title="Contacto"> Contacto </a>
 ```
 
-<a id="html4"></a>
+---
 
 ### **¿Para qué es el Doctype?**
 
-[Volver al indice](#html-base)
 
 El doctype es una declaración que se utiliza en un documento HTML para informar al navegador web sobre la versión de HTML en la que está escrito el documento. El doctype debe ser la primera línea de un documento HTML y se utiliza para garantizar que el navegador web interprete el documento correctamente.
 
@@ -61,7 +74,6 @@ El doctype es una declaración que se utiliza en un documento HTML para informar
 
 ### **Atributo placeholder para campos en HTML**
 
-
 El atributo placeholder me permite guiar al usuario con referencia lo que tiene que colocar dentro de nuestro campo. Por ejemplo:
 
 ```html
@@ -72,7 +84,7 @@ Esto indica al usuario que en ese campo va el nombre completo, o tambien se podr
 
 ---
 
-### **Que es HTML Semantico?** 
+### **Que es HTML Semantico?**
 
 
 Es el uso de etiquetas introducidas en HTML5 en vez de divs y span para la division de secciones en mi HTML.
@@ -128,6 +140,7 @@ El resultado de un documento básico tiene la siguiente estructura:
 
 ### **Puedo escribir las etiquetas en mayúscula y minúscula?**
 
+
 En HTML las mayúsculas y minúsculas son indiferentes. Quiere decir que las etiquetas pueden ser escritas con cualquier tipo de combinación de mayúsculas y minúsculas. Resulta, sin embargo, aconsejable acostumbrarse a escribirlas en minúscula, ya que otras tecnologías que pueden c onvivir
 con nuestro HTML (XML por ejemplo) no son tan permisivas y nunca viene mal hacernos a las buenas costumbres desde el principio, para evitar fallos triviales en un futuro.
 
@@ -141,9 +154,9 @@ seleccionar el destino del viaje.
 
 Un mapa de imagen permite definir diferentes zonas "pinchables" dentro de una imagen. El usuario puede clickear sobre cada una de las zonas definidas y cada una de ellas puede apuntar a una URL diferente.
 Siguiendo el ejemplo anterior, una sola imagen que muestre un mapa de todos los continentes puede definir una zona diferente para cada continente. De esta forma, el usuario puede clickear sobre la zona correspondiente a cada continente para que el navegador muestre la página que contiene los viajes disponibles a ese destino.
-Las zonas o regiones que se pueden definir en una imagen se crean mediante rectángulos, círculos y polígonos. Para crear un mapa de imagen, en primer lugar se inserta la imagen original mediante la etiqueta <img>. A continuación, se utiliza la etiqueta `<map>` para definir las zonas o regiones de la imagen. Cada zona se define mediante la etiqueta `<area>`.
+Las zonas o regiones que se pueden definir en una imagen se crean mediante rectángulos, círculos y polígonos. Para crear un mapa de imagen, en primer lugar se inserta la imagen original mediante la etiqueta `<img>`. A continuación, se utiliza la etiqueta `<map>` para definir las zonas o regiones de la imagen. Cada zona se define mediante la etiqueta `<area>`.
 
-<img width="197" alt="image" src="https://github.com/denulemos/denobible/assets/32619895/627950b8-7461-48b2-9846-5be8d3f355b0">
+`<img width="197" alt="image" src="https://github.com/denulemos/denobible/assets/32619895/627950b8-7461-48b2-9846-5be8d3f355b0">`
 
 Ejemplo de imagen que incluye un mapa de imagen
 Utilizando un círculo, dos rectángulos y un polígono se pueden definir fácilmente cuatro zonas clickeables en la imagen mediante el siguiente código HTML:
@@ -173,7 +186,7 @@ Se usa para proveer con un autocomplete a algunos elementos
 <form action="action_page.php" method="get">
 <input list="browsers" name="browser" id="browser">
 <datalist id="browsers">
-  <option value="Edge">
+  <option value="Edge"
   <option value="Firefox">
 </datalist>
 </form>
@@ -183,10 +196,59 @@ Se usa para proveer con un autocomplete a algunos elementos
 
 ### **Cuál es la diferencia entre div y span?**
 
-
 La etiqueta span trabaja como contenedor de línea, no se puede ampliar para ocupar un párrafo, debe usarse para edicion de frases en parrafos, y div trabaja como contenedor de bloque, y puede expandirse.
 
 ![image](https://github.com/denulemos/denobible/assets/32619895/e5463d4a-0cee-45ff-862b-f872e139ba9c)
 
 ---
 
+### **¿Qué es el atributo `alt` en imágenes?**
+
+El atributo `alt` proporciona un texto alternativo que se muestra si la imagen no carga. También ayuda a personas con discapacidad visual.
+
+---
+
+### **¿Qué es una lista en HTML?**
+
+Hay dos tipos principales de listas:
+- `<ul>`: lista desordenada (con viñetas).
+- `<ol>`: lista ordenada (con números).
+
+```html
+<ul>
+    <li>Manzana</li>
+    <li>Banana</li>
+</ul>
+```
+
+---
+
+### **¿Cómo hago un salto de línea?**
+
+Usa la etiqueta `<br>` para hacer un salto de línea dentro de un texto.
+
+---
+
+### **¿Qué es un comentario en HTML?**
+
+Un comentario es texto que no se muestra en la página. Se escribe así:
+
+```html
+<!-- Esto es un comentario -->
+```
+
+---
+
+### **¿Para qué sirve la etiqueta `<input>`?**
+
+La etiqueta `<input>` se usa para crear campos donde el usuario puede escribir datos, como texto, contraseñas o seleccionar archivos.
+
+---
+
+### **¿Qué es el atributo `id`?**
+
+El atributo `id` identifica de forma única un elemento en la página. Solo debe haber un elemento con el mismo `id`.
+
+```html
+<div id="cabecera"></div>
+```

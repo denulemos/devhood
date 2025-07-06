@@ -1,85 +1,93 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
+# 🩵 React
 
-# 🟦 React
+### **¿Cuál es la diferencia entre una librería y un framework?**
 
-### **¿Qué es React?**
+Imagina que estás cocinando:
 
+- **Librería:** Es como tener un libro de recetas. Tú eliges qué receta usar y cuándo. Tienes el control y decides cómo organizar tu cocina.  
+  Ejemplo: **React**, **Redux**, **Lodash**.
 
-React fue creado por Facebook en el año 2013, y sigue siendo mantenida por él. (ahora Meta). Algunos ejemplos de proveedores que usan React son, además de Facebook, PayPal, Netflix, etc., páginas con un gran flujo de usuarios al día de hoy.
+- **Framework:** Es como tener un chef jefe en tu cocina que te dice exactamente qué hacer, en qué orden y cómo organizar todo. El framework manda, tú sigues las reglas.  
+  Ejemplo: **Angular**, **Vue**, **Django**.
 
-Es rápido y escalable. Es declarativo y basado en componentes. Aclaramos que es lo que queremos renderizar, pero no el cómo. Al ser declarativo, hace que sea facil el seguir patrones de diseño.
+| Característica         | Librería                | Framework                |
+|----------------------- |------------------------|--------------------------|
+| ¿Quién tiene el control? | El programador         | El framework             |
+| ¿Flexibilidad?         | Mucha                   | Menos, hay que seguir reglas |
+| ¿Estructura fija?      | No, cada proyecto puede ser distinto | Sí, todos los proyectos se parecen |
+| Ejemplos               | React, Redux, Lodash    | Angular, Vue, Django     |
 
-Su trabajo es predecible, toda la info va en una sola via. Nos ayuda a prevenir mutaciones involuntarias.
-
-Funciona con la llamada **Programación Reactiva**, cada componente reacciona y se vuelve a renderizar (o no) cuando se produce un cambio de estado o llegan ciertas propiedades.
-
-Al ser una libreria, se puede usar directamente en un HTML (aunque no es la manera mas común), y esta hecho para aplicaciones de cualquier magnitud.
-
-Tambien se puede trabajar del lado del servidor con Node, aplicaciones mobile con React Native y de escritorio con Electron. Todo con el mismo tipo de codigo.
-
----
-
-### **Libreria vs Framework** 
-
-- **Libreria:** Es un conjunto de funciones que se pueden usar en un proyecto. El programador decide cuando y como usarla, es mucho mas flexible. Ejemplo: React, Redux, Lodash.
-- **Framework:** Es un conjunto de reglas y estructuras que se deben seguir para desarrollar un proyecto. El framework decide cuando y como usarlo. Ejemplo: Angular, Vue, Django.
-
-Es por eso que cuando vemos un proyecto hecho con React, y luego otro tambien hecho con React, su estructura puede ser completamente distinta. En cambio, cuando vemos proyectos Angular, podemos encontrar la misma estructura base en todos.
+Por eso, dos proyectos hechos con React pueden ser muy diferentes entre sí, pero dos proyectos hechos con Angular suelen tener la misma estructura.
 
 ---
 
-### **Para que es el comando React eject?**
+### **¿Para qué sirve el comando `eject` en React?**
 
-El comando `eject` de React es una forma de sacar toda la configuración de Webpack y Babel que React trae por defecto, para poder modificarla a gusto. Es una forma de tener control total sobre la configuración de la aplicación.
+Cuando creás una app con `create-react-app`, toda la configuración complicada (Webpack, Babel, etc.) está "escondida" para que no tengas que preocuparte. Pero si algún día necesitás cambiar algo avanzado (por ejemplo, agregar un plugin raro), podés usar el comando:
 
-```jsx
-npx create-react-app my-app
-cd my-app
+```bash
 npm run eject
 ```
 
+Esto "destapa" toda la configuración y la pone en tu proyecto para que la puedas modificar. **OJO:** No se puede volver atrás fácilmente. Usalo solo si realmente necesitás cambiar la configuración interna de React.
+
+
 ---
 
-### **Que son las Ref?**
+### **¿Qué son las Ref en React?**
 
-Permite a react manipular directamente el DOM Sin necesidad de actualizar un componente, asumen cambios en los mismos que no se pueden resolver mediante el traspaso de props o cuyo impacto se limita al propio componente no siendo rentable renderizarlo de nuevo.
+Las **Ref** en React sirven para acceder directamente a un elemento del DOM (por ejemplo, un `<div>`, un `<input>`, etc.) desde tu código JavaScript, sin tener que pasar por el sistema de props o estado de React.
+
+**¿Para qué se usan?**
+- Cuando necesitas modificar algo del DOM directamente (por ejemplo, enfocar un input, reproducir un video, medir el tamaño de un elemento, etc.).
+- Cuando NO querés que el componente se vuelva a renderizar solo por ese cambio.
+
+**Ejemplo fácil con componente funcional:**
 
 ```jsx
-class AnimatedSpinner extends Component {
+import React, { useRef } from 'react';
 
-  constructor() {
-    super()
-    this.animationRef = React.createRef()    // 1. creación
-  }
+function MiComponente() {
+  const inputRef = useRef(); // Creamos la ref
 
-  triggerAnimation() {
-    this.animationRef.current.className.add('animated')  // 3. acceso
-  }
+  const enfocarInput = () => {
+    inputRef.current.focus(); // Accedemos al input y lo enfocamos
+  };
 
-  render() {
-    return (
-      <>
-        <div ref={this.animationRef} className="spinner"> </div>  // asociación
-        <button onClick={this.triggerAnimation}> Animar </button>
-
-    )
-  }
+  return (
+    <>
+      <input ref={inputRef} placeholder="Escribí algo..." />
+      <button onClick={enfocarInput}>Enfocar input</button>
+    </>
+  );
 }
 ```
 
+**¿Qué pasa acá?**
+- `useRef()` crea una referencia.
+- Se la damos al `<input ref={inputRef} />`.
+- Cuando apretás el botón, el input se enfoca automáticamente.
+
+**Resumen:**  
+Las Ref son como un "puente" para manipular directamente elementos del DOM desde React, sin tener que actualizar el estado ni renderizar de nuevo el componente.
+
+
 ---
 
-### **De que tratan los Ciclos de Vida Componentes?**
+### **¿Qué son los Ciclos de Vida de los Componentes en React?**
 
-React provee de metodos especificos para los ciclos de vida de los componentes, en este caso, veremos en los de clase. Se llaman cuando el componente se monta, actualiza o desmonta, veamos las deficiones:
+Los **ciclos de vida** de los componentes en React son una serie de métodos especiales que permiten ejecutar código en momentos específicos del ciclo de vida de un componente de clase: cuando se monta (aparece en pantalla), se actualiza (cambia su estado o props) o se desmonta (se elimina del DOM).
 
-- Monta: El componente se renderiza en la pagina
-- Desmonta: El componente es removido de la pagina
-- Actualiza: El componente se actualiza en la pagina
+- **Montaje (Mounting):** El componente se crea y se inserta en el DOM.
+- **Actualización (Updating):** El componente se vuelve a renderizar debido a cambios en props o estado.
+- **Desmontaje (Unmounting):** El componente se elimina del DOM.
 
-Varios de los estados que veremos que se utilizaban tipicamente en componentes de clase se encuentran deprecados, y deben usarse con un tag UNSAFE para su uso.
+React proporciona métodos como `componentDidMount`, `componentDidUpdate` y `componentWillUnmount` para manejar estas etapas. Algunos métodos antiguos están deprecados y requieren el prefijo `UNSAFE_` para ser usados, ya que pueden causar problemas en futuras versiones de React.
+
+Hoy en día, en componentes funcionales, estos ciclos de vida se gestionan principalmente con el hook `useEffect`.
 
 ---
 
@@ -517,7 +525,7 @@ Ambos dependen de un array de dependencias para saber cuándo deben actualizarse
 
 ---
 
-### **useReducer()**
+### **`useReducer()`**
 
 
 Es una alternativa a useState que se utiliza de la siguiente manera al momento de inicializar el componente:
@@ -625,18 +633,16 @@ En resumen, useEffect se utiliza para efectos secundarios asincrónicos que no r
 
 ---
 
-### **¿Que es Redux?**
+### **¿Qué es Redux? (Explicación para dummies)**
 
-Redux permitira manejar el state global de manera facil conforme van creciendo, tambien ayuda a manejar los datos dependiendo de las acciones del usuario. Fue creado por un dev del equipo de React.
+Imaginá que tu aplicación es como una pizzería muy grande, con muchos empleados (componentes) que necesitan saber qué pizzas se están pidiendo y quién las pidió. Si cada empleado lleva su propia lista, todo se vuelve un lío. Redux es como una pizarra gigante en la cocina donde todos anotan y leen los pedidos. Así, todos siempre ven la misma información y nadie se confunde.
 
-- Solo hay 1 state principal
-- El state cambia depende lo que pase en la interfaz de usuario
-- Solo ciertas funciones cambiarán el State
-- Solo se hace un cambio a la vez
+- **Solo hay una pizarra (state global):** Toda la información importante está en un solo lugar.
+- **Para cambiar algo, hay que llenar un formulario (action):** Nadie puede borrar o agregar cosas a la pizarra directamente. Hay que pedirlo con un papelito que dice qué querés hacer.
+- **Un encargado (reducer) revisa los pedidos:** Este encargado lee el papelito y decide cómo cambiar la pizarra.
+- **Todos ven los cambios al instante:** Cuando la pizarra cambia, todos los empleados se enteran y pueden actuar en consecuencia.
 
-Redux es un contenedor de estado que se usa generalmente con React. 
-
-En el **Redux Store** se guarda el estado de la aplicacion al cual podemos acceder mediante **Actions**. 
+**Ejemplo de pedido:**
 
 ```javascript
 {
@@ -645,62 +651,61 @@ En el **Redux Store** se guarda el estado de la aplicacion al cual podemos acced
 }
 ```
 
-El `type` es el tipo de accion que se desea realizar de una cantidad pre-definida, el `payload` es la informacion necesaria para realizar este cambio. Este pedido es manejado por el **Reducer**
+**Ejemplo de encargado que actualiza la pizarra:**
 
 ```javascript
 function pedidosReducer(state = [], action) {
   switch (action.type) {
     case 'PEDIR_PIZZA':
-      return [...state, action.payload.item]; // Añade 'pizza' al pedido
+      return [...state, action.payload.item];
     default:
-      return state; // Devuelve el estado tal cual si no reconoce la acción
+      return state;
   }
 }
 ```
 
-Una vez que el cambio esta hecho, todos los componentes que la consumen estan al tanto de este cambio y cambian en consecuencia.
+**¿Por qué usar Redux?**
 
-Redux guarda la informacion en un solo lugar de la aplicacion y la distribuye a todos los componentes que la necesitan, y es facil de depurar. Es especialmete util en aplicaciones grandes.
+- Si tu pizzería (app) es chica, no hace falta la pizarra gigante, con papelitos alcanza (hooks o Context).
+- Si es grande y hay muchos empleados, la pizarra ayuda a que todos estén sincronizados y no se pisen los pedidos.
+- Es fácil ver qué pasó y cuándo (ideal para no perderse).
+- No hace que la pizzería sea más rápida, pero sí más ordenada.
 
----
+**¿Cuándo conviene usar Redux?**
 
-### **Cuando conviene usar Redux?**
+- Cuando tu app es grande y muchos componentes necesitan compartir información.
+- Cuando el equipo es grande y querés que todo sea más ordenado.
+- Si tu app es simple, mejor usar otras opciones más fáciles.
 
-Si la app es pequeña, se recomienda ContextAPI o hooks. Si es grande, y va a ser mantenido por varias personas, se recomeinda Redux
+**¿Cuáles son los beneficios de usar Redux?**
 
-- No hace la app mas rapida
-- Existe Redux para muchos frameworks, no solo React
-- No es necesario usarlo en cada proyecto
+- Todo está en un solo lugar, así que es fácil de encontrar y cambiar información.
+- Es muy ordenado y predecible: sabés exactamente cómo y cuándo cambió algo.
+- Hay muchas herramientas para ver y revisar los cambios.
+- Es fácil de probar y mantener, porque cada parte hace solo una cosa.
 
----
-
-### **¿Cuales son los beneficios de usar Redux?**
-
-- Como su estructura es muy estricta, es muy facil de mantener y de organizar, tambien es muy estable.
-- Da una fiable representacion del servidor, es muy util especialmente para presentaciones preliminares. Puede optimizar, por ejemplo, motores de busqueda.
-- Provee muchas herramientas para los devs
-- Es facil de probar, las funciones de redux y el codigo en si son pequeñas y atomicas.
 
 ---
 
 ### **Redux vs ContextAPI**
 
+Imaginá que tu app es una escuela:
 
-**Context**
+- **ContextAPI** es como un pizarrón en cada aula. Si los alumnos de esa aula necesitan saber algo (por ejemplo, el tema del día), el pizarrón lo muestra y todos lo pueden ver. Es fácil de usar, viene con React y sirve para compartir información simple o que no cambia mucho (como el idioma, el tema claro/oscuro, el usuario logueado, etc.).
 
-- Context es una herramienta de React que permite pasar datos a traves del arbol de componentes sin tener que pasar props manualmente en cada nivel
-- Context es una buena opcion para datos que son necesarios en muchos componentes de la aplicacion
-- Context es una buena opcion para datos que no cambian frecuentemente
-- Context viene integrado a React
-- Es facil de entender para principiantes
-- No requiere mucho codigo boilerplate
+- **Redux** es como tener una pizarra gigante en la dirección de la escuela, donde se anotan todos los cambios importantes (quién entra, quién sale, qué materias hay, etc.). Todos los profesores y alumnos pueden ver esa pizarra y pedir que se actualice, pero solo siguiendo reglas claras. Es ideal cuando hay muchos datos que cambian seguido y muchos salones (componentes) que necesitan estar sincronizados. Es más poderosa, pero requiere más configuración y no viene incluida en React.
 
-**Redux**
+**¿Cuándo usar cada uno?**
+- Si tu app es chica o solo necesitás compartir datos simples entre algunos componentes, usá ContextAPI.
+- Si tu app es grande, con muchos datos que cambian todo el tiempo y muchos componentes que dependen de esos datos, usá Redux.
 
-- Redux es una libreria de manejo de estado que permite manejar el estado de la aplicacion de manera predecible
-- Redux es una buena opcion para datos que cambian frecuentemente
-- Redux es una buena opcion para aplicaciones grandes con muchos componentes
-- Redux no viene integrado a React, se debe instalar por separado
+| Característica         | ContextAPI (pizarrón del aula) | Redux (pizarra de la dirección) |
+|------------------------|-------------------------------|-------------------------------|
+| ¿Dónde se usa?         | En partes específicas          | En toda la app                |
+| ¿Para qué sirve?       | Datos simples, poco cambio     | Datos complejos, mucho cambio |
+| ¿Fácil de usar?        | Sí, viene con React            | Requiere más configuración    |
+| ¿Ideal para...?        | Apps chicas/medianas           | Apps grandes y complejas      |
+
 
 ---
 
@@ -826,31 +831,53 @@ React Fiber no cambia cómo los desarrolladores escriben código React, pero mej
 
 ---
 
-### **Que tener en cuenta para tener una buena performance en React** 💛
+### **¿Cómo hacer que tu app React mas performante?** 
 
-- Usar memorizacion para evitar renderizados innecesarios. Usar `useMemo` para valores y `useCallback` para funciones.
+#### 1. **No hagas que todo se vuelva a dibujar todo el tiempo**
+
+- **¿Por qué?** Si cada vez que cambiás algo, toda la app se vuelve a dibujar, se pone lenta.
+- **¿Cómo lo evito?** Usá `useMemo` para guardar valores calculados y `useCallback` para guardar funciones. Así, React no recalcula ni recrea cosas que no cambiaron.
 
 ```jsx
 import React, { useMemo, useCallback } from 'react';
 
 const Componente = ({ lista }) => {
-  const listaOrdenada = useMemo(() => lista.sort(), [lista]);
+  // ¡OJO! Usá [...lista].sort() para no modificar la lista original
+  const listaOrdenada = useMemo(() => [...lista].sort(), [lista]);
   const manejarClick = useCallback(() => console.log('Clicked'), []);
   return <button onClick={manejarClick}>Ordenar</button>;
 };
 ```
 
-- Usa contextos (React Context) de manera adecuada para evitar actualizaciones globales innecesarias.
-- Evita la mutacion directa de objetos y arrays. Usa `useState` y `useReducer` para actualizar el estado de manera inmutable.
-- Divide la logica en componentes mas pequeños y reutilizables.
-- Usar la propiedad `key` cuando se renderizan listas para mejorar el rendimiento, ya que ayuda a React a identificar elementos únicos y realizar actualizaciones más eficientes.
-- Usar React Window o React Virtualized para renderizar grandes listas de elementos de manera eficiente.
+#### 2. **No cambies los objetos o arrays directamente**
+
+- Siempre usá funciones como `setState` o `useReducer` para cambiar el estado. Si cambiás un array u objeto "a mano", React no se entera y no actualiza bien la pantalla.
+
+#### 3. **Dividí tu app en componentes chiquitos**
+
+- Es más fácil de entender y solo se actualizan las partes que cambian.
+
+#### 4. **Usá `key` cuando hacés listas**
+
+- Cuando hacés una lista con `.map()`, poné una `key` única en cada elemento. Así React sabe cuál es cuál y no se confunde.
+
+```jsx
+{items.map(item => <li key={item.id}>{item.nombre}</li>)}
+```
+
+#### 5. **No uses contextos para todo**
+
+- El Context de React es útil, pero si lo usás para todo, cada cambio hace que toda la app se vuelva a dibujar. Usalo solo para datos realmente globales (como el usuario logueado o el tema de la app).
+
+#### 6. **Listas grandes: no muestres todo junto**
+
+- Si tenés una lista gigante (¡mil elementos!), usá librerías como **react-window** o **react-virtualized**. Solo muestran lo que el usuario ve en pantalla, no todo junto.
 
 ```jsx
 import { FixedSizeList as List } from 'react-window';
 
 const Row = ({ index, style }) => (
-  <div style={style}>Row {index}</div>
+  <div style={style}>Fila {index}</div>
 );
 
 const App = () => (
@@ -860,17 +887,42 @@ const App = () => (
 );
 ```
 
-- Usa React.lazy y Suspense para cargar componentes bajo demanda y mejorar los tiempos de carga.
-- Usa herramientas como Webpack para dividir el código en partes más pequeñas y cargar solo lo necesario.
-- Limita el uso de operaciones manuales con el DOM que pueden interferir con la reconciliación de React.
-- Usa herramientas como className o bibliotecas como styled-components en lugar de pasar estilos inline directamente en los elementos. Evita renders excesivos de estilos dinámicos.
-- Usa Server-Side Rendering (SSR) con herramientas como Next.js para mejorar tiempos de carga inicial
-- Usa las herramientas de React para identificar problemas de rendimiento como React DevTools y React Profiler.
-- Optimización de imágenes, carga diferida y compresión de recursos para mejorar los tiempos de carga y la experiencia del usuario. Usa formatos modernos como WebP.
+#### 7. **Cargá solo lo necesario (carga bajo demanda)**
+
+- Usá `React.lazy` y `Suspense` para cargar componentes solo cuando se necesitan. Así la app arranca más rápido.
+
+#### 8. **Dividí el código en partes más chicas**
+
+- Herramientas como **Webpack** pueden dividir tu app en archivos más chicos. Así el navegador baja solo lo que necesita.
+
+#### 9. **No toques el DOM a mano**
+
+- Si cambiás cosas del DOM directamente (con `document.getElementById`, etc.), React se puede confundir. Dejá que React maneje todo.
+
+#### 10. **No pongas estilos inline todo el tiempo**
+
+- Mejor usá `className` o librerías como **styled-components**. Los estilos inline pueden hacer que React vuelva a dibujar más de la cuenta.
+
+#### 11. **Renderizado en el servidor (SSR)**
+
+- Si querés que la página cargue rápido desde el principio, usá frameworks como **Next.js** que hacen parte del trabajo en el servidor.
+
+#### 12. **Imágenes y recursos: hacelos livianos**
+
+- Usá imágenes comprimidas y formatos modernos como **WebP**.
+- Cargá imágenes solo cuando se ven en pantalla (lazy loading).
+
+#### 13. **Usá las herramientas de React**
+
+- **React DevTools** y **React Profiler** te muestran qué partes de la app se están volviendo a dibujar y por qué. Así podés encontrar los problemas de performance.
+
+**En resumen:**  
+No hagas que React trabaje de más. Mostrá solo lo necesario, dividí tu app en partes chicas, y usá las herramientas que te da React para que todo ande rápido y bien.
+
 
 ---
 
-### **¿Qué es el Virtual DOM?** 💛
+### **¿Qué es el Virtual DOM?**
 
 Para que React pueda efectuar esta suerte de “recarga parcial por pedazos” de una página, debe usar el Virtual DOM, que es una representación del DOM real.
 
@@ -911,11 +963,9 @@ Se suele manejar la informacion en un objeto con 3 elementos:
 }
 ```
 
-
+---
 
 ### **useActionState en React**
-
-[Volver al indice](#entrevista-base)
 
 Es un hook que en React 18 fue considerado experimental, utilizado para simpliificr la gestion de acciones asincronas en los componentes, como el estado de `loading`, `error` y `data`.
 
@@ -930,19 +980,13 @@ Este hook nos ahorra usar multiples `useState` para el manejo de estos estados
 
 ---
 
-### **startTransition() React**
-
-[Volver al indice](#entrevista-base)
+### **`startTransition()`**
 
 La función `startTransition()` de React es una herramienta que se utiliza para gestionar actualizaciones de estado que no son críticas para la interacción inmediata del usuario. Su principal objetivo es mejorar la **experiencia de usuario** al permitir que las actualizaciones menos importantes no bloqueen el hilo de ejecución principal y no interfieran con las interacciones críticas.
-
-#### ¿Cómo funciona `startTransition()`?
 
 En React, las actualizaciones de estado, por defecto, son **sincrónicas**, lo que significa que cualquier cambio en el estado de un componente o renderización se ejecutará inmediatamente, lo cual puede causar problemas de rendimiento si el componente tiene un renderizado pesado o si hay muchos cambios de estado que se ejecutan al mismo tiempo.
 
 `startTransition()` es una API que permite que ciertas actualizaciones no se consideren prioritarias. Cuando usas `startTransition()`, le estás diciendo a React que esta actualización es **baja prioridad** y puede ser interrumpida si el hilo está ocupado haciendo tareas más importantes, como responder a las interacciones del usuario.
-
-#### ¿Cómo se usa `startTransition()`?
 
 Aquí tienes un ejemplo básico de cómo usar `startTransition()`:
 
@@ -992,7 +1036,7 @@ Se debe usar `startTransition()` cuando tengas actualizaciones de estado o rende
 2. **Optimización del rendimiento**: Al gestionar las actualizaciones de estado con menor prioridad, React puede hacer las actualizaciones más críticas primero, manteniendo la interfaz fluida.
 3. **Control más fino de las actualizaciones**: Permite una separación entre las tareas que son cruciales para la interacción del usuario y las que pueden esperar.
 
-### Limitaciones
+#### Limitaciones
 
 - **No reemplaza el uso de `useEffect`**: `startTransition()` no se debe usar para efectos secundarios que deban ocurrir de manera inmediata (como realizar peticiones API).
 - **No aplica a todas las actualizaciones de estado**: Debe usarse en contextos donde el rendimiento es una preocupación, pero no es necesario para todas las actualizaciones de estado.
@@ -1101,144 +1145,107 @@ Consideraciones
 - **Flujos de trabajo complejos**: Si tu formulario involucra validación compleja o interacciones con múltiples APIs, es posible que necesites integrar este hook con otros hooks personalizados o librerías como Formik o React Hook Form para manejar el estado y las validaciones de manera más avanzada.
 
 
-### **`useOptimistic()` React**
+### **`useOptimistic()`**
 
+`useOptimistic()` es un hook de React que te ayuda a que la app se sienta más rápida cuando haces cambios que dependen de un servidor (como borrar, editar o agregar algo). La idea es: **muestra el cambio en pantalla al instante**, aunque el servidor todavía no haya respondido. Si después hay un error, puedes volver atrás.
 
-El hook `useOptimistic()` es una característica introducida en React para manejar **actualizaciones optimistas** de manera más sencilla y declarativa. Se utiliza para actualizar la interfaz de usuario de manera inmediata, asumiendo que una operación asíncrona se completará correctamente, mientras el servidor procesa los datos. Si la operación falla, puedes revertir el estado de la interfaz de usuario.
+#### ¿Por qué usarlo?
+- El usuario ve los cambios al toque, sin esperar.
+- Si el servidor dice que todo salió bien, no hay que hacer nada más.
+- Si hay un error, podés avisar y volver al estado anterior.
 
-Este enfoque mejora la experiencia del usuario al hacer que las actualizaciones sean instantáneas, incluso antes de recibir una confirmación del servidor.
+#### ¿Cómo se usa?
 
-
-#### ¿Cómo funciona `useOptimistic()`?
-
-`useOptimistic()` es un hook diseñado para trabajar con estados que podrían necesitar ser actualizados de forma optimista. Al usarlo, defines un estado inicial y una función para calcular el nuevo estado después de una actualización. React se encargará de manejar ese estado temporalmente mientras la operación real se completa.
-
-El hook devuelve un par de valores:
-
-1. **`optimisticState`**: El estado actual, incluyendo cualquier cambio optimista que se haya realizado.
-2. **`setOptimisticState`**: Una función para actualizar el estado de manera optimista.
-
-#### Sintaxis de `useOptimistic()`
-
-```javascript
-const [optimisticState, setOptimisticState] = useOptimistic(initialState, reducer);
+```jsx
+const [estadoOptimista, setEstadoOptimista] = useOptimistic(estadoInicial, reducer);
 ```
+- `estadoInicial`: el valor con el que empieza tu estado (por ejemplo, una lista de tareas).
+- `reducer`: una función que dice cómo cambiar el estado cuando pasa algo (por ejemplo, borrar una tarea).
 
-- **`initialState`**: El estado inicial que quieres usar.
-- **`reducer`**: Una función que calcula el nuevo estado basado en el estado actual y una acción.
+Ejemplo simple: borrar tareas optimistamente
 
-```javascript
+```jsx
 import React, { useOptimistic } from 'react';
 
-function TodoList() {
-  const initialTodos = [
-    { id: 1, text: 'Aprender React' },
-    { id: 2, text: 'Construir una app' },
-    { id: 3, text: 'Publicar en producción' },
+function ListaTareas() {
+  const tareasIniciales = [
+    { id: 1, texto: 'Aprender React' },
+    { id: 2, texto: 'Hacer una app' },
   ];
 
-  // Estado optimista para la lista de tareas
-  const [todos, setTodos] = useOptimistic(initialTodos, (currentTodos, action) => {
-    switch (action.type) {
-      case 'delete':
-        // Eliminar tarea de manera optimista
-        return currentTodos.filter((todo) => todo.id !== action.id);
-      default:
-        return currentTodos;
+  const [tareas, setTareas] = useOptimistic(tareasIniciales, (tareasActuales, accion) => {
+    if (accion.tipo === 'borrar') {
+      return tareasActuales.filter((t) => t.id !== accion.id);
     }
+    return tareasActuales;
   });
 
-  const handleDelete = async (id) => {
-    // Actualización optimista: elimina la tarea de inmediato
-    setTodos({ type: 'delete', id });
-
+  const borrarTarea = async (id) => {
+    setTareas({ tipo: 'borrar', id }); // Borra en pantalla YA
     try {
-      // Simular una operación asíncrona, como una petición al servidor
-      await fetch(`/api/todos/${id}`, { method: 'DELETE' });
-    } catch (error) {
-      console.error('Error eliminando la tarea:', error);
-      // Si falla, puedes manejar la reversión manualmente (aquí no se implementa).
+      await fetch(`/api/tareas/${id}`, { method: 'DELETE' });
+    } catch (e) {
+      alert('No se pudo borrar. Volvé a intentar.');
+      // Acá podrías volver atrás si querés
     }
   };
 
   return (
     <ul>
-      {todos.map((todo) => (
-        <li key={todo.id}>
-          {todo.text}{' '}
-          <button onClick={() => handleDelete(todo.id)}>Eliminar</button>
+      {tareas.map((t) => (
+        <li key={t.id}>
+          {t.texto} <button onClick={() => borrarTarea(t.id)}>Borrar</button>
         </li>
       ))}
     </ul>
   );
 }
-
-export default TodoList;
 ```
 
+#### ¿Cuándo conviene usarlo?
+- Cuando querés que la app se vea rápida y no querés esperar a que el servidor responda.
+- Para borrar, agregar o editar cosas en listas.
+- Para sumar likes, votos, etc.
 
-1. **Estado optimista**: Usamos `useOptimistic()` para definir un estado inicial de tareas y un `reducer` que nos permite actualizar ese estado de forma declarativa.
-
-2. **Actualización optimista**: Cuando el usuario elimina una tarea, el estado se actualiza inmediatamente en la interfaz de usuario sin esperar la confirmación del servidor.
-
-3. **Reversión manual (si es necesario)**: Si la operación asíncrona (como la petición al servidor) falla, puedes manejar la reversión al estado anterior. Este manejo de errores no se incluye en el ejemplo, pero es importante para aplicaciones reales.
-
-#### ¿Cuándo usar `useOptimistic()`?
-
-Usa `useOptimistic()` cuando quieras manejar interacciones de usuario con actualizaciones rápidas en la interfaz, pero que dependen de operaciones asíncronas que podrían fallar. Algunos casos comunes incluyen:
-
-- **Edición de datos**: Actualizar textos, estados o elementos en una lista.
-- **Eliminaciones**: Mostrar instantáneamente que un elemento fue eliminado, aunque aún no se haya confirmado en el servidor.
-- **Creación de elementos**: Mostrar nuevos elementos en la interfaz antes de recibir confirmación del servidor.
-- **Actualizaciones de likes/reacciones**: Incrementar un contador de likes instantáneamente mientras se envía la acción al servidor.
-
-#### Beneficios de `useOptimistic()`
-
-1. **Experiencia de usuario mejorada**: Las actualizaciones optimistas hacen que la aplicación parezca más rápida y responsiva.
-2. **Código más declarativo**: Con el uso de un `reducer`, puedes definir cómo manejar diferentes acciones de manera clara.
-3. **Integración con la API de React**: Funciona perfectamente con las características de React 18, como el concurrent rendering.
-
-
-#### Consideraciones:
-
-- **Reversión manual**: Si la operación falla, tendrás que manejar manualmente la reversión del estado optimista.
-- **No es adecuado para todas las operaciones**: Si el resultado de la operación en el servidor afecta de manera significativa la lógica de la aplicación, puede ser mejor esperar a la confirmación antes de actualizar el estado.
-- **Evitar estados inconsistentes**: Asegúrate de manejar errores correctamente para que la interfaz no muestre datos incorrectos.
+#### Cosas a tener en cuenta
+- Si el servidor falla, tenés que decidir si volvés atrás el cambio o avisás al usuario.
+- No lo uses si el cambio depende sí o sí de la respuesta del servidor.
 
 ---
 
 ### **React Server Components**
 
-Es una caracteristica de React que nos permite renderizar algunos componentes en el lado del servidor, y que el cliente solo reciba el HTML necesario para renderizar la pagina, y que lo hidrate (que significa que los hace interactivos sin tener que re-renderizarlos completamente) de ser necesario, esto es muy util para componentes que son estaticos y no son interactivos, todo esto para evitar la carga de JS inutil.
+Los **React Server Components** son una forma de hacer que parte de tu app se arme en el servidor y no en el navegador. Así, el usuario recibe la página ya lista y más liviana, porque no tiene que bajar tanto JavaScript.
 
-- Disminuye el peso del bundle 
-- Mejora el tiempo de carga ya que el browser no debe hacer tanto trabajo para cargar la pagina
-- Se pueden realizar acciones como acceder a una base de datos desde el lado del servidor sin necesitar de involucrar al cliente
-- En estos componentes marcados como `Server Component` no se puede usar `useState` o `useEffect`, ya que estos son manejados por el cliente
+- **Más rápido**: la página carga antes porque el servidor hace el trabajo pesado.
+- **Menos código en el navegador**: solo se manda lo necesario.
+- **Podés pedir datos directamente desde el servidor** (por ejemplo, de una base de datos).
+
+**OJO:** En estos componentes no podés usar hooks como `useState` o `useEffect`, porque solo funcionan en el navegador.
+
+#### Ejemplo:
 
 ```jsx
-// Componente del Servidor (Rendimiento en el servidor)
+// Componente que corre en el servidor
 export default function ServerComponent() {
-  // Este código se ejecuta en el servidor
-  const data = fetchDataFromDatabase();  // Llamada al servidor o base de datos
-  return <div>Datos del servidor: {data}</div>;
+  const datos = buscarDatosEnLaBase(); // Esto solo lo hace el servidor
+  return <div>Datos: {datos}</div>;
 }
 
-// Componente del Cliente (Rendimiento en el cliente)
+// Componente que corre en el navegador
 export default function ClientComponent() {
-  // Este componente puede ser interactivo
-  const [count, setCount] = useState(0);
-
+  const [contador, setContador] = useState(0);
   return (
     <div>
-      <button onClick={() => setCount(count + 1)}>Haz clic</button>
-      <p>Has hecho clic {count} veces</p>
+      <button onClick={() => setContador(contador + 1)}>Sumar</button>
+      <p>Clicks: {contador}</p>
     </div>
   );
 }
 ```
 
-Es muy util combinar esta funcionalidad con NextJs para mejorar el rendimiento de la aplicacion.
+Se usan mucho con frameworks como Next.js para que tu app sea más rápida y eficiente.
+
 
 ---
 
@@ -1704,12 +1711,10 @@ Usa Context API o Redux para manejar datos sensibles de manera segura y evitar p
 
 Un **Fragment** en React es un componente especial que permite agrupar varios elementos sin añadir nodos adicionales al DOM. Es útil cuando necesitas devolver múltiples elementos desde un componente sin envolverlos en un elemento contenedor como un `<div>`.
 
-### ¿Por qué usar Fragment?
+¿Por qué usar Fragment?
 
 1. **Evitar nodos innecesarios en el DOM**: Usar un `<div>` u otro contenedor puede generar nodos adicionales que no son necesarios, lo que puede afectar el rendimiento o el estilo de la aplicación.
 2. **Mejorar la semántica del HTML**: Al no añadir contenedores innecesarios, el HTML resultante es más limpio y semántico.
-
-### Ejemplo básico
 
 ```jsx
 import React from 'react';
