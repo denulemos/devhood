@@ -4,6 +4,6 @@ import {Redirect} from '@docusaurus/router';
 
 export default function Home(): ReactNode {
   return (
-   <Redirect to="/docs/category/-desarrollo-y-tecnologías" />
+   <Redirect to="/docs/landing/devhood" />
   );
 }

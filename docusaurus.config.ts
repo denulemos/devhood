@@ -13,7 +13,7 @@ const config: Config = {
   url: 'https://elrincondeldev.vercel.app',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: '/docs/landing/devhood',
 
   // GitH  ub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -44,9 +44,9 @@ const config: Config = {
   presets: [
     [
       'classic',
-      {
-        docs: {
+      {        docs: {
           sidebarPath: './sidebars.ts',
+          routeBasePath: 'docs',
         },
         blog: {
           showReadingTime: true,
@@ -58,8 +58,7 @@ const config: Config = {
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
-        },
-        theme: {
+        },        theme: {
           customCss: './src/css/custom.css',
         },
       } satisfies Preset.Options,

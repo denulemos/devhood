@@ -3,8 +3,6 @@ id: accesibilidad
 title: 🌐 Accesibilidad
 ---
 
-
-
 ### **¿Qué es la accesibilidad web?**
 
 
