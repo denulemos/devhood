@@ -10,15 +10,15 @@ const config: Config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://elrincondeldev.vercel.app',
+  url: 'https://denulemos.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/docs/landing/devhood',
+  baseUrl: '/devhood/',
 
   // GitH  ub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'denulemos', // Usually your GitHub org/user name.
-  projectName: 'devdojo-docs', // Usually your repo name.
+  projectName: 'devhood', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -67,7 +67,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/favicon.ico',
     navbar: {
       title: 'DevHood',
       logo: {
