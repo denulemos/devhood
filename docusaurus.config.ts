@@ -10,10 +10,10 @@ const config: Config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://denulemos.github.io',
+  url: 'https://devhood-tau.vercel.app/',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/devhood/',
+  baseUrl: '/',
 
   // GitH  ub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -35,8 +35,6 @@ const config: Config = {
     },
   },
 },
-
-
    stylesheets: [
     'https://fonts.googleapis.com/css2?family=Pacifico&display=swap',
   ],
