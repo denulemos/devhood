@@ -23,6 +23,7 @@ const sidebars: SidebarsConfig = {
     'desarrollo-web/html',
     'desarrollo-web/javascript',
     'desarrollo-web/nodejs',
+    'versionado',
   ],
 };
 
