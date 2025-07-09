@@ -787,6 +787,91 @@ Sin embargo, si uno planifica trabajar con WebSockets o Eventos Complejos, Obser
 
 ---
 
+### **Manejo de estado de una aplicación Angular, qué metodos hay?**
+
+En Angular, el manejo de estado de una aplicación puede hacerse de varias maneras, dependiendo de la complejidad y los requerimientos de la aplicación. Aquí hay algunos métodos comunes:
+
+1. **Servicios compartidos**: Utilizar servicios para almacenar y compartir el estado entre componentes. Los servicios pueden contener propiedades y métodos para manipular el estado.
+
+   ```typescript
+   @Injectable({
+     providedIn: 'root',
+   })
+   export class StateService {
+     private state = { count: 0 };
+
+     getCount() {
+       return this.state.count;
+     }
+
+     increment() {
+       this.state.count++;
+     }
+   }
+   ```
+
+2. **BehaviorSubject de RxJS**: Utilizar `BehaviorSubject` para manejar el estado reactivo. Permite emitir y suscribirse a cambios en el estado.
+
+   ```typescript
+    import { Injectable } from '@angular/core';
+    import { BehaviorSubject } from 'rxjs';
+    @Injectable({
+      providedIn: 'root',
+    })
+    export class StateService {
+      private state = new BehaviorSubject<{ count: number }>({ count: 0 });
+
+      getState() {
+        return this.state.asObservable();
+      }
+
+      increment() {
+        const currentState = this.state.getValue();
+        this.state.next({ count: currentState.count + 1 });
+      }
+    }
+    ```
+
+3. **NgRx**: Utilizar NgRx, una librería basada en Redux, para manejar el estado de la aplicación de manera más estructurada y predecible. NgRx utiliza acciones, reducers y efectos para gestionar el estado.
+
+    ```typescript
+    // Acción
+    export const increment = createAction('[Counter] Increment');
+  
+    // Reducer
+    export const counterReducer = createReducer(
+      initialState,
+      on(increment, (state) => ({ ...state, count: state.count + 1 }))
+    );
+  
+    // Componente
+    export class CounterComponent {
+      count$ = this.store.select('count');
+  
+      constructor(private store: Store<{ count: number }>) {}
+  
+      increment() {
+        this.store.dispatch(increment());
+      }
+    }
+    ```
+
+4. **Akita**: Otra librería para el manejo de estado que proporciona una API simple y flexible, ideal para aplicaciones más pequeñas o medianas.
+
+5. **Signals**: Con Angular 16, se introdujo Signals, que permite manejar el estado de manera reactiva y declarativa, similar a los observables pero con una sintaxis más simple y sin necesidad de suscripciones.
+
+   ```typescript
+   import { signal } from '@angular/core';
+
+   const count = signal(0);
+
+   function increment() {
+     count.set(count() + 1);
+   }
+   ```
+
+---
+
 ### **¿Qué es Angular Signals?**
 
 Angular signals es una caracteristica que aparecio con Angular 16 en donde se introducen herramientas de reacividad para mejorar la gestion de estados y deteccion de cambios. Reemplaza a algunos elementos nativos y a algunos usos de RxJs
@@ -1278,3 +1363,66 @@ export class SharedModule {}
 ```
 
 Luego lo importás en otros módulos que lo necesiten.
+
+---
+
+### **¿Qué diferencias hay entre `ViewChild` y `ContentChild`? ¿Cuándo usarías cada uno?**
+
+`ViewChild` y `ContentChild` son dos decoradores en Angular que se utilizan para acceder a elementos del DOM o componentes hijos, pero tienen propósitos diferentes.
+
+- **ViewChild:** Se usa para acceder a un elemento del DOM o un componente hijo que está en la vista del componente actual. Es útil cuando necesitas interactuar con un elemento que está directamente en el template del componente.
+
+```typescript
+import { Component, ViewChild } from '@angular/core';
+import { ElementRef } from '@angular/core';
+@Component({
+  selector: 'app-mi-componente',
+  template: `<input #miInput type="text">`
+})
+export class MiComponente {
+  @ViewChild('miInput') inputRef!: ElementRef;
+
+  ngAfterViewInit() {
+    this.inputRef.nativeElement.focus(); // Accede al input y le da foco
+  }
+}
+```
+
+- **ContentChild:** Se usa para acceder a un elemento del DOM o un componente hijo que está proyectado dentro del componente actual mediante `<ng-content>`. Es útil cuando necesitas interactuar con contenido que se inserta en el componente desde el exterior.
+
+```typescript
+import { Component, ContentChild } from '@angular/core';
+import { ElementRef } from '@angular/core';
+
+@Component({
+  selector: 'app-mi-componente',
+  template: `<ng-content></ng-content>`
+})
+
+export class MiComponente {
+  @ContentChild('miContenido') contenidoRef!: ElementRef;
+
+  ngAfterContentInit() {
+    console.log(this.contenidoRef.nativeElement.textContent); // Accede al contenido proyectado
+  }
+}
+```
+
+---
+
+### **¿Cómo organizas un proyecto grande en Angular? ¿Usas Nx o alguna otra herramienta de monorepo?**
+
+- **Modularización:** Divide la aplicación en módulos lógicos. Cada módulo debe tener una responsabilidad clara y contener componentes, servicios y otros elementos relacionados.
+- **Lazy Loading:** Implementa lazy loading para cargar módulos solo cuando sean necesarios, mejorando el rendimiento inicial de la aplicación.
+- **Shared Module:** Crea un módulo compartido para componentes, directivas y pipes que se usan en varios lugares de la aplicación.
+- **Core Module:** Crea un módulo core para servicios singleton que se usan en toda la aplicación, como servicios de autenticación o configuración.
+- **Feature Modules:** Agrupa funcionalidades relacionadas en módulos específicos. Por ejemplo, un módulo de usuarios, un módulo de productos, etc.
+- **Uso de Nx o Monorepos:** Si el proyecto es muy grande o tiene múltiples aplicaciones, considera usar herramientas como Nx para gestionar un monorepo. Esto permite compartir código entre aplicaciones y bibliotecas, y facilita la gestión de dependencias y versiones.
+- **Estructura de carpetas:** Mantén una estructura de carpetas clara y consistente. Por ejemplo, puedes tener carpetas para `components`, `services`, `models`, `pipes`, etc.
+- **Documentación:** Documenta el código y las decisiones arquitectónicas. Esto es especialmente importante en proyectos grandes donde varios desarrolladores pueden trabajar en diferentes partes de la aplicación.
+- **Pruebas:** Implementa pruebas unitarias y de integración para asegurar la calidad del código. Usa herramientas como Jasmine y Karma para pruebas unitarias, y Protractor o Cypress para pruebas end-to-end.
+- **Linting y Formateo:** Usa herramientas como ESLint y Prettier para mantener un código limpio y consistente. Configura reglas de linting que se ajusten a las convenciones del equipo.
+- **Gestión de Estado:** Considera usar una librería de gestión de estado como NgRx o Akita para manejar el estado de la aplicación de manera predecible y escalable.
+- **Optimización de Rendimiento:** Utiliza herramientas de análisis de rendimiento como el Angular DevTools para identificar cuellos de botella y optimizar la aplicación.
+- **Seguridad:** Implementa buenas prácticas de seguridad, como sanitización de entradas, protección contra ataques XSS y CSRF, y uso de HTTPS.
+
