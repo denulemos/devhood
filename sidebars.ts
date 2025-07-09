@@ -24,6 +24,7 @@ const sidebars: SidebarsConfig = {
     'desarrollo-web/javascript',
     'desarrollo-web/nodejs',
     'versionado',
+    'cicd',
   ],
 };
 

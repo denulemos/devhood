@@ -1,4 +1,4 @@
-# 🗂️ Versionado y Deployment (Git, Mercurial, CI-CD etc.)
+# 🗂️ Versionado (Git/Mercurial)
 
 ### **Git vs Mercurial**
 
@@ -172,38 +172,24 @@ Si agregás un archivo **.gitignore**, podés evitar que se suban archivos que n
 
 ---
 
+### **¿Cómo vinculás los cambios del código con un changelog?**
 
-### **¿Qué es CI/CD?**
+Para vincular los cambios del código con un changelog, lo más común es:
 
-**CI/CD** significa **Integración Continua** y **Entrega/Despliegue Continuo**.
+1. **Escribir mensajes de commit claros**: Cada vez que hacés un commit, explicá brevemente qué cambiaste. Si usás un sistema de issues (como GitHub Issues o Jira), podés poner el número del ticket en el mensaje.
 
-- **Integración Continua (CI):** Cada vez que alguien sube cambios, se ejecutan pruebas automáticas para detectar errores rápido.
-- **Entrega/Despliegue Continuo (CD):** Si todo sale bien, el código se puede poner en producción automáticamente.
+2. **Actualizar el changelog manualmente**: Cuando terminás una funcionalidad o arreglás un bug, agregá una entrada en el archivo `CHANGELOG.md` con una breve descripción del cambio, la fecha y el número de versión si corresponde.
 
-**¿Por qué sirve?**
-- Encontrás errores antes.
-- El código llega más rápido a los usuarios.
-- Menos trabajo manual.
+3. **Automatizar con herramientas**: Hay herramientas como [Conventional Commits](https://www.conventionalcommits.org/) y [standard-version](https://github.com/conventional-changelog/standard-version) que generan el changelog automáticamente a partir de los mensajes de commit.
 
-**Ejemplo:**
-1. Subís tu código a GitHub.
-2. Un robot (como GitHub Actions) lo prueba automáticamente.
-3. Si todo pasa, lo sube a producción.
+**Ejemplo de entrada en changelog:**
+```markdown
+## [1.2.0] - 2024-06-10
+### Added
+- Nueva funcionalidad para exportar datos (#42)
 
-**En resumen:** CI/CD automatiza pruebas y despliegues para que tu software llegue más rápido y seguro.
+### Fixed
+- Error al guardar archivos grandes (#45)
+```
 
----
-
-### **¿Qué es un Pipeline?**
-
-Un **pipeline** es como una línea de montaje automática para tu código.
-
-Cuando subís cambios, el pipeline sigue una serie de pasos (probar, construir, desplegar) en orden. Si un paso falla, los siguientes no se hacen.
-
-**Ejemplo de pipeline:**
-1. Revisar el código.
-2. Ejecutar pruebas.
-3. Construir la app.
-4. Subirla a producción.
-
-Así te asegurás de que todo funciona bien antes de que tu software llegue a los usuarios, y sin hacerlo a mano cada vez
+Así, cualquier persona puede ver fácilmente qué cambió en cada versión y relacionarlo con los commits o tickets correspondientes.
