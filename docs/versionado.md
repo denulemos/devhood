@@ -151,6 +151,28 @@ Si agregás un archivo **.gitignore**, podés evitar que se suban archivos que n
 
 ---
 
+### **Explica la diferencia entre `git reset --soft`, `--mixed` y `--hard`.**
+
+`git reset` se usa para deshacer cambios en tu repositorio. La diferencia entre `--soft`, `--mixed` y `--hard` es cómo afectan el área de preparación (staging area) y el directorio de trabajo.
+
+**`git reset --soft <commit>`**:
+  - Deshace los commits hasta el commit especificado.
+  - Mantiene los cambios en el área de preparación (staging area).
+  - Útil si querés rehacer commits sin perder los cambios.
+
+**`git reset --mixed <commit>`** (por defecto si no especificás):
+  - Deshace los commits hasta el commit especificado.
+  - Mantiene los cambios en el directorio de trabajo, pero los quita del área de preparación.
+  - Útil si querés rehacer commits y trabajar en los cambios sin subirlos aún.
+  
+**`git reset --hard <commit>`**:
+  - Deshace los commits hasta el commit especificado.
+  - Borra todos los cambios en el área de preparación y en el directorio de trabajo.
+  - Útil si querés deshacer todo y volver a un estado anterior sin conservar cambios.
+
+---
+
+
 ### **¿Qué es CI/CD?**
 
 **CI/CD** significa **Integración Continua** y **Entrega/Despliegue Continuo**.
