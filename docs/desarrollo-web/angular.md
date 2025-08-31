@@ -577,7 +577,7 @@ constructor(@Inject(CONFIG_TOKEN) private config: string) {
 
 ---
 
-### **¿Qué es el Two-Way Data Binding en Angular?**
+## ¿Qué es el Two-Way Data Binding en Angular?
 
 El Two-Way Data Binding es una forma de vincular datos entre el componente y la vista de manera que si cambia el valor en el HTML, también cambia en el componente, y viceversa. Es como una autopista de doble mano: lo que escribís en el input se refleja en la variable, y si la variable cambia, el input también.
 
@@ -611,7 +611,7 @@ Ejemplo de uso:
 
 ---
 
-### **¿Qué es un Service en Angular y por qué se usa?**
+## ¿Qué es un Service en Angular y por qué se usa?
 
 Un Service es una clase donde ponés lógica que querés compartir entre varios componentes, como llamadas a APIs, manejo de datos, o utilidades. Así evitás repetir código y mantenés tus componentes más limpios.
 
@@ -625,8 +625,6 @@ export class ApiService {
   }
 }
 ```
-
-Luego lo inyectás en cualquier componente que lo necesite.
 
 ---
 
