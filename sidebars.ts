@@ -17,7 +17,16 @@ const sidebars: SidebarsConfig = {
   tutorialSidebar: [
     'landing/devhood',
     'accesibilidad/accesibilidad',
-    'desarrollo-web/angular',
+    {
+      type: 'category',
+      label: '❤️ Angular',
+      collapsed: false,
+      items: [
+        'desarrollo-web/angular',          
+        'desarrollo-web/angular/clean-code',
+        'desarrollo-web/angular/performance',
+      ],
+    },
     'desarrollo-web/react',
     'desarrollo-web/scss',
     'desarrollo-web/html',
