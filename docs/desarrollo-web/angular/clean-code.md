@@ -1,5 +1,7 @@
 # Clean Code en Angular
 
+[Formato README en Github](https://github.com/denulemos/DevDojo/blob/master/Angular.md)
+
 ### ¿Cuales son algunas reglas de Clean Code en Angular?
 
 🔹 **1. Un componente, una responsabilidad**
@@ -410,3 +412,22 @@ export class ProfileComponent {
   }
 }
 ```
+
+---
+
+## ¿Cómo organizas un proyecto grande en Angular? ¿Usas Nx o alguna otra herramienta de monorepo?
+
+- **Modularización:** Divide la aplicación en módulos lógicos. Cada módulo debe tener una responsabilidad clara y contener componentes, servicios y otros elementos relacionados.
+- **Lazy Loading:** Implementa lazy loading para cargar módulos solo cuando sean necesarios, mejorando el rendimiento inicial de la aplicación.
+- **Shared Module:** Crea un módulo compartido para componentes, directivas y pipes que se usan en varios lugares de la aplicación.
+- **Core Module:** Crea un módulo core para servicios singleton que se usan en toda la aplicación, como servicios de autenticación o configuración.
+- **Feature Modules:** Agrupa funcionalidades relacionadas en módulos específicos. Por ejemplo, un módulo de usuarios, un módulo de productos, etc.
+- **Uso de Nx o Monorepos:** Si el proyecto es muy grande o tiene múltiples aplicaciones, considera usar herramientas como Nx para gestionar un monorepo. Esto permite compartir código entre aplicaciones y bibliotecas, y facilita la gestión de dependencias y versiones.
+- **Estructura de carpetas:** Mantén una estructura de carpetas clara y consistente. Por ejemplo, puedes tener carpetas para `components`, `services`, `models`, `pipes`, etc.
+- **Documentación:** Documenta el código y las decisiones arquitectónicas. Esto es especialmente importante en proyectos grandes donde varios desarrolladores pueden trabajar en diferentes partes de la aplicación.
+- **Pruebas:** Implementa pruebas unitarias y de integración para asegurar la calidad del código. Usa herramientas como Jasmine y Karma para pruebas unitarias, y Protractor o Cypress para pruebas end-to-end.
+- **Linting y Formateo:** Usa herramientas como ESLint y Prettier para mantener un código limpio y consistente. Configura reglas de linting que se ajusten a las convenciones del equipo.
+- **Gestión de Estado:** Considera usar una librería de gestión de estado como NgRx o Akita para manejar el estado de la aplicación de manera predecible y escalable.
+- **Optimización de Rendimiento:** Utiliza herramientas de análisis de rendimiento como el Angular DevTools para identificar cuellos de botella y optimizar la aplicación.
+- **Seguridad:** Implementa buenas prácticas de seguridad, como sanitización de entradas, protección contra ataques XSS y CSRF, y uso de HTTPS.
+

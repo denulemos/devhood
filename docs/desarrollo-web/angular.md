@@ -1,5 +1,7 @@
 # Preguntas generales 
 
+[Formato README en Github](https://github.com/denulemos/DevDojo/blob/master/Angular.md)
+
 ## ¿Qué son los modulos en Angular?
 
 **⚠️ En versiones nuevas de Angular (como Angular 15+), ya no es obligatorio usar módulos. Ahora puedes tener componentes "standalone": independientes, sin necesidad de estar dentro de un módulo.**
@@ -628,7 +630,7 @@ export class ApiService {
 
 ---
 
-### **¿Qué es un Guard en Angular y para qué sirve?**
+## ¿Qué es un Guard en Angular y para qué sirve?
 
 Un Guard es como un portero para tus rutas. Decide si un usuario puede entrar a una página o no (por ejemplo, si está logueado o tiene permisos).
 
@@ -651,7 +653,7 @@ Y lo usás en tus rutas:
 
 ---
 
-### **¿Qué es un Resolver en Angular?**
+## ¿Qué es un Resolver en Angular?
 
 Un Resolver es una clase que se encarga de traer datos antes de que se muestre una ruta. Así, cuando el usuario entra a una página, ya tiene toda la información lista y no ve pantallas vacías o "cargando".
 
@@ -674,7 +676,7 @@ Y en la ruta:
 
 ---
 
-### **¿Qué es un Directive en Angular?**
+## ¿Qué es un Directive en Angular?
 
 Una Directiva es una instrucción que le das a un elemento HTML para que cambie su comportamiento o apariencia. Hay directivas estructurales (como `*ngIf`, `*ngFor`) y de atributo (como `[ngClass]`, `[ngStyle]`).
 
@@ -691,23 +693,132 @@ También podés crear tus propias directivas para reutilizar lógica visual.
 
 ---
 
-### **¿Qué es el Angular CLI y por qué debería usarlo?**
+## ¿Qué es un Decorador en Angular?
 
-El Angular CLI es una herramienta de línea de comandos que te ayuda a crear, desarrollar, testear y construir aplicaciones Angular de manera rápida y ordenada. Te ahorra tiempo generando componentes, servicios, módulos, y más, con buenas prácticas por defecto.
+Indica como debe comportarse el componente. Dentro de este decorador, puedes observar el selector del componente (un nombre para el mismo), el template HTML y la hoja de estilos que usará.
 
-Ejemplo de comandos útiles:
+- `@Component`: Se utiliza para decorar una clase que define un componente de Angular
 
-```bash
-ng new mi-app         # Crea una nueva app Angular
-ng generate component usuario
-ng generate service api
-ng serve              # Levanta el servidor de desarrollo
-ng build              # Compila la app para producción
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root', // Nombre de la etiqueta HTML
+  templateUrl: './app.component.html', // Archivo HTML
+  styleUrls: ['./app.component.css'] // Estilos CSS
+})
+export class AppComponent {
+  title = 'Mi aplicación Angular';
+}
+```
+
+- `@Injectable`: marca una clase como inyección de dependencias en Angular. Se usa para declarar que una clase puede ser inyectada en otros componentes o servicios
+
+```typescript
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root' // Este servicio estará disponible en toda la aplicación
+})
+export class DataService {
+  constructor() {}
+
+  getData() {
+    return ['Elemento1', 'Elemento2', 'Elemento3'];
+  }
+}
+```
+
+- ` @NgModule`: Se usa para definir que este componente es un modulo en si mismo. Con la aparicion de los componentes standalone ya no es tan comunmente usado.
+
+```typescript
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent } from './app.component';
+
+@NgModule({
+  declarations: [AppComponent], // Componentes que pertenecen al módulo
+  imports: [BrowserModule], // Otros módulos que necesita
+  providers: [], // Servicios a inyectar
+  bootstrap: [AppComponent] // Componente inicial
+})
+export class AppModule {}
+```
+
+- `@Input`: se utiliza para marcar una propiedad de un componente que va a recibir datos desde su componente padre.
+
+```typescript
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-child',
+  template: '<h2>{{ name }}</h2>'
+})
+export class ChildComponent {
+  @Input() name: string; // Recibe un valor desde el componente padre
+}
+```
+
+- `@Output`: El decorador @Output se usa para crear un evento personalizado en un componente que puede ser escuchado por su componente padre.
+
+```typescript
+import { Component, Output, EventEmitter } from '@angular/core';
+
+@Component({
+  selector: 'app-child',
+  template: '<button (click)="sendMessage()">Enviar Mensaje</button>'
+})
+export class ChildComponent {
+  @Output() messageEvent = new EventEmitter<string>();
+
+  sendMessage() {
+    this.messageEvent.emit('Hola desde el componente hijo');
+  }
+}
+```
+
+- `@HostListener`: Cuando preciso escuchar cualquier accion en el navegador, como clicks o cambios en el tamanio de la pantalla.
+
+```typescript
+import { Component, HostListener } from '@angular/core';
+
+@Component({
+  selector: 'app-resize-listener',
+  template: '<p>El tamaño de la ventana es: {{ width }}px</p>'
+})
+
+export class ResizeListenerComponent {
+  width: number = window.innerWidth;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.width = window.innerWidth;
+  }
+}
+```
+
+- `@ViewChild`: Se utiliza para acceder a un componente hijo desde su componente padre.
+
+```typescript
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
+
+@Component({
+  selector: 'app-parent',
+  template: '<app-child #childComponent></app-child>'
+})
+
+export class ParentComponent implements AfterViewInit {
+  @ViewChild('childComponent') child: any;
+
+  ngAfterViewInit() {
+    console.log(this.child); // Accede al componente hijo
+  }
+}
 ```
 
 ---
 
-### **¿Qué es un Input y un Output en Angular?**
+## ¿Qué es un Input y un Output en Angular?
 
 - **@Input:** Permite que un componente hijo reciba datos de su componente padre.
 - **@Output:** Permite que un componente hijo le envíe eventos o datos al padre.
@@ -731,25 +842,64 @@ enviar() {
 
 ---
 
-### **¿Qué es el Routing en Angular?**
+## ¿Qué es el Routing en Angular?
 
-El Routing es el sistema de navegación de Angular. Permite que tu app tenga varias "páginas" (componentes) y que el usuario navegue entre ellas sin recargar la página.
+Es la configuracion que permite a los usuarios navegar en nuestra aplicacion sin necesidad de recargar la pagina por cada cambio en el caso de los SPA.
+Tambien se encarga de gestionar las URL para facilitar el compartir links y la navegabilidad.
+Se configura mediante el `RouterModule` en un array de rutas, el cual se referencia con un path y un componente. 
 
-Definís rutas en un archivo especial:
+```ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
-```typescript
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'usuarios', component: UsuariosComponent },
-  { path: '**', redirectTo: '' } // Ruta para errores (404)
+  { path: '', component: HomeComponent }, // Ruta raíz
+  { path: 'about', component: AboutComponent }, // Ruta para "Acerca de"
+  { path: '**', component: NotFoundComponent } // Ruta comodín para páginas no encontradas
 ];
 ```
 
-Y usás `<router-outlet></router-outlet>` en tu HTML para mostrar el componente correspondiente según la ruta.
+En el mismo tambien se pueden manejar componentes con Lazy Loading
+
+```ts
+{ path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) }
+```
+
+Restringir el acceso a rutas protegidas
+
+```ts
+{ path: 'admin', component: AdminComponent, canActivate: [AuthGuard] }
+```
+
+Y luego en el ng.html que hace de entrypoint de nuestra app, referenciamos al contenido "routerizado"
+
+```html
+<nav>
+  <a routerLink="/">Inicio</a>
+  <a routerLink="/about">Acerca de</a>
+</nav>
+
+<router-outlet></router-outlet>
+```
+
+Tambien es posible manejar las rutas desde el codigo logico de nuestra app por fuera de los componentes
+
+```ts
+import { Router } from '@angular/router';
+
+constructor(private router: Router) {}
+
+irAAbout() {
+  this.router.navigate(['/about']);
+}
+```
 
 ---
 
-### **¿Qué es un módulo compartido (Shared Module) y para qué sirve?**
+## ¿Qué es un módulo compartido (Shared Module) y para qué sirve?
 
 Un Shared Module es un módulo donde ponés componentes, pipes y directivas que vas a usar en varios lugares de tu app. Así, evitás importar lo mismo muchas veces y mantenés tu código más organizado.
 
@@ -767,7 +917,7 @@ Luego lo importás en otros módulos que lo necesiten.
 
 ---
 
-### **¿Qué diferencias hay entre `ViewChild` y `ContentChild`? ¿Cuándo usarías cada uno?**
+## ¿Qué diferencias hay entre `ViewChild` y `ContentChild`? ¿Cuándo usarías cada uno?
 
 `ViewChild` y `ContentChild` son dos decoradores en Angular que se utilizan para acceder a elementos del DOM o componentes hijos, pero tienen propósitos diferentes.
 
@@ -808,22 +958,3 @@ export class MiComponente {
   }
 }
 ```
-
----
-
-### **¿Cómo organizas un proyecto grande en Angular? ¿Usas Nx o alguna otra herramienta de monorepo?**
-
-- **Modularización:** Divide la aplicación en módulos lógicos. Cada módulo debe tener una responsabilidad clara y contener componentes, servicios y otros elementos relacionados.
-- **Lazy Loading:** Implementa lazy loading para cargar módulos solo cuando sean necesarios, mejorando el rendimiento inicial de la aplicación.
-- **Shared Module:** Crea un módulo compartido para componentes, directivas y pipes que se usan en varios lugares de la aplicación.
-- **Core Module:** Crea un módulo core para servicios singleton que se usan en toda la aplicación, como servicios de autenticación o configuración.
-- **Feature Modules:** Agrupa funcionalidades relacionadas en módulos específicos. Por ejemplo, un módulo de usuarios, un módulo de productos, etc.
-- **Uso de Nx o Monorepos:** Si el proyecto es muy grande o tiene múltiples aplicaciones, considera usar herramientas como Nx para gestionar un monorepo. Esto permite compartir código entre aplicaciones y bibliotecas, y facilita la gestión de dependencias y versiones.
-- **Estructura de carpetas:** Mantén una estructura de carpetas clara y consistente. Por ejemplo, puedes tener carpetas para `components`, `services`, `models`, `pipes`, etc.
-- **Documentación:** Documenta el código y las decisiones arquitectónicas. Esto es especialmente importante en proyectos grandes donde varios desarrolladores pueden trabajar en diferentes partes de la aplicación.
-- **Pruebas:** Implementa pruebas unitarias y de integración para asegurar la calidad del código. Usa herramientas como Jasmine y Karma para pruebas unitarias, y Protractor o Cypress para pruebas end-to-end.
-- **Linting y Formateo:** Usa herramientas como ESLint y Prettier para mantener un código limpio y consistente. Configura reglas de linting que se ajusten a las convenciones del equipo.
-- **Gestión de Estado:** Considera usar una librería de gestión de estado como NgRx o Akita para manejar el estado de la aplicación de manera predecible y escalable.
-- **Optimización de Rendimiento:** Utiliza herramientas de análisis de rendimiento como el Angular DevTools para identificar cuellos de botella y optimizar la aplicación.
-- **Seguridad:** Implementa buenas prácticas de seguridad, como sanitización de entradas, protección contra ataques XSS y CSRF, y uso de HTTPS.
-
