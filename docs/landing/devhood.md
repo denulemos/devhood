@@ -1,5 +1,0 @@
----
-id: devhood
-title: 💖 Hola!
----
-
