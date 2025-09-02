@@ -2,16 +2,16 @@ import React from 'react';
 import styles from './IndiceTable.module.css';
 
 const data = [
-  { tema: '🅰️ Angular', link: '../desarrollo-web/angular.md' },
-  { tema: '⚛️ React', link: '../desarrollo-web/react.md' },
-  { tema: '🟩 NodeJS', link: '../desarrollo-web/nodejs.md' },
-  { tema: '✨ JavaScript', link: '../desarrollo-web/javascript.md' },
-  { tema: '🌐 HTML', link: '../desarrollo-web/html.md' },
-  { tema: '🎨 CSS', link: '../desarrollo-web/css.md' },
-  { tema: '💅 SCSS', link: '../desarrollo-web/scss.md' },
-  { tema: '♿ Accesibilidad', link: '../accesibilidad/Accesibilidad.md' },
-  { tema: '🔄 CICD', link: '../cicd.md' },
-  { tema: '🗂️ Versionado', link: '../versionado.md' },
+  { tema: '🅰️ Angular', link: '../desarrollo-web/angular' },
+  { tema: '⚛️ React', link: '../desarrollo-web/react' },
+  { tema: '🟩 NodeJS', link: '../desarrollo-web/nodejs' },
+  { tema: '✨ JavaScript', link: '../desarrollo-web/javascript' },
+  { tema: '🌐 HTML', link: '../desarrollo-web/html' },
+  { tema: '🎨 CSS', link: '../desarrollo-web/css' },
+  { tema: '💅 SCSS', link: '../desarrollo-web/scss' },
+  { tema: '♿ Accesibilidad', link: '../accesibilidad/Accesibilidad' },
+  { tema: '🔄 CICD', link: '../cicd' },
+  { tema: '🗂️ Versionado', link: '../versionado' },
 ];
 
 export default function IndiceTable() {
