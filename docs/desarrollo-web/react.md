@@ -3,7 +3,7 @@ sidebar_position: 3
 ---
 # 🩵 React
 
-### **¿Cuál es la diferencia entre una librería y un framework?**
+## ¿Cuál es la diferencia entre una librería y un framework?
 
 Imagina que estás cocinando:
 
@@ -24,7 +24,7 @@ Por eso, dos proyectos hechos con React pueden ser muy diferentes entre sí, per
 
 ---
 
-### **¿Para qué sirve el comando `eject` en React?**
+## ¿Para qué sirve el comando `eject` en React?
 
 Cuando creás una app con `create-react-app`, toda la configuración complicada (Webpack, Babel, etc.) está "escondida" para que no tengas que preocuparte. Pero si algún día necesitás cambiar algo avanzado (por ejemplo, agregar un plugin raro), podés usar el comando:
 
@@ -37,7 +37,7 @@ Esto "destapa" toda la configuración y la pone en tu proyecto para que la pueda
 
 ---
 
-### **¿Qué son las Ref en React?**
+## ¿Qué son las Ref en React?
 
 Las **Ref** en React sirven para acceder directamente a un elemento del DOM (por ejemplo, un `<div>`, un `<input>`, etc.) desde tu código JavaScript, sin tener que pasar por el sistema de props o estado de React.
 
@@ -71,13 +71,12 @@ function MiComponente() {
 - Se la damos al `<input ref={inputRef} />`.
 - Cuando apretás el botón, el input se enfoca automáticamente.
 
-**Resumen:**  
 Las Ref son como un "puente" para manipular directamente elementos del DOM desde React, sin tener que actualizar el estado ni renderizar de nuevo el componente.
 
 
 ---
 
-### **¿Qué son los Ciclos de Vida de los Componentes en React?**
+## **Ciclos de vida y Hooks**
 
 Los **ciclos de vida** de los componentes en React son una serie de métodos especiales que permiten ejecutar código en momentos específicos del ciclo de vida de un componente de clase: cuando se monta (aparece en pantalla), se actualiza (cambia su estado o props) o se desmonta (se elimina del DOM).
 
@@ -91,23 +90,7 @@ Hoy en día, en componentes funcionales, estos ciclos de vida se gestionan princ
 
 ---
 
-### **Class components vs Functional Components**
-
-Antes se utilizaban los componentes de clase para componentes complejos, y los componentes de funcion para componentes con poca logica en si mismos, hoy en dia se puede decir que los componentes de funcion reemplazaron completamente a los componentes de clase.
-
-Los componentes de funcion son mas faciles de leer, escribir y testear, y son mas faciles de optimizar. Los componentes de clase son mas dificiles de leer, escribir y testear, y son mas dificiles de optimizar.
-
-| Componentes de Clase | Componentes de Funcion |
-| --- | --- |
-| Manejaba los props con `this.props` | Maneja los props como argumentos de la funcion |
-| Manejaba los ciclos de vida con funciones como `componentDidMount()` | Maneja los ciclos de vida con hooks como `useEffect()` |
-| Manejaba los eventos con funciones como `this.handleClick` | Maneja los eventos con funciones como `handleClick` |
-| Manejaba el estado con `this.state` | Maneja el estado con `useState` |
-| Manejaba el contexto con `this.context` | Maneja el contexto con `useContext` |
-
----
-
-### **`componentWillReceiveProps()`**
+### `componentWillReceiveProps()`
 
 
 Se ejecuta cuando hay alguna actualizacion de alguna prop
@@ -122,19 +105,7 @@ componentWillReceiveProps(nextProps) {
 
 ---
 
-### **`componentDidMount()`**
-
-Se llama cuando el componente es renderizado en la pagina. Se puede usar para inicializar cosas, como para pedir la informacion inicial de los componentes.
-
-```jsx
-componentDidMount() {
-    // get the data I need to correctly display
-}
-```
-
----
-
-### **`componentWillUnmount()`**
+### `componentWillUnmount()`
 
 Es llamado antes de que el componente sea desmontado del DOM. Se puede usar para liberar recursos. No existe un “DidUnmount” ya que, una vez que se desmonta, ya no se puede hacer nada por el mismo.
 
@@ -147,7 +118,7 @@ componentWillUnmount() {
 
 --- 
 
-### **`componentWillMount()`**
+### `componentWillMount()`
 
 Corresponde a cuando el componente va a montarse, se ejecuta antes de su montaje, es como el constructor del mismo.
 
@@ -157,7 +128,22 @@ componentWillMount() {
 }
 ```
 
-### **`componentWillMount()`**
+---
+
+### `componentDidMount()`
+
+Se llama cuando el componente es renderizado en la pagina. Se puede usar para inicializar cosas, como para pedir la informacion inicial de los componentes.
+
+```jsx
+componentDidMount() {
+    // get the data I need to correctly display
+}
+```
+
+---
+
+
+### `componentDidUpdate()`
 
 Se llama cuando el componente se actualiza en el DOM. Podemos hacerlo para, por ejemplo, para avisar que el counter fue incrementado en uno.
 
@@ -169,7 +155,7 @@ componentDidUpdate() {
 
 ---
 
-### **`shouldComponentUpdate()`**
+### `shouldComponentUpdate()`
 
 
 Nos permite decidir si debemos ejecutar o no el render. Muestra con que valores, o bajo que condiciones, se realizará la actualizacion.
@@ -183,7 +169,8 @@ shouldComponentUpdate(nextProps, nextState) {
 
 ---
 
-### **`componentWillUpdate()`**
+
+### `componentWillUpdate()`
 
 Es cuando se esta por ejecutar el render. Nos ayuda a setear valores globales justo antes del mismo.
 
@@ -195,7 +182,93 @@ componentWillUpdate() {
 
 ---
 
-### **`useCallback`** 
+### `useEffect()`
+
+El hook `useEffect` es un hook que aparecio como reemplazo de las funciones de manejo de ciclo de vida de los componentes de clase.
+
+Podemos hacer que se ejecute ante cada renderizado, solo al montar el componente, solo al desmontar el componente, o solo cuando ciertos valores cambian.
+
+```jsx
+// Se ejecuta ante cada renderizado
+useEffect(() => {
+    console.log('Hola');
+});
+
+// Se ejecuta solo al montar el componente
+useEffect(() => {
+    console.log('Hola');
+}, []);
+
+// Se ejecuta solo al desmontar el componente
+useEffect(() => {
+    return () => console.log('Adios');
+}, []);
+
+// Se ejecuta solo cuando el valor de `value` cambia
+useEffect(() => {
+    console.log('Hola');
+}, [value]);
+```
+
+Se pueden realizar diversas cosas dentro del useEffect, como llamadas a las APIs, para las cuales se recomienda que esten en otra funcion aparte y no dentro del useEffect, convirtiendolo en asincrono, ya que React espera que useEffect devuelva `undefined` o una funcion de limpieza, no una Promise. Probablemente funcione, pero tendremos un error en la consola.
+
+---
+
+### Puede el useEffect ser asincrono?
+
+El useEffect **no** deberia ser asincrono en si mismo, ya que no se puede retornar una promesa. Pero si se puede llamar a una funcion asincrona dentro del useEffect
+
+```jsx
+useEffect(() => {
+    const fetchData = async () => {
+        const response = await fetch("https://api.com");
+        const data = await response.json();
+        console.log(data);
+    }
+
+    fetchData();
+}, []);
+```
+
+Esto es porque el useEffect esta hecho para devolver una funcion de clean up, y no una promesa.
+
+En el caso de que el useEffect en si mismo sea asincrono, el codigo funcionara, pero habra un error en la consola.
+
+![useeffect error](https://blog.logrocket.com/useeffect-react-hook-complete-guide/)
+
+---
+
+### `useState()`
+
+
+Hooks permiten usar los state dentro de los componentes funcionales. El más común es el useState que necesita ser importado de la siguiente manera para ser usado
+
+`import React, {useState} from 'react';`
+
+Y lo manejamos de la siguiente manera:
+
+```jsx
+function Hello() {
+  const [name, setName] = useState("David");
+
+  return <h1>Hola {name} </h1>;
+}
+```
+
+name es la manera en la que nos referimos al state en si, `useState` lo inicializa con algún valor, y setName queda como la funcion para modificar el mismo.
+
+Tambien podemos manejar objetos dentro de los `useState`
+
+```jsx
+const [coordenadas, serCoodernadas] = useState ({
+  latitud: null, longitud: null });
+
+setCoordenadas({latitud: 12, longitud: 13});
+```
+
+Los Hooks solo pueden ser usados dentro de un componente funcional, en el caso de los componentes de clase, debemos usar el this para referenciar a un estado.
+
+### `useCallback()`
 
 Tiene dos casos de uso:
 
@@ -240,147 +313,55 @@ Si no tuviéramos el useCallback, el useEffect se dispararía ante cada cambio d
 
 ---
 
-### **useDispatch - Hook Redux** 
+### `useMemo()`
 
-Es para ejecutar las acciones que podamos tener en nuestro Redux
+
+Primero para entender este Hook, debemos entender el uso de Memo en React.
+
+Para prevenir que un componente vuelva a renderizarse si sus props son las mismas usamos Memo, lo memorizamos.
+
+Lo podemos hacer de dos maneras, con memo desde React, si la prop “value” no cambia del valor anterior, el componente no vuelve a renderizarse.
 
 ```jsx
-const [name, setName] = useState("");
-const [price, setPrice] = useState(0);
+import React, {memo} from 'react';
 
-const dispatch = useDispatch();
+export const Small = memo(({value}) => {
+    console.log("Me volvi a llamar");
+    // http?
 
-const addProduct = (product) => {
-    dispatch({
-        type: "ADD_PRODUCT",
-        payload: product,
-    });
-};
+    return (
+        <small>{value}</small>
+    )
+})
+```
 
-const submitNewProduct = (e) => {
-    e.preventDefault();
+En el caso del uso del Hook useMemo, es muy parecido a Memo.
 
-    if (!name.trim()) {
-        console.log("Name is required");
-        return;
-    }
+```jsx
+const memoProcesoPesado = useMemo(() => procesoPesado(counter), [counter]);
+```
 
-    if (price <= 0) {
-        console.log("Price is required");
-        return;
-    }
+Se recibe como primer parámetro una función en callback, y como segundo parámetro una variable o estado que debemos chequear su valor para memorizar, o no, la función.
 
-    addProduct({
-        name,
-        price,
-    });
-};
+El valor se almacena en la variable memoProcesoPesado, y lo usamos en lugar de la función en todas sus referencias de uso
+
+```jsx
+<p> {memoProcesoPesado} </p>
+```
+
+Lo que hace, en resumen, es que si el valor de counter no cambia, la función no se re-ejecuta ante cada nuevo renderizado, solo se vuelve a procesar si counter cambia, no es necesario que sea la misma variable que la función recibe por parámetros.
+
+Evitar re-renderizado de, por ejemplo, una lista
+
+```jsx
+const twoRandomProducts = useMemo(() => [...products]
+.sort(() => (Math.random() > ...))
+.slice(0,2), [products]); // dependencia de products, si products no cambia, memo no cambia
 ```
 
 ---
 
-### **`useEffect`** 💛
-
-
-El hook `useEffect` es un hook que aparecio como reemplazo de las funciones de manejo de ciclo de vida de los componentes de clase.
-
-Podemos hacer que se ejecute ante cada renderizado, solo al montar el componente, solo al desmontar el componente, o solo cuando ciertos valores cambian.
-
-```jsx
-// Se ejecuta ante cada renderizado
-useEffect(() => {
-    console.log('Hola');
-});
-
-// Se ejecuta solo al montar el componente
-useEffect(() => {
-    console.log('Hola');
-}, []);
-
-// Se ejecuta solo al desmontar el componente
-useEffect(() => {
-    return () => console.log('Adios');
-}, []);
-
-// Se ejecuta solo cuando el valor de `value` cambia
-useEffect(() => {
-    console.log('Hola');
-}, [value]);
-```
-
-Se pueden realizar diversas cosas dentro del useEffect, como llamadas a las APIs, para las cuales se recomienda que esten en otra funcion aparte y no dentro del useEffect, convirtiendolo en asincrono, ya que React espera que useEffect devuelva `undefined` o una funcion de limpieza, no una Promise. Probablemente funcione, pero tendremos un error en la consola.
-
----
-
-### **Puede el useEffect ser asincrono?**
-
-El useEffect **no** deberia ser asincrono en si mismo, ya que no se puede retornar una promesa. Pero si se puede llamar a una funcion asincrona dentro del useEffect
-
-```jsx
-useEffect(() => {
-    const fetchData = async () => {
-        const response = await fetch("https://api.com");
-        const data = await response.json();
-        console.log(data);
-    }
-
-    fetchData();
-}, []);
-```
-
-Esto es porque el useEffect esta hecho para devolver una funcion de clean up, y no una promesa.
-
-En el caso de que el useEffect en si mismo sea asincrono, el codigo funcionara, pero habra un error en la consola.
-
-![useeffect error](https://blog.logrocket.com/useeffect-react-hook-complete-guide/)
-
----
-
-### **`useState()`**
-
-
-Hooks permiten usar los state dentro de los componentes funcionales. El más común es el useState que necesita ser importado de la siguiente manera para ser usado
-
-`import React, {useState} from 'react';`
-
-Y lo manejamos de la siguiente manera:
-
-```jsx
-function Hello() {
-  const [name, setName] = useState("David");
-
-  return <h1>Hola {name} </h1>;
-}
-```
-
-name es la manera en la que nos referimos al state en si, `useState` lo inicializa con algún valor, y setName queda como la funcion para modificar el mismo.
-
-Tambien podemos manejar objetos dentro de los `useState`
-
-```jsx
-const [coordenadas, serCoodernadas] = useState ({
-  latitud: null, longitud: null });
-
-setCoordenadas({latitud: 12, longitud: 13});
-```
-
-Los Hooks solo pueden ser usados dentro de un componente funcional, en el caso de los componentes de clase, debemos usar el this para referenciar a un estado.
-
----
-
-### **useSelector - Hook Redux**
-
-Es un hook dado por Redux. 
-
-Es para acceder a un state dentro del componente. Es decir, si tenemos un state de error, poder reflejar algo en la UI en funcion de su valor.
-
-```jsx
-const error = useSelector(state => state.error)
-```
-
----
-
-### **useRef**
+### `useRef()`
 
 Es otro Hook que viene con React. Asi que debe ser importado en conjunto
 
@@ -439,50 +420,118 @@ Notar que nos referimos al valor del ref o para su cambio con current
 
 ---
 
-### **`useMemo()`**
+### `useLayoutEffect()`
 
+No es un Hook muy común en si mismo. Se dispara de forma asíncrona después de que todas las manipulaciones del DOM se hayan hecho, se usa para tomar referencias, como por ejemplos, tamaños de cajas de textos, etc...
 
-Primero para entender este Hook, debemos entender el uso de Memo en React.
+La misma documentación de React recomienda usar `useEffect` en su lugar para evitar el bloqueo de actualizaciones visuales.
 
-Para prevenir que un componente vuelva a renderizarse si sus props son las mismas usamos Memo, lo memorizamos.
+Se activa en las mismas fases del `componentDidMount` y `componentDidUpdate` que podiamos ver en los componentes de clase y sus ciclos de vida.
 
-Lo podemos hacer de dos maneras, con memo desde React, si la prop “value” no cambia del valor anterior, el componente no vuelve a renderizarse.
+Por ejemplo, para recoger el tamaño de un elemento de nuestro DOM, hacemos lo siguiente.
+
+Lo importamos como un Hook nativo de React
 
 ```jsx
-import React, {memo} from 'react';
-
-export const Small = memo(({value}) => {
-    console.log("Me volvi a llamar");
-    // http?
-
-    return (
-        <small>{value}</small>
-    )
-})
+import React, {useLayoutEffect} from 'react';
 ```
 
-En el caso del uso del Hook useMemo, es muy parecido a Memo.
+Posee la misma estructura que el useEffect, en el ejemplo este console.log se ejecutará ante cada primer renderizado del componente por su array final []
 
 ```jsx
-const memoProcesoPesado = useMemo(() => procesoPesado(counter), [counter]);
+useLayoutEffect(() => {
+    console.log("hola");
+}, [])
 ```
 
-Se recibe como primer parámetro una función en callback, y como segundo parámetro una variable o estado que debemos chequear su valor para memorizar, o no, la función.
-
-El valor se almacena en la variable memoProcesoPesado, y lo usamos en lugar de la función en todas sus referencias de uso
+Podemos complementar el ejemplo con useRef, y agregarlo al elemento que queremos evaluar.
 
 ```jsx
-<p> {memoProcesoPesado} </p>
+const pTag = useRef();
+
+useLayoutEffect(() => {
+ console.log(pTag.current.getBoundingClientRect());
+}, [quote]);
 ```
 
-Lo que hace, en resumen, es que si el valor de counter no cambia, la función no se re-ejecuta ante cada nuevo renderizado, solo se vuelve a procesar si counter cambia, no es necesario que sea la misma variable que la función recibe por parámetros.
+En este ejemplo podemos ver que se creó la referencia (pTag) ya posicionada en el elemento a evaluar, y, cada vez que cambia la variable quote de nuestro componente, se ejecutará el `useLayoutEffect`, tomando el tamaño del rectángulo que contiene al elemento, para eso sirve el **`getBoundingClientRect()`** usado en este caso.
 
-Evitar re-renderizado de, por ejemplo, una lista
+Una vez hecho esto, nos aparecerá esto en la consola del navegador ⇒
+
+![React example](https://miro.medium.com/max/1400/1*ehoXFftQ5DCge88ZZtS7cQ.png)
+
+El primero es cuando el DOM todavía no renderizo el elemento, por eso es todo valor cero. El segundo es cuando ya está renderizado.
+
+Ante cada cambio de quote que se haga, volverá a cero y volverá a tener otro valor, ya que este elemento es el que contiene el valor de quote, de longitud variable (es una frase random)
+
+
+---
+
+## Class components vs Functional Components
+
+Antes se utilizaban los componentes de clase para componentes complejos, y los componentes de funcion para componentes con poca logica en si mismos, hoy en dia se puede decir que los componentes de funcion reemplazaron completamente a los componentes de clase.
+
+Los componentes de funcion son mas faciles de leer, escribir y testear, y son mas faciles de optimizar. Los componentes de clase son mas dificiles de leer, escribir y testear, y son mas dificiles de optimizar.
+
+| Componentes de Clase | Componentes de Funcion |
+| --- | --- |
+| Manejaba los props con `this.props` | Maneja los props como argumentos de la funcion |
+| Manejaba los ciclos de vida con funciones como `componentDidMount()` | Maneja los ciclos de vida con hooks como `useEffect()` |
+| Manejaba los eventos con funciones como `this.handleClick` | Maneja los eventos con funciones como `handleClick` |
+| Manejaba el estado con `this.state` | Maneja el estado con `useState` |
+| Manejaba el contexto con `this.context` | Maneja el contexto con `useContext` |
+
+
+---
+
+### **useDispatch - Hook Redux** 
+
+Es para ejecutar las acciones que podamos tener en nuestro Redux
 
 ```jsx
-const twoRandomProducts = useMemo(() => [...products]
-.sort(() => (Math.random() > ...))
-.slice(0,2), [products]); // dependencia de products, si products no cambia, memo no cambia
+const [name, setName] = useState("");
+const [price, setPrice] = useState(0);
+
+const dispatch = useDispatch();
+
+const addProduct = (product) => {
+    dispatch({
+        type: "ADD_PRODUCT",
+        payload: product,
+    });
+};
+
+const submitNewProduct = (e) => {
+    e.preventDefault();
+
+    if (!name.trim()) {
+        console.log("Name is required");
+        return;
+    }
+
+    if (price <= 0) {
+        console.log("Price is required");
+        return;
+    }
+
+    addProduct({
+        name,
+        price,
+    });
+};
+```
+
+
+---
+
+### **useSelector - Hook Redux**
+
+Es un hook dado por Redux. 
+
+Es para acceder a un state dentro del componente. Es decir, si tenemos un state de error, poder reflejar algo en la UI en funcion de su valor.
+
+```jsx
+const error = useSelector(state => state.error)
 ```
 
 ---
@@ -565,49 +614,7 @@ function Counter() {
 
 ---
 
-### **`useLayoutEffect()`**
 
-No es un Hook muy común en si mismo. Se dispara de forma asíncrona después de que todas las manipulaciones del DOM se hayan hecho, se usa para tomar referencias, como por ejemplos, tamaños de cajas de textos, etc...
-
-La misma documentación de React recomienda usar `useEffect` en su lugar para evitar el bloqueo de actualizaciones visuales.
-
-Se activa en las mismas fases del `componentDidMount` y `componentDidUpdate` que podiamos ver en los componentes de clase y sus ciclos de vida.
-
-Por ejemplo, para recoger el tamaño de un elemento de nuestro DOM, hacemos lo siguiente.
-
-Lo importamos como un Hook nativo de React
-
-```jsx
-import React, {useLayoutEffect} from 'react';
-```
-
-Posee la misma estructura que el useEffect, en el ejemplo este console.log se ejecutará ante cada primer renderizado del componente por su array final []
-
-```jsx
-useLayoutEffect(() => {
-    console.log("hola");
-}, [])
-```
-
-Podemos complementar el ejemplo con useRef, y agregarlo al elemento que queremos evaluar.
-
-```jsx
-const pTag = useRef();
-
-useLayoutEffect(() => {
- console.log(pTag.current.getBoundingClientRect());
-}, [quote]);
-```
-
-En este ejemplo podemos ver que se creó la referencia (pTag) ya posicionada en el elemento a evaluar, y, cada vez que cambia la variable quote de nuestro componente, se ejecutará el `useLayoutEffect`, tomando el tamaño del rectángulo que contiene al elemento, para eso sirve el **`getBoundingClientRect()`** usado en este caso.
-
-Una vez hecho esto, nos aparecerá esto en la consola del navegador ⇒
-
-![React example](https://miro.medium.com/max/1400/1*ehoXFftQ5DCge88ZZtS7cQ.png)
-
-El primero es cuando el DOM todavía no renderizo el elemento, por eso es todo valor cero. El segundo es cuando ya está renderizado.
-
-Ante cada cambio de quote que se haga, volverá a cero y volverá a tener otro valor, ya que este elemento es el que contiene el valor de quote, de longitud variable (es una frase random)
 
 ---
 
