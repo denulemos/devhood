@@ -481,6 +481,168 @@ Los componentes de funcion son mas faciles de leer, escribir y testear, y son ma
 | Manejaba el estado con `this.state` | Maneja el estado con `useState` |
 | Manejaba el contexto con `this.context` | Maneja el contexto con `useContext` |
 
+---
+## **State management**
+
+### Redux
+
+Imaginá que tu aplicación es como una pizzería muy grande, con muchos empleados (componentes) que necesitan saber qué pizzas se están pidiendo y quién las pidió. Si cada empleado lleva su propia lista, todo se vuelve un lío. Redux es como una pizarra gigante en la cocina donde todos anotan y leen los pedidos. Así, todos siempre ven la misma información y nadie se confunde.
+
+- **Solo hay una pizarra (state global):** Toda la información importante está en un solo lugar.
+- **Para cambiar algo, hay que llenar un formulario (action):** Nadie puede borrar o agregar cosas a la pizarra directamente. Hay que pedirlo con un papelito que dice qué querés hacer.
+- **Un encargado (reducer) revisa los pedidos:** Este encargado lee el papelito y decide cómo cambiar la pizarra.
+- **Todos ven los cambios al instante:** Cuando la pizarra cambia, todos los empleados se enteran y pueden actuar en consecuencia.
+
+**Ejemplo de pedido:**
+
+```javascript
+{
+  type: 'PEDIR_PIZZA',
+  payload: { item: 'pizza' }
+}
+```
+
+**Ejemplo de encargado que actualiza la pizarra:**
+
+```javascript
+function pedidosReducer(state = [], action) {
+  switch (action.type) {
+    case 'PEDIR_PIZZA':
+      return [...state, action.payload.item];
+    default:
+      return state;
+  }
+}
+```
+
+**¿Por qué usar Redux?**
+
+- Si tu pizzería (app) es chica, no hace falta la pizarra gigante, con papelitos alcanza (hooks o Context).
+- Si es grande y hay muchos empleados, la pizarra ayuda a que todos estén sincronizados y no se pisen los pedidos.
+- Es fácil ver qué pasó y cuándo (ideal para no perderse).
+- No hace que la pizzería sea más rápida, pero sí más ordenada.
+
+**¿Cuándo conviene usar Redux?**
+
+- Cuando tu app es grande y muchos componentes necesitan compartir información.
+- Cuando el equipo es grande y querés que todo sea más ordenado.
+- Si tu app es simple, mejor usar otras opciones más fáciles.
+
+**¿Cuáles son los beneficios de usar Redux?**
+
+- Todo está en un solo lugar, así que es fácil de encontrar y cambiar información.
+- Es muy ordenado y predecible: sabés exactamente cómo y cuándo cambió algo.
+- Hay muchas herramientas para ver y revisar los cambios.
+- Es fácil de probar y mantener, porque cada parte hace solo una cosa.
+
+---
+
+### ¿Cual es el flujo de Redux?
+
+
+Store
+
+- Contiene el state y solo hay un Store por app
+
+Dispatch
+
+- Ejecuta una accion, es una funcion que maneja un state
+
+```jsx
+dispatch(addProductOk(product))
+```
+
+Actions
+
+- Objetos en JS con tipo y payload (datos que modificaran el state)
+- Los componentes no deben modificar el state directamente, se modifica por medio de funciones llamadas Actions
+
+Subscribe
+
+- Similar al event listener para el state
+
+Reducer
+
+- Funciones que saben que hacer con las acciones y el payload
+
+---
+
+### Que es ContextAPI?
+
+
+ContextAPI es una herramienta que viene con React de manera nativa que cumple la misma funcion que Redux pero de una manera mucho mas pequenia. 
+A veces nos puede suceder que si queremos que cierta informacion sea usada por varios componentes caemos en un **prop drilling** donde terminamos pasando esas mismas props de un componente a otro, incluso si ese componente no lo necesita en su totalidad. 
+
+```jsx
+const App = () => {
+  const user = { name: 'John Doe' }; // Datos globales
+
+  return (
+    <Parent user={user} />
+  );
+};
+
+const Parent = ({ user }) => {
+  return (
+    <Child user={user} />
+  );
+};
+
+const Child = ({ user }) => {
+  return <h1>{user.name}</h1>;
+};
+```
+
+En este caso, ContextApi soluciona este problema disponibilizando un sistema de estado global, haciendo que solo el que lo necesita acceda a la informacion. 
+
+ContextApi funciona bajo 3 conceptos:
+
+- Context: Es un contenedor para datos que pueden ser compartidos entre componentes
+
+```jsx
+const UserContext = React.createContext();
+```
+
+- Provider: Es un componente que provee la infomacion a los componentes que lo precisan, solo se deben poner dentro de este los componentes que necesitan la informacion.
+
+```jsx
+<UserContext.Provider value={{ name: 'John Doe' }}>
+  <Parent />
+</UserContext.Provider>
+```
+
+- Consumer: Es el componente que precisa acceder a esta informacion.
+
+```jsx  
+import React from 'react';
+import { UserContext } from './UserContext';
+
+const Child = () => {
+  return (
+    <UserContext.Consumer>
+      {(user) => <h1>Hola, {user.name}!</h1>}
+    </UserContext.Consumer>
+  );
+};
+```
+
+Tambien se puede utilizar el hook `useContext` que facilita la consumicion de esta informacion.
+
+```jsx
+import React, { useContext } from 'react';
+import { UserContext } from './UserContext';
+
+const Child = () => {
+  const user = useContext(UserContext); // Consumir el contexto directamente
+  return <h1>Hola, {user.name}!</h1>;
+};
+```
+
+Las limitaciones que posee ContextApi son
+
+- Cuando el valor del contexto cambia, los elementos que la consumen se van a re-renderizar de manera innecesaria en algunos casos, es por eso que es recomendable dividir los componentes en unidades mas pequenias para poder manejar esto de mejor manera
+- Si preciso manejar estados mas complejos, Redux sigue siendo la mejor opcion
+
 
 ---
 
@@ -638,59 +800,6 @@ Ambos son Hooks de React que se utilizan para ejecutar efectos secundarios en co
 
 En resumen, useEffect se utiliza para efectos secundarios asincrónicos que no requieren acceso inmediato al DOM, mientras que useLayoutEffect se utiliza para efectos secundarios síncronos que requieren acceso inmediato al DOM y afectan la geometría de los elementos.
 
----
-
-### **¿Qué es Redux? (Explicación para dummies)**
-
-Imaginá que tu aplicación es como una pizzería muy grande, con muchos empleados (componentes) que necesitan saber qué pizzas se están pidiendo y quién las pidió. Si cada empleado lleva su propia lista, todo se vuelve un lío. Redux es como una pizarra gigante en la cocina donde todos anotan y leen los pedidos. Así, todos siempre ven la misma información y nadie se confunde.
-
-- **Solo hay una pizarra (state global):** Toda la información importante está en un solo lugar.
-- **Para cambiar algo, hay que llenar un formulario (action):** Nadie puede borrar o agregar cosas a la pizarra directamente. Hay que pedirlo con un papelito que dice qué querés hacer.
-- **Un encargado (reducer) revisa los pedidos:** Este encargado lee el papelito y decide cómo cambiar la pizarra.
-- **Todos ven los cambios al instante:** Cuando la pizarra cambia, todos los empleados se enteran y pueden actuar en consecuencia.
-
-**Ejemplo de pedido:**
-
-```javascript
-{
-  type: 'PEDIR_PIZZA',
-  payload: { item: 'pizza' }
-}
-```
-
-**Ejemplo de encargado que actualiza la pizarra:**
-
-```javascript
-function pedidosReducer(state = [], action) {
-  switch (action.type) {
-    case 'PEDIR_PIZZA':
-      return [...state, action.payload.item];
-    default:
-      return state;
-  }
-}
-```
-
-**¿Por qué usar Redux?**
-
-- Si tu pizzería (app) es chica, no hace falta la pizarra gigante, con papelitos alcanza (hooks o Context).
-- Si es grande y hay muchos empleados, la pizarra ayuda a que todos estén sincronizados y no se pisen los pedidos.
-- Es fácil ver qué pasó y cuándo (ideal para no perderse).
-- No hace que la pizzería sea más rápida, pero sí más ordenada.
-
-**¿Cuándo conviene usar Redux?**
-
-- Cuando tu app es grande y muchos componentes necesitan compartir información.
-- Cuando el equipo es grande y querés que todo sea más ordenado.
-- Si tu app es simple, mejor usar otras opciones más fáciles.
-
-**¿Cuáles son los beneficios de usar Redux?**
-
-- Todo está en un solo lugar, así que es fácil de encontrar y cambiar información.
-- Es muy ordenado y predecible: sabés exactamente cómo y cuándo cambió algo.
-- Hay muchas herramientas para ver y revisar los cambios.
-- Es fácil de probar y mantener, porque cada parte hace solo una cosa.
-
 
 ---
 
@@ -712,114 +821,6 @@ Imaginá que tu app es una escuela:
 | ¿Para qué sirve?       | Datos simples, poco cambio     | Datos complejos, mucho cambio |
 | ¿Fácil de usar?        | Sí, viene con React            | Requiere más configuración    |
 | ¿Ideal para...?        | Apps chicas/medianas           | Apps grandes y complejas      |
-
-
----
-
-### **¿Cual es el flujo de Redux?**
-
-
-Store
-
-- Contiene el state y solo hay un Store por app
-
-Dispatch
-
-- Ejecuta una accion, es una funcion que maneja un state
-
-```jsx
-dispatch(addProductOk(product))
-```
-
-Actions
-
-- Objetos en JS con tipo y payload (datos que modificaran el state)
-- Los componentes no deben modificar el state directamente, se modifica por medio de funciones llamadas Actions
-
-Subscribe
-
-- Similar al event listener para el state
-
-Reducer
-
-- Funciones que saben que hacer con las acciones y el payload
-
----
-### **Que es ContextAPI?**
-
-
-ContextAPI es una herramienta que viene con React de manera nativa que cumple la misma funcion que Redux pero de una manera mucho mas pequenia. 
-A veces nos puede suceder que si queremos que cierta informacion sea usada por varios componentes caemos en un **prop drilling** donde terminamos pasando esas mismas props de un componente a otro, incluso si ese componente no lo necesita en su totalidad. 
-
-```jsx
-const App = () => {
-  const user = { name: 'John Doe' }; // Datos globales
-
-  return (
-    <Parent user={user} />
-  );
-};
-
-const Parent = ({ user }) => {
-  return (
-    <Child user={user} />
-  );
-};
-
-const Child = ({ user }) => {
-  return <h1>{user.name}</h1>;
-};
-```
-
-En este caso, ContextApi soluciona este problema disponibilizando un sistema de estado global, haciendo que solo el que lo necesita acceda a la informacion. 
-
-ContextApi funciona bajo 3 conceptos:
-
-- Context: Es un contenedor para datos que pueden ser compartidos entre componentes
-
-```jsx
-const UserContext = React.createContext();
-```
-
-- Provider: Es un componente que provee la infomacion a los componentes que lo precisan, solo se deben poner dentro de este los componentes que necesitan la informacion.
-
-```jsx
-<UserContext.Provider value={{ name: 'John Doe' }}>
-  <Parent />
-</UserContext.Provider>
-```
-
-- Consumer: Es el componente que precisa acceder a esta informacion.
-
-```jsx  
-import React from 'react';
-import { UserContext } from './UserContext';
-
-const Child = () => {
-  return (
-    <UserContext.Consumer>
-      {(user) => <h1>Hola, {user.name}!</h1>}
-    </UserContext.Consumer>
-  );
-};
-```
-
-Tambien se puede utilizar el hook `useContext` que facilita la consumicion de esta informacion.
-
-```jsx
-import React, { useContext } from 'react';
-import { UserContext } from './UserContext';
-
-const Child = () => {
-  const user = useContext(UserContext); // Consumir el contexto directamente
-  return <h1>Hola, {user.name}!</h1>;
-};
-```
-
-Las limitaciones que posee ContextApi son
-
-- Cuando el valor del contexto cambia, los elementos que la consumen se van a re-renderizar de manera innecesaria en algunos casos, es por eso que es recomendable dividir los componentes en unidades mas pequenias para poder manejar esto de mejor manera
-- Si preciso manejar estados mas complejos, Redux sigue siendo la mejor opcion
 
 ---
 
