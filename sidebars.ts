@@ -31,9 +31,17 @@ const sidebars: SidebarsConfig = {
     'desarrollo-web/scss',
     'desarrollo-web/html',
     'desarrollo-web/javascript',
-    'desarrollo-web/nodejs',
     'versionado',
     'cicd',
+    {
+      type: 'category',
+      label: 'Backend',
+      collapsed: false,
+      items: [
+        'desarrollo-web/nodejs',
+        'desarrollo-web/backend/java',
+      ],
+    },
   ],
 };
 
