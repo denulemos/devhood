@@ -81,6 +81,9 @@ Scanner sc = new Scanner(System.in);
 String lineaTexto = sc.nextLine(); 
 int numeroEntero = sc.nextInt();
 double numeroDecimal = sc.nextDouble();
+
+// libera los recursos del sistema
+sc.close();
 ```
 
 ## Métodos sobre Strings
@@ -147,6 +150,9 @@ for (int i = 0; i < productos.length; i++) {
     System.out.println(productos[i]);
 }
 ```
+
+
+
 
 
 
