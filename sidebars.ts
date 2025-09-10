@@ -35,9 +35,10 @@ const sidebars: SidebarsConfig = {
     'cicd',
     {
       type: 'category',
-      label: 'Backend',
+      label: '🖥️ Backend',
       collapsed: false,
       items: [
+      'desarrollo-web/backend/poo',
         'desarrollo-web/nodejs',
         'desarrollo-web/backend/java',
       ],
