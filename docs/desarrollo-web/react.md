@@ -34,6 +34,24 @@ npm run eject
 
 Esto "destapa" toda la configuración y la pone en tu proyecto para que la puedas modificar. **OJO:** No se puede volver atrás fácilmente. Usalo solo si realmente necesitás cambiar la configuración interna de React.
 
+---
+
+## ¿Qué es el Virtual DOM?
+
+Para que React pueda efectuar esta suerte de “recarga parcial por pedazos” de una página, debe usar el Virtual DOM, que es una representación del DOM real.
+
+Cuando un elemento cambia, primero se actualiza el VDOM de forma muy rápida, luego, React compara este VDOM propio con el DOM real, y basándonos en sus diferencias, únicamente aplica los cambios necesarios para que ambos coincidan.
+
+Todo sale de app.js, que contiene X cantidad de componentes, y estos poseen Z cantidad de componentes en sí mismos. Si actualizamos a `app.js`, se actualiza la página entera, pero si actualizamos algo dentro de estos componentes, únicamente se actualizará de este componente “para arriba” en la jerarquía de componentes.
+
+Más arriba la jerarquía, más refrescos habrá. Un componente hijo, idealmente, no deberia necesitar modificar el estado del componente padre.
+
+- Aumenta la velocidad de la aplicacion
+- No acapara mucha memoria, hace que el uso de la misma sea mucho mas eficiente
+- Provee una capa adicional de Scripting, dandole un peso mas a la CPU
+
+![Virtual Dom](src/vdom.png)
+
 
 ---
 
@@ -72,6 +90,37 @@ function MiComponente() {
 - Cuando apretás el botón, el input se enfoca automáticamente.
 
 Las Ref son como un "puente" para manipular directamente elementos del DOM desde React, sin tener que actualizar el estado ni renderizar de nuevo el componente.
+
+---
+
+## ¿Qué es React Fiber?
+
+La arquitectura de React hizo que fuera muy facil trabajar no solo en web si no tambien en mobile (React Native) y en hasta aplicaciones de Realidad Virtual. Asi los dev de React decidieron separar su algoritmo de reconciliacion (el que compara los cambios entre DOM y VDOM) y el lienzo donde esos cambios se muestran (Web, Mobile, etc..)
+
+Fiber fue diseñado para mejorar el rendimiento, particularmente en aplicaciones que requieren animaciones, interacciones complejas y actualizaciones de gran volumen.
+
+React Fiber organiza la renderización en dos fases principales:
+
+- **Fase de Render (Reconciliación)**: Se construye o actualiza un árbol de componentes de manera asíncrona. React decide qué cambios deben aplicarse al DOM basándose en las prioridades.
+- **Fase de Commit**: Es sincrónica y rápida. Los cambios calculados en la fase de render se aplican al DOM real.
+
+React Fiber no cambia cómo los desarrolladores escriben código React, pero mejora significativamente el rendimiento y la flexibilidad de las aplicaciones React modernas. Es la base que permite que React maneje de manera eficiente aplicaciones cada vez más interactivas y complejas.
+
+---
+
+## Class components vs Functional Components
+
+Antes se utilizaban los componentes de clase para componentes complejos, y los componentes de funcion para componentes con poca logica en si mismos, hoy en dia se puede decir que los componentes de funcion reemplazaron completamente a los componentes de clase.
+
+Los componentes de funcion son mas faciles de leer, escribir y testear, y son mas faciles de optimizar. Los componentes de clase son mas dificiles de leer, escribir y testear, y son mas dificiles de optimizar.
+
+| Componentes de Clase | Componentes de Funcion |
+| --- | --- |
+| Manejaba los props con `this.props` | Maneja los props como argumentos de la funcion |
+| Manejaba los ciclos de vida con funciones como `componentDidMount()` | Maneja los ciclos de vida con hooks como `useEffect()` |
+| Manejaba los eventos con funciones como `this.handleClick` | Maneja los eventos con funciones como `handleClick` |
+| Manejaba el estado con `this.state` | Maneja el estado con `useState` |
+| Manejaba el contexto con `this.context` | Maneja el contexto con `useContext` |
 
 
 ---
@@ -361,6 +410,44 @@ const twoRandomProducts = useMemo(() => [...products]
 
 ---
 
+### ¿Cuál es la diferencia entre `useCallback()` y `useMemo()`?
+
+
+Tanto useCallback como useMemo son hooks de React diseñados para optimizar el rendimiento al evitar cálculos innecesarios o recreaciones de funciones/valores. La diferencia principal radica en qué optimizan y cómo se usan:
+
+- `useCallback` memoriza funciones, evitando que se creen nuevas instancias de la función en cada renderizado. Se usa para evitar que las funciones se pasen como propiedades a componentes hijos se vuelvan a renderizar innecesariamente.
+
+```jsx
+const memoizedCallback = useCallback(() => {
+  // lógica de la función
+}, [dependencias]);
+
+const handleClick = useCallback(() => {
+  console.log('Button clicked');
+}, []);
+
+return <Button onClick={handleClick} />;
+```
+
+- `useMemo` memoriza valores, evitando que se recalculen en cada renderizado. Se usa para evitar cálculos costosos en componentes funcionales.
+
+```jsx
+const memoizedValue = useMemo(() => {
+  // lógica de cálculo
+  return resultado;
+}, [dependencias]);
+
+const filteredItems = useMemo(() => {
+  return items.filter(item => item.isActive);
+}, [items]);
+
+return <ItemList items={filteredItems} />;
+```
+
+Ambos dependen de un array de dependencias para saber cuándo deben actualizarse. Si las dependencias no cambian, el hook devuelve el valor o la función memorizada.
+
+---
+
 ### `useRef()`
 
 Es otro Hook que viene con React. Asi que debe ser importado en conjunto
@@ -464,22 +551,106 @@ El primero es cuando el DOM todavía no renderizo el elemento, por eso es todo v
 
 Ante cada cambio de quote que se haga, volverá a cero y volverá a tener otro valor, ya que este elemento es el que contiene el valor de quote, de longitud variable (es una frase random)
 
+---
+
+### ¿Qué diferencia hay entre `useEffect` y `useLayoutEffect`? ¿Cuándo usarías cada uno?
+
+Ambos son Hooks de React que se utilizan para ejecutar efectos secundarios en componentes funcionales. La diferencia principal entre useEffect y useLayoutEffect es cuándo se ejecutan.
+
+1. **useEffect**:
+   - Se ejecuta después de que el navegador haya renderizado el componente y actualizado el DOM.
+   - Es asincrónico y no bloquea la actualización visual del navegador.
+   - Se utiliza para tareas que no requieren acceso inmediato al DOM, como llamadas a API, suscripciones a eventos y actualizaciones de estado.
+   - Se ejecuta después de que el navegador haya pintado el componente en la pantalla, lo que puede causar un parpadeo o retraso en la actualización visual.
+   - Se recomienda usar useEffect para la mayoría de los efectos secundarios, ya que es más eficiente y no bloquea la actualización visual.
+
+2. **useLayoutEffect**:
+    - Se ejecuta de forma síncrona después de que el navegador haya renderizado el componente pero antes de que se actualice el DOM.
+    - Es síncrono y bloquea la actualización visual del navegador.
+    - Se utiliza para tareas que requieren acceso inmediato al DOM, como medir elementos, calcular geometría y realizar animaciones.
+    - Se ejecuta antes de que el navegador pinte el componente en la pantalla, lo que garantiza que los cambios en el DOM se reflejen de inmediato.
+    - Se recomienda usar useLayoutEffect solo cuando sea necesario acceder al DOM de forma síncrona y realizar cambios que afecten la geometría de los elementos.
+
+En resumen, useEffect se utiliza para efectos secundarios asincrónicos que no requieren acceso inmediato al DOM, mientras que useLayoutEffect se utiliza para efectos secundarios síncronos que requieren acceso inmediato al DOM y afectan la geometría de los elementos.
 
 ---
 
-## Class components vs Functional Components
+### `useActionState()`
 
-Antes se utilizaban los componentes de clase para componentes complejos, y los componentes de funcion para componentes con poca logica en si mismos, hoy en dia se puede decir que los componentes de funcion reemplazaron completamente a los componentes de clase.
+Es un hook que en React 18 fue considerado experimental, utilizado para simpliificr la gestion de acciones asincronas en los componentes, como el estado de `loading`, `error` y `data`.
 
-Los componentes de funcion son mas faciles de leer, escribir y testear, y son mas faciles de optimizar. Los componentes de clase son mas dificiles de leer, escribir y testear, y son mas dificiles de optimizar.
+```jsx
+const [state, action, isPending] = useActionState(actionFunction, initialState);
+```
 
-| Componentes de Clase | Componentes de Funcion |
-| --- | --- |
-| Manejaba los props con `this.props` | Maneja los props como argumentos de la funcion |
-| Manejaba los ciclos de vida con funciones como `componentDidMount()` | Maneja los ciclos de vida con hooks como `useEffect()` |
-| Manejaba los eventos con funciones como `this.handleClick` | Maneja los eventos con funciones como `handleClick` |
-| Manejaba el estado con `this.state` | Maneja el estado con `useState` |
-| Manejaba el contexto con `this.context` | Maneja el contexto con `useContext` |
+- `actionFunction` es la funcion asincrona
+- `initialState` es el valor inicial del estado
+
+Este hook nos ahorra usar multiples `useState` para el manejo de estos estados
+
+---
+
+### `startTransition()`
+
+La función `startTransition()` de React es una herramienta que se utiliza para gestionar actualizaciones de estado que no son críticas para la interacción inmediata del usuario. Su principal objetivo es mejorar la **experiencia de usuario** al permitir que las actualizaciones menos importantes no bloqueen el hilo de ejecución principal y no interfieran con las interacciones críticas.
+
+En React, las actualizaciones de estado, por defecto, son **sincrónicas**, lo que significa que cualquier cambio en el estado de un componente o renderización se ejecutará inmediatamente, lo cual puede causar problemas de rendimiento si el componente tiene un renderizado pesado o si hay muchos cambios de estado que se ejecutan al mismo tiempo.
+
+`startTransition()` es una API que permite que ciertas actualizaciones no se consideren prioritarias. Cuando usas `startTransition()`, le estás diciendo a React que esta actualización es **baja prioridad** y puede ser interrumpida si el hilo está ocupado haciendo tareas más importantes, como responder a las interacciones del usuario.
+
+Aquí tienes un ejemplo básico de cómo usar `startTransition()`:
+
+```javascript
+import React, { useState, startTransition } from 'react';
+
+function MyComponent() {
+  const [isPending, setIsPending] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+
+  const handleChange = (event) => {
+    const { value } = event.target;
+
+    // Aquí usamos startTransition para hacer que el cambio en el estado de inputValue sea de baja prioridad
+    startTransition(() => {
+      setInputValue(value);
+    });
+
+    // Marca si la actualización está pendiente
+    setIsPending(true);
+  };
+
+  return (
+    <div>
+      <input type="text" value={inputValue} onChange={handleChange} />
+      {isPending && <div>Updating...</div>}
+    </div>
+  );
+}
+```
+
+1. **Prioridad baja para actualizaciones de estado**: Dentro del `startTransition()`, el cambio de estado `setInputValue(value)` se marca como una actualización de baja prioridad, lo que significa que React intentará procesar esta actualización solo cuando haya tiempo disponible, sin bloquear interacciones importantes como el input del usuario.
+   
+2. **Optimización del rendimiento**: Esto permite que, si hay una actualización costosa o renderizado en progreso, las actualizaciones menos importantes no retrasen la interacción del usuario.
+
+#### ¿Cuándo se debería usar `startTransition()`?
+
+Se debe usar `startTransition()` cuando tengas actualizaciones de estado o renderizados que no necesiten ser procesados inmediatamente y que no afecten la interacción directa del usuario. Algunos ejemplos incluyen:
+
+- **Filtros o búsquedas en listas grandes**: Si tienes una búsqueda que filtra una lista muy grande y el filtrado no es urgente.
+- **Actualización de datos en segundo plano**: Si necesitas actualizar ciertos estados o cálculos en segundo plano sin interrumpir las interacciones del usuario.
+- **Animaciones o cambios visuales complejos**: Para renderizados pesados o animaciones que no son necesarias de inmediato, como transiciones de interfaz de usuario.
+
+#### Beneficios de `startTransition()`
+
+1. **Mejora de la experiencia del usuario**: Evita que la interfaz se congele o se sienta lenta debido a renderizados pesados.
+2. **Optimización del rendimiento**: Al gestionar las actualizaciones de estado con menor prioridad, React puede hacer las actualizaciones más críticas primero, manteniendo la interfaz fluida.
+3. **Control más fino de las actualizaciones**: Permite una separación entre las tareas que son cruciales para la interacción del usuario y las que pueden esperar.
+
+#### Limitaciones
+
+- **No reemplaza el uso de `useEffect`**: `startTransition()` no se debe usar para efectos secundarios que deban ocurrir de manera inmediata (como realizar peticiones API).
+- **No aplica a todas las actualizaciones de estado**: Debe usarse en contextos donde el rendimiento es una preocupación, pero no es necesario para todas las actualizaciones de estado.
+
 
 ---
 ## **State management**
@@ -646,7 +817,7 @@ Las limitaciones que posee ContextApi son
 
 ---
 
-### **useDispatch - Hook Redux** 
+### `useDispatch`
 
 Es para ejecutar las acciones que podamos tener en nuestro Redux
 
@@ -686,7 +857,7 @@ const submitNewProduct = (e) => {
 
 ---
 
-### **useSelector - Hook Redux**
+### `useSelector`
 
 Es un hook dado por Redux. 
 
@@ -698,45 +869,7 @@ const error = useSelector(state => state.error)
 
 ---
 
-### **¿Cuál es la diferencia entre `useCallback()` y `useMemo()`?**
-
-
-Tanto useCallback como useMemo son hooks de React diseñados para optimizar el rendimiento al evitar cálculos innecesarios o recreaciones de funciones/valores. La diferencia principal radica en qué optimizan y cómo se usan:
-
-- `useCallback` memoriza funciones, evitando que se creen nuevas instancias de la función en cada renderizado. Se usa para evitar que las funciones se pasen como propiedades a componentes hijos se vuelvan a renderizar innecesariamente.
-
-```jsx
-const memoizedCallback = useCallback(() => {
-  // lógica de la función
-}, [dependencias]);
-
-const handleClick = useCallback(() => {
-  console.log('Button clicked');
-}, []);
-
-return <Button onClick={handleClick} />;
-```
-
-- `useMemo` memoriza valores, evitando que se recalculen en cada renderizado. Se usa para evitar cálculos costosos en componentes funcionales.
-
-```jsx
-const memoizedValue = useMemo(() => {
-  // lógica de cálculo
-  return resultado;
-}, [dependencias]);
-
-const filteredItems = useMemo(() => {
-  return items.filter(item => item.isActive);
-}, [items]);
-
-return <ItemList items={filteredItems} />;
-```
-
-Ambos dependen de un array de dependencias para saber cuándo deben actualizarse. Si las dependencias no cambian, el hook devuelve el valor o la función memorizada.
-
----
-
-### **`useReducer()`**
+### `useReducer()`
 
 
 Es una alternativa a useState que se utiliza de la siguiente manera al momento de inicializar el componente:
@@ -774,36 +907,10 @@ function Counter() {
 }
 ```
 
----
-
-
 
 ---
 
-### **¿Qué diferencia hay entre `useEffect` y `useLayoutEffect`? ¿Cuándo usarías cada uno?**
-
-Ambos son Hooks de React que se utilizan para ejecutar efectos secundarios en componentes funcionales. La diferencia principal entre useEffect y useLayoutEffect es cuándo se ejecutan.
-
-1. **useEffect**:
-   - Se ejecuta después de que el navegador haya renderizado el componente y actualizado el DOM.
-   - Es asincrónico y no bloquea la actualización visual del navegador.
-   - Se utiliza para tareas que no requieren acceso inmediato al DOM, como llamadas a API, suscripciones a eventos y actualizaciones de estado.
-   - Se ejecuta después de que el navegador haya pintado el componente en la pantalla, lo que puede causar un parpadeo o retraso en la actualización visual.
-   - Se recomienda usar useEffect para la mayoría de los efectos secundarios, ya que es más eficiente y no bloquea la actualización visual.
-
-2. **useLayoutEffect**:
-    - Se ejecuta de forma síncrona después de que el navegador haya renderizado el componente pero antes de que se actualice el DOM.
-    - Es síncrono y bloquea la actualización visual del navegador.
-    - Se utiliza para tareas que requieren acceso inmediato al DOM, como medir elementos, calcular geometría y realizar animaciones.
-    - Se ejecuta antes de que el navegador pinte el componente en la pantalla, lo que garantiza que los cambios en el DOM se reflejen de inmediato.
-    - Se recomienda usar useLayoutEffect solo cuando sea necesario acceder al DOM de forma síncrona y realizar cambios que afecten la geometría de los elementos.
-
-En resumen, useEffect se utiliza para efectos secundarios asincrónicos que no requieren acceso inmediato al DOM, mientras que useLayoutEffect se utiliza para efectos secundarios síncronos que requieren acceso inmediato al DOM y afectan la geometría de los elementos.
-
-
----
-
-### **Redux vs ContextAPI**
+### Redux vs ContextAPI
 
 Imaginá que tu app es una escuela:
 
@@ -824,20 +931,28 @@ Imaginá que tu app es una escuela:
 
 ---
 
-### **Que es React Fiber?**
+### Redux Async Flow
 
-La arquitectura de React hizo que fuera muy facil trabajar no solo en web si no tambien en mobile (React Native) y en hasta aplicaciones de Realidad Virtual. Asi los dev de React decidieron separar su algoritmo de reconciliacion (el que compara los cambios entre DOM y VDOM) y el lienzo donde esos cambios se muestran (Web, Mobile, etc..)
+Redux Async Flow es el flujo asincrono de Redux. Si bien Redux maneja los estados de manera asincrona, a veces necesitamos llevar a cabo tareas asincronas en si mismos, como llamar a una API, y Redux no entiende funciones asincronas, no sabe esperar a que la API termine su procesamiento. 
 
-Fiber fue diseñado para mejorar el rendimiento, particularmente en aplicaciones que requieren animaciones, interacciones complejas y actualizaciones de gran volumen.
+Para solucionar esto se usa un middleware llamado `Redux Thunk` o `Redux Saga` que funciona como intermediario entre los actions y los reducers, los mismos permiten ejeuctan funciones asincronas en las acciones y despachar nuevas acciones una vez que la primera tarea asincrona termino.
 
-React Fiber organiza la renderización en dos fases principales:
+```javascript
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 
-- **Fase de Render (Reconciliación)**: Se construye o actualiza un árbol de componentes de manera asíncrona. React decide qué cambios deben aplicarse al DOM basándose en las prioridades.
-- **Fase de Commit**: Es sincrónica y rápida. Los cambios calculados en la fase de render se aplican al DOM real.
+const store = createStore(reducer, applyMiddleware(thunk));
+```
 
-React Fiber no cambia cómo los desarrolladores escriben código React, pero mejora significativamente el rendimiento y la flexibilidad de las aplicaciones React modernas. Es la base que permite que React maneje de manera eficiente aplicaciones cada vez más interactivas y complejas.
+Se suele manejar la informacion en un objeto con 3 elementos:
 
----
+```javascript
+{
+  loading: false,
+  data: [...], // Datos obtenidos
+  error: null
+}
+```
 
 ### **¿Cómo hacer que tu app React mas performante?** 
 
@@ -927,127 +1042,6 @@ const App = () => (
 **En resumen:**  
 No hagas que React trabaje de más. Mostrá solo lo necesario, dividí tu app en partes chicas, y usá las herramientas que te da React para que todo ande rápido y bien.
 
-
----
-
-### **¿Qué es el Virtual DOM?**
-
-Para que React pueda efectuar esta suerte de “recarga parcial por pedazos” de una página, debe usar el Virtual DOM, que es una representación del DOM real.
-
-Cuando un elemento cambia, primero se actualiza el VDOM de forma muy rápida, luego, React compara este VDOM propio con el DOM real, y basándonos en sus diferencias, únicamente aplica los cambios necesarios para que ambos coincidan.
-
-Todo sale de app.js, que contiene X cantidad de componentes, y estos poseen Z cantidad de componentes en sí mismos. Si actualizamos a `app.js`, se actualiza la página entera, pero si actualizamos algo dentro de estos componentes, únicamente se actualizará de este componente “para arriba” en la jerarquía de componentes.
-
-Más arriba la jerarquía, más refrescos habrá. Un componente hijo, idealmente, no deberia necesitar modificar el estado del componente padre.
-
-- Aumenta la velocidad de la aplicacion
-- No acapara mucha memoria, hace que el uso de la misma sea mucho mas eficiente
-- Provee una capa adicional de Scripting, dandole un peso mas a la CPU
-
-![Virtual Dom](src/vdom.png)
-
----
-
-### **Redux Async Flow**
-
-Redux Async Flow es el flujo asincrono de Redux. Si bien Redux maneja los estados de manera asincrona, a veces necesitamos llevar a cabo tareas asincronas en si mismos, como llamar a una API, y Redux no entiende funciones asincronas, no sabe esperar a que la API termine su procesamiento. 
-
-Para solucionar esto se usa un middleware llamado `Redux Thunk` o `Redux Saga` que funciona como intermediario entre los actions y los reducers, los mismos permiten ejeuctan funciones asincronas en las acciones y despachar nuevas acciones una vez que la primera tarea asincrona termino.
-
-```javascript
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-
-const store = createStore(reducer, applyMiddleware(thunk));
-```
-
-Se suele manejar la informacion en un objeto con 3 elementos:
-
-```javascript
-{
-  loading: false,
-  data: [...], // Datos obtenidos
-  error: null
-}
-```
-
----
-
-### **useActionState en React**
-
-Es un hook que en React 18 fue considerado experimental, utilizado para simpliificr la gestion de acciones asincronas en los componentes, como el estado de `loading`, `error` y `data`.
-
-```jsx
-const [state, action, isPending] = useActionState(actionFunction, initialState);
-```
-
-- `actionFunction` es la funcion asincrona
-- `initialState` es el valor inicial del estado
-
-Este hook nos ahorra usar multiples `useState` para el manejo de estos estados
-
----
-
-### **`startTransition()`**
-
-La función `startTransition()` de React es una herramienta que se utiliza para gestionar actualizaciones de estado que no son críticas para la interacción inmediata del usuario. Su principal objetivo es mejorar la **experiencia de usuario** al permitir que las actualizaciones menos importantes no bloqueen el hilo de ejecución principal y no interfieran con las interacciones críticas.
-
-En React, las actualizaciones de estado, por defecto, son **sincrónicas**, lo que significa que cualquier cambio en el estado de un componente o renderización se ejecutará inmediatamente, lo cual puede causar problemas de rendimiento si el componente tiene un renderizado pesado o si hay muchos cambios de estado que se ejecutan al mismo tiempo.
-
-`startTransition()` es una API que permite que ciertas actualizaciones no se consideren prioritarias. Cuando usas `startTransition()`, le estás diciendo a React que esta actualización es **baja prioridad** y puede ser interrumpida si el hilo está ocupado haciendo tareas más importantes, como responder a las interacciones del usuario.
-
-Aquí tienes un ejemplo básico de cómo usar `startTransition()`:
-
-```javascript
-import React, { useState, startTransition } from 'react';
-
-function MyComponent() {
-  const [isPending, setIsPending] = useState(false);
-  const [inputValue, setInputValue] = useState('');
-
-  const handleChange = (event) => {
-    const { value } = event.target;
-
-    // Aquí usamos startTransition para hacer que el cambio en el estado de inputValue sea de baja prioridad
-    startTransition(() => {
-      setInputValue(value);
-    });
-
-    // Marca si la actualización está pendiente
-    setIsPending(true);
-  };
-
-  return (
-    <div>
-      <input type="text" value={inputValue} onChange={handleChange} />
-      {isPending && <div>Updating...</div>}
-    </div>
-  );
-}
-```
-
-1. **Prioridad baja para actualizaciones de estado**: Dentro del `startTransition()`, el cambio de estado `setInputValue(value)` se marca como una actualización de baja prioridad, lo que significa que React intentará procesar esta actualización solo cuando haya tiempo disponible, sin bloquear interacciones importantes como el input del usuario.
-   
-2. **Optimización del rendimiento**: Esto permite que, si hay una actualización costosa o renderizado en progreso, las actualizaciones menos importantes no retrasen la interacción del usuario.
-
-#### ¿Cuándo se debería usar `startTransition()`?
-
-Se debe usar `startTransition()` cuando tengas actualizaciones de estado o renderizados que no necesiten ser procesados inmediatamente y que no afecten la interacción directa del usuario. Algunos ejemplos incluyen:
-
-- **Filtros o búsquedas en listas grandes**: Si tienes una búsqueda que filtra una lista muy grande y el filtrado no es urgente.
-- **Actualización de datos en segundo plano**: Si necesitas actualizar ciertos estados o cálculos en segundo plano sin interrumpir las interacciones del usuario.
-- **Animaciones o cambios visuales complejos**: Para renderizados pesados o animaciones que no son necesarias de inmediato, como transiciones de interfaz de usuario.
-
-#### Beneficios de `startTransition()`
-
-1. **Mejora de la experiencia del usuario**: Evita que la interfaz se congele o se sienta lenta debido a renderizados pesados.
-2. **Optimización del rendimiento**: Al gestionar las actualizaciones de estado con menor prioridad, React puede hacer las actualizaciones más críticas primero, manteniendo la interfaz fluida.
-3. **Control más fino de las actualizaciones**: Permite una separación entre las tareas que son cruciales para la interacción del usuario y las que pueden esperar.
-
-#### Limitaciones
-
-- **No reemplaza el uso de `useEffect`**: `startTransition()` no se debe usar para efectos secundarios que deban ocurrir de manera inmediata (como realizar peticiones API).
-- **No aplica a todas las actualizaciones de estado**: Debe usarse en contextos donde el rendimiento es una preocupación, pero no es necesario para todas las actualizaciones de estado.
 
 ---
 
