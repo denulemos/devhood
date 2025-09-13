@@ -5,13 +5,15 @@ const data = [
   { tema: '🅰️', nombre: 'Angular', link: '../desarrollo-web/angular' },
   { tema: '⚛️', nombre: 'React', link: '../desarrollo-web/react' },
   { tema: '🟩', nombre: 'NodeJS', link: '../desarrollo-web/nodejs' },
-  { tema: '✨', nombre: 'JavaScript', link: '../desarrollo-web/javascript' },
+  { tema: '✨', nombre: 'JavaScript', link: '../desarrollo-web/javascript/javascript' },
+  { tema: '💙', nombre: 'Typescript', link: '../desarrollo-web/javascript/typescript' },
   { tema: '🌐', nombre: 'HTML', link: '../desarrollo-web/html' },
-  { tema: '🎨', nombre: 'CSS', link: '../desarrollo-web/css' },
-  { tema: '💅', nombre: 'SCSS', link: '../desarrollo-web/scss' },
+  { tema: '🎨', nombre: 'CSS y SCSS', link: '../desarrollo-web/css' },
   { tema: '♿', nombre: 'Accesibilidad', link: '../accesibilidad/Accesibilidad' },
   { tema: '🔄', nombre: 'CICD', link: '../cicd' },
   { tema: '🗂️', nombre: 'Versionado', link: '../versionado' },
+  { tema: '🙀', nombre: 'Java', link: '../desarrollo-web/backend/java' },
+  { tema: '🔨', nombre: 'Programacion Orientada a Objetos', link: '../desarrollo-web/backend/poo' },
 ];
 
 export default function IndiceTable() {

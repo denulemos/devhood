@@ -1,7 +1,7 @@
 ---
 sidebar_position: 4
 ---
-# 🌐 CSS y SASS
+# 🖌️ CSS y SASS
 
 [Formato README en Github](https://github.com/denulemos/DevDojo/blob/master/html.md)
 

@@ -20,7 +20,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: '❤️ Angular',
-      collapsed: false,
+      collapsed: true,
       items: [
         'desarrollo-web/angular',          
         'desarrollo-web/angular/clean-code',
@@ -30,16 +30,32 @@ const sidebars: SidebarsConfig = {
     'desarrollo-web/react',
     'desarrollo-web/scss',
     'desarrollo-web/html',
-    'desarrollo-web/javascript',
+    {
+      type: 'category',
+      label: '👨‍💻 Javascript y TypeScript',
+      collapsed: true,
+      items: [
+        'desarrollo-web/javascript/javascript',
+        'desarrollo-web/javascript/typescript',
+        'desarrollo-web/nodejs',
+      ],
+      
+    },
     'versionado',
     'cicd',
     {
       type: 'category',
-      label: '🖥️ Backend',
-      collapsed: false,
+      label: 'Teoria Programacion',
+      collapsed: true,
       items: [
       'desarrollo-web/backend/poo',
-        'desarrollo-web/nodejs',
+      ],
+    },
+    {
+      type: 'category',
+      label: '🖥️ Backend',
+      collapsed: true,
+      items: [
         'desarrollo-web/backend/java',
       ],
     },
