@@ -795,3 +795,36 @@ console.log(greeting); // prints
 ```
 
 Se usa otro tipo de “comilla” cuando se quiere invocar al String (`) y no es necesario poner /n para que se haga un salto de línea en el texto de salida
+
+### Funciones de alto nivel / Higher order Function
+
+Habían muchas funcionalidades que se estaban repitiendo, entonces JS decidio hacerlas nativas, como iteraciones. Funciones de orden mayor es que reciben como parametro los iterables y un callback, que se ejecutaba en cada elemento iterado.
+
+Hoy en dia todo esto esta abstraído y solo pasamos el callback.
+
+Ejemplos puede ser `.map`, `.filter`, `.reduce`
+
+```javascript
+// Función de orden superior que toma una función como argumento
+function operacionMatematica(x, y, operacion) {
+  return operacion(x, y);
+}
+
+// Funciones que serán pasadas como argumentos a la función de orden superior
+function suma(a, b) {
+  return a + b;
+}
+
+function resta(a, b) {
+  return a - b;
+}
+
+function multiplicacion(a, b) {
+  return a * b;
+}
+
+// Uso de la función de orden superior con diferentes funciones como argumentos
+console.log(operacionMatematica(5, 3, suma)); // Devuelve 8 (5 + 3)
+console.log(operacionMatematica(10, 4, resta)); // Devuelve 6 (10 - 4)
+console.log(operacionMatematica(6, 2, multiplicacion)); // Devuelve 12 (6 * 2)
+```
