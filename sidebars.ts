@@ -1,4 +1,4 @@
-import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
+import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -19,36 +19,53 @@ const sidebars: SidebarsConfig = {
     'accesibilidad/accesibilidad',
     {
       type: 'category',
-      label: '❤️ Angular',
+      label: '🎨 Frontend',
       collapsed: true,
+      link: { type: 'doc', id: 'landing/frontend' },
       items: [
-        'desarrollo-web/angular',          
-        'desarrollo-web/angular/clean-code',
-        'desarrollo-web/angular/performance',
+        {
+          type: 'category',
+          label: '❤️ Angular',
+          collapsed: true,
+          items: [
+            'desarrollo-web/angular',
+            'desarrollo-web/angular/clean-code',
+            'desarrollo-web/angular/performance',
+          ],
+        },
+        'desarrollo-web/react',
+        'desarrollo-web/scss',
+        'desarrollo-web/html',
       ],
     },
-    'desarrollo-web/react',
-    'desarrollo-web/scss',
-    'desarrollo-web/html',
     {
       type: 'category',
-      label: '👨‍💻 Javascript y TypeScript',
+      label: '👨‍💻 Javascript',
+      link: { type: 'doc', id: 'landing/jsts' },
       collapsed: true,
       items: [
         'desarrollo-web/javascript/javascript',
         'desarrollo-web/javascript/typescript',
         'desarrollo-web/nodejs',
       ],
-      
+
     },
-    'versionado',
-    'cicd',
     {
       type: 'category',
-      label: 'Teoria Programacion',
+      label: '⚙️ DevOps',
+      link: { type: 'doc', id: 'landing/devops' },
       collapsed: true,
       items: [
-      'desarrollo-web/backend/poo',
+        'versionado',
+      'cicd',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Teoria',
+      collapsed: true,
+      items: [
+        'desarrollo-web/backend/poo',
       ],
     },
     {

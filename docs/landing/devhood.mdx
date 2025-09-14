@@ -1,11 +1,21 @@
 ---
 id: devhood
-title: Indice 💖
+title: Indice
 ---
 
 import IndiceTable from '@site/src/components/IndiceTable';
 
-<IndiceTable />
+export const data = [
+{ tema: '♿', nombre: 'Accesibilidad', link: '../accesibilidad/Accesibilidad' },
+  { tema: '🅰️', nombre: 'Frontend', link: 'frontend' },
+  { tema: '✨', nombre: 'JavaScript', link: 'jsts' },
+  { tema: '🔄', nombre: 'CICD', link: '../cicd' },
+  { tema: '🗂️', nombre: 'Versionado', link: '../versionado' },
+  { tema: '🙀', nombre: 'Backend', link: '../desarrollo-web/backend/java' },
+  { tema: '🔨', nombre: 'Teoria', link: '../desarrollo-web/backend/poo' },
+];
+
+<IndiceTable data={data}/>
 
 
 
