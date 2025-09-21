@@ -57,12 +57,13 @@ const sidebars: SidebarsConfig = {
       collapsed: true,
       items: [
         'versionado',
-      'cicd',
+        'cicd',
       ],
     },
     {
       type: 'category',
-      label: 'Teoria',
+      label: '📚 Teoria',
+      link: { type: 'doc', id: 'landing/teoria' },
       collapsed: true,
       items: [
         'desarrollo-web/backend/poo',
@@ -71,11 +72,13 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: '🖥️ Backend',
+      link: { type: 'doc', id: 'landing/backend' },
       collapsed: true,
       items: [
         'desarrollo-web/backend/java',
       ],
     },
+    'seguridad',
   ],
 };
 
