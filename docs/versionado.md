@@ -1,5 +1,7 @@
 # 🗂️ Versionado (Git/Mercurial)
 
+[Formato README en Github](https://github.com/denulemos/DevDojo/blob/master/Versionado.md)
+
 ### **Git vs Mercurial**
 
 Las diferencias principales entre **Git** y **Mercurial** son:

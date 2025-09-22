@@ -1,5 +1,7 @@
 # 🚀 CI/CD (Integración y entrega continua)
 
+[Formato README en Github](https://github.com/denulemos/DevDojo/blob/master/Versionado.md)
+
 ### **¿Qué es CI/CD?**
 
 **CI/CD** significa **Integración Continua** y **Entrega/Despliegue Continuo**.

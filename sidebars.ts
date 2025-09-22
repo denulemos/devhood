@@ -79,6 +79,7 @@ const sidebars: SidebarsConfig = {
       ],
     },
     'seguridad',
+    'forense',
   ],
 };
 
