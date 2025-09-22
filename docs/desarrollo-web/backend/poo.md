@@ -2,10 +2,36 @@
 
 Ejemplos en **Java**
 
+[Formato README en Github](https://github.com/denulemos/DevDojo/blob/master/poo.md)
+
 ### Que es la programacion orientada a objetos?
 
 La programación orientada a objetos (POO) es un estilo de programación que organiza el código en "objetos". Un objeto es como una caja que contiene datos (llamados atributos) y cosas que puede hacer (llamadas métodos).
 
+```java
+public class Perro {
+    private String nombre;
+    private int edad;
+
+    public Perro(String nombre, int edad) {
+        this.nombre = nombre;
+        this.edad = edad;
+    }
+
+    public void ladrar() {
+        System.out.println(nombre + " dice: Guau!");
+    }
+}
+```
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        Perro miPerro = new Perro("Fido", 3);
+        miPerro.ladrar();
+    }
+}
+```
 Por ejemplo, imagina que tienes un objeto llamado "Perro". Este objeto podría tener atributos como "nombre" y "edad", y métodos como "ladrar()" o "correr()". Así, puedes crear muchos perros con diferentes nombres y edades, pero todos pueden ladrar y correr.
 
 La POO se basa en cuatro ideas principales:
