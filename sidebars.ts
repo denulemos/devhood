@@ -76,6 +76,7 @@ const sidebars: SidebarsConfig = {
       collapsed: true,
       items: [
         'desarrollo-web/backend/java',
+        'desarrollo-web/backend/basesDatos',
       ],
     },
     'seguridad',

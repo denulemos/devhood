@@ -1,4 +1,4 @@
-# Java 
+# 🚀 Java 
 
 ## **Funciones**
 
@@ -151,12 +151,51 @@ for (int i = 0; i < productos.length; i++) {
 }
 ```
 
+## Excepciones
 
+### Qué es una excepcion? Que tipos hay? (`try-catch`)
 
+Una excepcion es un error que sucede durante la ejecucion del programa e interrumpe el flujo normal del mismo. Hay 2 grandes categorias:
 
+- **Excepciones verificadas**: Son aquellas que el compilador obliga a manejar, como `IOException`. Debes usar `try-catch` o declarar la excepcion en el metodo.
+- **Excepciones no verificadas**: Son errores de tiempo de ejecucion, como `NullPointerException`. No es obligatorio manejarlas.
 
+```java
+try {
+    // Codigo que puede lanzar una excepcion
+} catch (TipoDeExcepcion e) {
+    // Manejo de la excepcion
+} finally {
+    // Se ejecuta independientemente del resultado al final de todo, se puede usar para librerar recursos
+}
+```
 
+### Excepciones personalizadas
 
+Se pueden crear excepciones personalizadas extendiendo de `Exception` o `RuntimeException`
 
+```java
+public class ProductoNoEncontradoException extends Exception {
+    public ProductoNoEncontradoException(String mensaje){
+        super(mensaje);
+    }
+}
+```
+
+## Modulos 
+
+Los modulos permiten una division logica mayor que con los paquetes. Un modulo puede contener muchos paquetes.
+
+- Control preciso de que partes del codigo son accesibles
+- Gestion de dependencias explicita
+
+Todas poseen un `module-info.java` que puede ser similar al `package.json`
+
+```java
+module com.paquete.negocio {
+    exports com.paquete.dependencia1;
+    //...
+}
+```
 
 

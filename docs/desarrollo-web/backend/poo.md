@@ -1,4 +1,4 @@
-# Programación Orientada a Objetos
+# ✏️ Programación Orientada a Objetos
 
 Ejemplos en **Java**
 
@@ -96,7 +96,7 @@ public class Producto {
 }
 ```
 
-## Getters y Setters
+### Getters y Setters
 
 Son métodos que permiten acceder y modificar los atributos privados de una clase, promoviendo el encapsulamiento.
 
@@ -138,7 +138,7 @@ public class Producto {
 }
 ```
 
-## Visibilidad
+### Visibilidad
 
 - `public`: accesible desde cualquier parte.
 - `private`: accesible solo dentro de la misma clase.
@@ -172,7 +172,45 @@ class Gato extends Animal {
 }
 ```
 
-## Metodos estaticos (static)
+### Clases abstractas e Interfaces'
+
+Una **Clase abstracta** es una clase que no puede instanciarse directamente, solo da una base comun para subclases. No tiene cuerpo.
+
+```java
+public abstract class ProductoBase {
+    private String nombre;
+
+    public ProductoBase(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public abstract double calcularPrecioFinal();
+}
+```
+
+Una **Interfaz** define un conjunto de metodos que una clase debe implementar sin proveer esta implementacion, ya esta dada. Define un contrato
+
+```java
+// Cualquier clase que implemente Descontable debe proveer aplicarDescuento
+public interface Descontable {
+    double aplicarDescuento(double porcentaje);
+}
+```
+
+
+
+| Clase Abstracta | Interfaz |
+| --- | ---| 
+| Puede tener métodos con implementación y métodos abstractos (sin cuerpo) | Solo puede tener métodos abstractos (hasta Java 7); desde Java 8 puede tener métodos default y estáticos |
+| Puede tener atributos (variables de instancia) | Solo puede tener constantes (atributos `public static final`) |
+| Se usa la palabra clave `abstract` | Se usa la palabra clave `interface` |
+| Una clase puede heredar solo de una clase abstracta (herencia simple) | Una clase puede implementar varias interfaces (herencia múltiple) |
+| Puede tener constructores | No puede tener constructores |
+| Los métodos pueden tener cualquier modificador de acceso (`public`, `protected`, `private`) | Los métodos son `public` y abstractos por defecto (hasta Java 7) |
+
+
+
+## Metodos estaticos - `static`
 
 En Java, la palabra clave static se usa para indicar que algo pertenece a la clase y no a los objetos creados a partir de esa clase.
 
@@ -197,10 +235,6 @@ class Utilidades {
 // Se puede llamar así, sin crear un objeto:
 int resultado = Utilidades.sumar(2, 3);
 ```
-
-## Herencia
-
-Se pueden crear nuevas clases basadas en otras existentes.
 
 
 ## Polimorfismo
@@ -231,6 +265,22 @@ public class Main {
 
         miPerro.hacerSonido(); // Guau
         miGato.hacerSonido();  // Miau
+    }
+}
+```
+
+Otra explicacion mas simple es, suponiendo que tengo `Producto p = new Producto()` y `Producto d = new Producto()`, si bien ambos son `Producto`, cuando se invoquen metodos sobre ellos se ejecutara la version sobrescrita de la subclase.
+
+### Sobrescritura - `Override`
+
+Consiste en redefinir un metodo heredado de la superclase adaptando su comportamiento. 
+
+```java
+public class Bebida extends Producto {
+    @Override
+    public double calcularPrecioFinal() {
+        // Supongamos que las bebidas siempre tienen 10 pesos de recargo
+        return getPrecio() + 10; 
     }
 }
 ```
@@ -339,6 +389,12 @@ public class ProductoElectronico extends Producto {
     }
 }
 ```
+
+`ProductoElectronico` hereda de `Producto`, y hace uso de `super` para llamar al constructor de la clase padre, y agrega su garantia como propiedad propia. 
+
+### Uso de `this` y `super`
+
+`this` hace referencia al objeto actual, y `super` a la superclase (clase padre), puedo usarlo para llamar la constructor de esta superclase o a un metodo del mismo, evitando la **duplicacion de codigo**
 
 
 
