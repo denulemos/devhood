@@ -11,7 +11,81 @@ public int sumar(int a, int b) {
 }
 ```
 
-### Las funciones reciben parámetros por valor o por referencia?
+### Como se maneja un parametro que puede ser nulo? (`Optional<>`)
+
+En Java 8 aparecio `Optional<>` que es un wrapper para un valor que puede ser nulo, pero evita el `null` en si mismo y la excepcion `NullPointerException`.
+
+```java
+Optional<String> nombre = obtenerNombreOptional();
+nombre.ifPresent(n -> System.out.println(n.toUpperCase()));
+```
+
+Se ejecuta el `System.out.println(n.toUpperCase())` si el nombre no es nulo (esta presente).
+
+Por ejemplo, en el siguiente codigo se obtiene el nombre de una persona y se imprime en mayusculas si no es nulo, si es nulo se imprime "DESCONOCIDO".
+
+```java
+public class EjemploOptional {
+    public static void main(String[] args) {
+        Optional<String> nombre = obtenerNombre();
+
+        String resultado = nombre
+                .map(String::toUpperCase)
+                .orElse("DESCONOCIDO");
+
+        System.out.println(resultado);
+    }
+
+    static Optional<String> obtenerNombre() {
+        return Optional.ofNullable(null);
+    }
+}
+```
+
+### Se recomienda usar `Optional<>` en parametros de funciones?
+
+NO se recomienda usar `Optional` como parámetro de un método.
+
+Este codigo: 
+
+```java
+public void saludar(Optional<String> nombre) {
+    System.out.println("Hola " + nombre.orElse("Invitado"));
+}
+```
+
+Es bastante mas complejo que:
+
+```java
+public void saludar(String nombre) {
+    System.out.println("Hola " + (nombre != null ? nombre : "Invitado"));
+}
+```
+
+`Optional` esta pensado para valores de retorno, no para entradas. Ademas, si se llama al metodo, se debe crear un `Optional`
+
+```java
+saludar(Optional.of("Denisse"));
+```
+
+Incluso se podria seguir pasando `null` como parametro.
+
+```java
+saludar(null); // NullPointerException
+```
+
+Ademas casi todas las librerias y frameworks esperan parametros normales, no `Optional`.
+
+SI tiene sentido usarlo cuando son metodos privados.
+
+```java
+private void procesarUsuario(Optional<Usuario> usuarioOpt) {
+    usuarioOpt.ifPresent(this::guardar);
+}
+```
+
+
+### ¿Las funciones en Java reciben parámetros por valor o por referencia?
 
 En Java, los parámetros de una función **siempre se pasan por valor**, pero lo que cambia es *qué es lo que se copia* según el tipo de dato:
 
@@ -95,6 +169,7 @@ Los metodos existentes son:
 - `length()`
 - `substring(int inicio, int fin)`
 - `toUpperCase()` y `toLowerCase()`
+- `isBlank()`: Verifica si la cadena es nula o vacia
 - `trim()` : Quita los espacios en blanco al principio y al final de la cadena
 - `indexOf(String s)`: retorna la posición de la primera aparición de s en la cadena
 - `replace(String viejo, String nuevo)`
@@ -167,6 +242,45 @@ try {
     // Manejo de la excepcion
 } finally {
     // Se ejecuta independientemente del resultado al final de todo, se puede usar para librerar recursos
+}
+```
+
+Por ejemplo:
+
+```java
+private void validarStock(Producto producto, int cantidad) throws StockInsuficienteException {
+        if (cantidad <= 0) {
+            throw new StockInsuficienteException("Cantidad debe ser mayor que cero.");
+        }
+        if (producto.getStock() < cantidad) {
+            throw new StockInsuficienteException("Stock insuficiente. Disponible: " + producto.getStock());
+        }
+    }
+```
+
+La funcion, `validarStock`, lanza la excepcion `StockInsuficienteException` si la cantidad es menor o igual a 0 o si el stock del producto es menor a la cantidad.
+
+```java
+try {
+                validarStock(producto, cantidad);
+                // Restar stock
+                producto.setStock(producto.getStock() - cantidad);
+                orden.addItem(new OrdenItem(producto, cantidad));
+                System.out.println("Item agregado.");
+            } catch (StockInsuficienteException e) {
+                System.out.println(e.getMessage());
+            }
+```
+
+Que la excepcion este dentro del `catch` hace que la ejecucion del programa no se interrumpa y se pueda seguir ejecutando.
+
+Mientras tanto la excepcion en si se ve asi:
+
+```java
+public class StockInsuficienteException extends Exception {
+    public StockInsuficienteException(String mensaje){
+        super(mensaje);
+    }
 }
 ```
 
