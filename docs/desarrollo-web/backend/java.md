@@ -11,6 +11,12 @@ public int sumar(int a, int b) {
 }
 ```
 
+- `public`: Es el modificador de acceso, puede ser `private`, `protected` o `public`.
+- `int`: Es el tipo de dato que retorna la función. Si no retorna nada, se usa `void`.
+- `sumar`: Es el nombre de la función.
+- `(int a, int b)`: Son los parámetros que recibe la función, cada uno con su tipo de dato.
+- `return resultado;`: Devuelve el valor calculado por la función.
+
 ### Como se maneja un parametro que puede ser nulo? (`Optional<>`)
 
 En Java 8 aparecio `Optional<>` que es un wrapper para un valor que puede ser nulo, pero evita el `null` en si mismo y la excepcion `NullPointerException`.
