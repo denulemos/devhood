@@ -408,7 +408,442 @@ counter.set(1); // Consola: "Counter value is: 1"
 
 ---
 
-## Manejo de estado de una aplicación Angular, qué metodos hay?
+## **Clean Code en Angular**
+
+### Un componente, una responsabilidad
+**❌ Malo:** un componente que muestra una lista *y* también guarda datos en el servidor.
+**✅ Bueno:** un componente que solo muestra la lista, y otro que se encarga de guardar los datos.
+
+```ts
+// ❌ Esto hace demasiado:
+@Component({...})
+export class UsuarioComponent {
+  usuarios = [];
+  guardarUsuario(usuario) {
+    // guardar en API
+  }
+}
+```
+
+```ts
+// ✅ Separado en dos componentes:
+- UsuarioListaComponent (muestra)
+- UsuarioFormularioComponent (guarda)
+```
+
+### Usá componentes hijos
+Cuando un componente se vuelve grande, dividilo en partes más chiquitas:
+
+```html
+<!-- padre -->
+<app-info-personal></app-info-personal>
+<app-preferencias></app-preferencias>
+```
+
+🔹 **3. Plantillas (HTML) simples y limpias**
+**❌ Malo:**
+
+```html
+<div *ngIf="user && user.age > 18 && user.isActive">...</div>
+```
+
+**✅ Bueno:**
+
+```ts
+mostrarContenido() {
+  return this.user && this.user.age > 18 && this.user.isActive;
+}
+```
+
+```html
+<div *ngIf="mostrarContenido()">...</div>
+```
+
+
+### Servicios para lógica pesada
+El componente solo debería mostrar cosas, **no** manejar llamadas a APIs.
+
+```ts
+// Servicio
+getDatos() {
+  return this.http.get('https://api.com/datos');
+}
+```
+
+```ts
+// Componente
+this.apiService.getDatos().subscribe(...);
+```
+
+### Desuscribirse de los Observables
+
+```ts
+subscripcion: Subscription;
+
+ngOnInit() {
+  this.subscripcion = this.servicio.getDatos().subscribe(...);
+}
+
+ngOnDestroy() {
+  this.subscripcion.unsubscribe();
+}
+```
+
+O mejor aún, usá el `async` pipe:
+
+```html
+<div *ngIf="datos$ | async as datos">
+  {{ datos.nombre }}
+</div>
+```
+
+### Usá Angular CLI
+Siempre preferí:
+
+```bash
+ng generate component usuario
+ng generate service api
+```
+
+Te asegura estructura clara y buenas prácticas.
+
+
+### Evitá lógica compleja en el HTML
+Si hay mucha lógica en el template, movela al archivo `.ts`.
+
+
+### Usá tipado estricto y `interfaces`
+No uses `any`. Definí tus modelos:
+
+```ts
+interface Usuario {
+  nombre: string;
+  edad: number;
+}
+```
+
+
+### Poné nombres claros y descriptivos
+**❌ Malo:** `comp1`, `servicio2`
+**✅ Bueno:** `FormularioUsuarioComponent`, `AutenticacionService`
+
+
+### Estilo consistente con Prettier/ESLint
+Instalá herramientas que formateen y detecten errores automáticamente.
+
+---
+
+## **Patrones de diseño en Angular**
+
+### Arquitectura modular
+
+Trata de separar toda la aplicacion en modulos logicos y funcionales que agrupan componentes, servivios y directivas relacionadas.
+
+```typescript
+// Módulo de usuario (user.module.ts)
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { UserComponent } from './user.component';
+
+@NgModule({
+  declarations: [UserComponent],
+  imports: [CommonModule],
+})
+export class UserModule {}
+
+// Módulo principal (app.module.ts)
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent } from './app.component';
+import { UserModule } from './user/user.module';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [BrowserModule, UserModule],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
+
+### Inyeccion de Dependencias
+
+Angular gestiona los servicios compartidos mediante la inyeccion de dependencias. Se inyecta mediante el constructor o con `injector`
+
+```typescript
+// Servicio (logger.service.ts)
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root', // Disponible en toda la app
+})
+export class LoggerService {
+  log(message: string): void {
+    console.log('Log:', message);
+  }
+}
+
+// Componente que usa el servicio (app.component.ts)
+import { Component } from '@angular/core';
+import { LoggerService } from './logger.service';
+
+@Component({
+  selector: 'app-root',
+  template: `<button (click)="logMessage()">Log</button>`,
+})
+export class AppComponent {
+  constructor(private logger: LoggerService) {}
+
+  logMessage(): void {
+    this.logger.log('Mensaje desde el componente');
+  }
+}
+```
+
+### Component Communication
+
+Es el uso de `@Input` y `@Output` para la comunicacion entre componentes, en conjunto con `EventEmitter` para emision de eventos desde componentes hijos y `ViewChild` para acceder a componentes hijos desde componentes padres.
+
+```typescript
+// Componente hijo (child.component.ts)
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+
+@Component({
+  selector: 'app-child',
+  template: `<button (click)="notify()">Notificar al padre</button>`,
+})
+export class ChildComponent {
+  @Input() childMessage: string = ''; // Recibe datos del padre
+  @Output() notifyParent = new EventEmitter<string>();
+
+  notify(): void {
+    this.notifyParent.emit('Mensaje del hijo');
+  }
+}
+
+// Componente padre (parent.component.ts)
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-parent',
+  template: `
+    <app-child
+      [childMessage]="'Hola desde el padre'"
+      (notifyParent)="handleNotification($event)"
+    ></app-child>
+  `,
+})
+export class ParentComponent {
+  handleNotification(message: string): void {
+    console.log('Mensaje recibido:', message);
+  }
+}
+```
+
+### Singleton Services
+
+Si un servicio que luego sera inyectado posee el `injectable` con el valor `root` eso significa que habra una sola instancia de la misma en toda la aplicacion.
+
+```typescript
+// Servicio global (state.service.ts)
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class StateService {
+  private state = { counter: 0 };
+
+  getCounter(): number {
+    return this.state.counter;
+  }
+
+  incrementCounter(): void {
+    this.state.counter++;
+  }
+}
+
+// Componentes que comparten el estado
+@Component({ /* ... */ })
+export class ComponentA {
+  constructor(private stateService: StateService) {}
+
+  increment(): void {
+    this.stateService.incrementCounter();
+  }
+}
+
+@Component({ /* ... */ })
+export class ComponentB {
+  constructor(private stateService: StateService) {}
+
+  getCounter(): number {
+    return this.stateService.getCounter();
+  }
+}
+```
+
+### Redux Pattern
+
+Es el uso de Redux o NgRx para el manejo de estados complejos en aplicaciones grandes. 
+
+```typescript
+
+// Defino estado y accioned
+
+export interface AppState {
+  count: number;
+}
+
+export const increment = createAction('[Counter] Increment');
+export const decrement = createAction('[Counter] Decrement');
+
+// Reducer
+
+export const counterReducer = createReducer(
+  initialState,
+  on(increment, (state) => ({ ...state, count: state.count + 1 })),
+  on(decrement, (state) => ({ ...state, count: state.count - 1 }))
+);
+
+// Uso
+
+export class CounterComponent {
+  count$ = this.store.select('count');
+
+  constructor(private store: Store<{ count: number }>) {}
+
+  increment() {
+    this.store.dispatch(increment());
+  }
+
+  decrement() {
+    this.store.dispatch(decrement());
+  }
+}
+```
+
+### Reactive Forms
+
+Mediante el uso de `ReactiveFormsModule` puedo manejar estados complejos de formularios.
+
+```typescript
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-reactive-form',
+  template: `
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <input formControlName="name" placeholder="Nombre" />
+      <button type="submit" [disabled]="form.invalid">Enviar</button>
+    </form>
+  `,
+})
+export class ReactiveFormComponent {
+  form: FormGroup;
+
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({
+      name: ['', Validators.required],
+    });
+  }
+
+  onSubmit(): void {
+    console.log(this.form.value);
+  }
+}
+```
+
+### Lazy Loading
+
+Es el uso de `loadChildren` en el archivo de rutas para cargar modulos de manera asincrona.
+
+```typescript
+// Ruta con Lazy Loading (app-routing.module.ts)
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+  {
+    path: 'users',
+    loadChildren: () =>
+      import('./user/user.module').then((m) => m.UserModule),
+  },
+];
+```
+
+### Facade Pattern
+
+Abstrae la logica compleja de varios servicios en una sola clase para proporcionar una API simplificada para el resto de la aplicacion.
+
+Por ejemplo en este caso, `UserFacade` combina el uso de `userService` y `authService` en uno solo.
+
+```typescript
+// Servicios individuales
+@Injectable({ providedIn: 'root' })
+export class UserService {
+  getUser() {
+    return { name: 'John Doe' };
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+  isAuthenticated() {
+    return true;
+  }
+}
+
+// Fachada (user.facade.ts)
+@Injectable({ providedIn: 'root' })
+export class UserFacade {
+  constructor(
+    private userService: UserService,
+    private authService: AuthService
+  ) {}
+
+  getUserData() {
+    if (this.authService.isAuthenticated()) {
+      return this.userService.getUser();
+    }
+    return null;
+  }
+}
+
+// Componente que usa la fachada
+@Component({ /* ... */ })
+export class ProfileComponent {
+  constructor(private userFacade: UserFacade) {}
+
+  getUser() {
+    console.log(this.userFacade.getUserData());
+  }
+}
+```
+
+---
+
+### ¿Cómo organizas un proyecto grande en Angular? ¿Usas Nx o alguna otra herramienta de monorepo?
+
+- **Modularización:** Divide la aplicación en módulos lógicos. Cada módulo debe tener una responsabilidad clara y contener componentes, servicios y otros elementos relacionados.
+- **Lazy Loading:** Implementa lazy loading para cargar módulos solo cuando sean necesarios, mejorando el rendimiento inicial de la aplicación.
+- **Shared Module:** Crea un módulo compartido para componentes, directivas y pipes que se usan en varios lugares de la aplicación.
+- **Core Module:** Crea un módulo core para servicios singleton que se usan en toda la aplicación, como servicios de autenticación o configuración.
+- **Feature Modules:** Agrupa funcionalidades relacionadas en módulos específicos. Por ejemplo, un módulo de usuarios, un módulo de productos, etc.
+- **Uso de Nx o Monorepos:** Si el proyecto es muy grande o tiene múltiples aplicaciones, considera usar herramientas como Nx para gestionar un monorepo. Esto permite compartir código entre aplicaciones y bibliotecas, y facilita la gestión de dependencias y versiones.
+- **Estructura de carpetas:** Mantén una estructura de carpetas clara y consistente. Por ejemplo, puedes tener carpetas para `components`, `services`, `models`, `pipes`, etc.
+- **Documentación:** Documenta el código y las decisiones arquitectónicas. Esto es especialmente importante en proyectos grandes donde varios desarrolladores pueden trabajar en diferentes partes de la aplicación.
+- **Pruebas:** Implementa pruebas unitarias y de integración para asegurar la calidad del código. Usa herramientas como Jasmine y Karma para pruebas unitarias, y Protractor o Cypress para pruebas end-to-end.
+- **Linting y Formateo:** Usa herramientas como ESLint y Prettier para mantener un código limpio y consistente. Configura reglas de linting que se ajusten a las convenciones del equipo.
+- **Gestión de Estado:** Considera usar una librería de gestión de estado como NgRx o Akita para manejar el estado de la aplicación de manera predecible y escalable.
+- **Optimización de Rendimiento:** Utiliza herramientas de análisis de rendimiento como el Angular DevTools para identificar cuellos de botella y optimizar la aplicación.
+- **Seguridad:** Implementa buenas prácticas de seguridad, como sanitización de entradas, protección contra ataques XSS y CSRF, y uso de HTTPS.
+
+
+
+---
+
+## **Performance en Angular**
+
+### Manejo de estado de una aplicación Angular, qué metodos hay?
 
 En Angular, el manejo de estado de una aplicación puede hacerse de varias maneras, dependiendo de la complejidad y los requerimientos de la aplicación. Aquí hay algunos métodos comunes:
 
@@ -492,6 +927,218 @@ En Angular, el manejo de estado de una aplicación puede hacerse de varias maner
    ```
 
 ---
+
+### ¿Cómo se implementa Lazy Loading en Angular?
+
+Lazy Loading carga un modulo solo cuando el usuario esta por acceder a la misma. Antes de la introduccion de standalone components, era necesario crear modulos para cada componente, pero ahora no es necesario. Se utiliza `loadComponent` en lugar de `loadChildren`
+
+```ts
+import { Routes } from '@angular/router';
+
+export const routes: Routes = [
+  {
+    path: 'admin',
+    loadComponent: () => import('./admin/admin.component').then(m => m.AdminComponent)
+  },
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full'
+  }
+];
+```
+
+Tambien puede complementarse muy bien con `Route Guards` para proteger rutas y asegurarse de que el usuario tenga acceso a la misma si posee autorizacion. 
+
+```ts
+{
+  path: 'admin',
+  loadComponent: () => import('./admin/admin.component').then(m => m.AdminComponent),
+  canActivate: [authGuard]
+}
+```
+
+### ¿Cómo funciona la detección de cambios en Angular?
+
+Angular tiene un sistema que cada vez que:
+
+- tocás algo del DOM (como un botón),
+
+- hacés un evento ((click), (input), etc.),
+
+- llega un nuevo dato de un observable o un servicio,
+
+automáticamente revisa todos los componentes y se pregunta: **“¿Cambió algo que estoy mostrando en la pantalla?”**
+
+Si la respuesta es sí, Angular actualiza lo que ve el usuario.
+
+**¿Angular revisa TODO todo el tiempo?**
+
+Sí, y no. Por defecto, Angular vuelve a revisar todos los componentes desde la raíz hacia abajo, cada vez que cree que algo pudo haber cambiado. Esto es gracias a algo que se llama **zone.js**, una librería que observa cosas como:
+
+- setTimeout
+- eventos de usuario
+- llamadas HTTP
+- promesas
+
+Entonces Angular dice: “Algo pasó, mejor reviso todo, por si las dudas”, a esto se le dice **Dirty Checking**
+Si tu app es de tamanio pequenio, ni lo notás. Pero en apps grandes con muchos componentes, puede volverse lento. 
+
+Hay varias estrategias para detectar los cambios:
+
+* **Default**: Angular recorre todo el arbol de componentes y verifica si hay cambios en las propiedades de los componentes. Si hay cambios, actualiza la vista. Se ejecuta ante cualquier evento asincronico y puede afectar el rendimiento si hay muchos componentes.
+* **OnPush**: Solo se actualiza el componente si hay cambios en las propiedades de entrada (`@Input`) o si se emite un evento (`@Output`). Es mas eficiente que la estrategia por defecto.
+
+```typescript
+@Component({
+  selector: 'app-ejemplo',
+  templateUrl: './ejemplo.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush // Activa la detección optimizada
+})
+```
+
+La deteccion de cambios sin embargo puede ser tambien forzada mediante el uso de `ChangeDetectorRef`
+
+- `ChangeDetectorRef.detectChanges()` → Recorre el árbol de componentes y actualiza la vista.
+- `ChangeDetectorRef.markForCheck()` → Marca el componente como "sucio" para la próxima detección.
+
+```typescript
+constructor(private cdr: ChangeDetectorRef) {}
+
+ngAfterViewInit() {
+  this.cdr.detectChanges(); // Forzar actualización
+}
+```
+
+---
+
+## **¿Qué problemas de rendimiento pueden existir en Angular y cómo se solucionan?**
+
+### ⚠️ Renderizado excesivo (detección de cambios ineficiente)
+
+**Qué pasa:**
+Angular, por defecto, revisa todo el árbol de componentes cada vez que algo cambia. En apps grandes, esto puede hacer que se renderice más de lo necesario, generando lentitud.
+
+**Cómo lo solucionás:**
+
+* Activá `ChangeDetectionStrategy.OnPush` en tus componentes. Esto le dice a Angular que solo actualice el componente si cambian sus `@Input` o se dispara un evento (como un observable).
+
+```ts
+@Component({
+  selector: 'app-mi-componente',
+  template: `{{ data }}`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class MiComponente {
+  @Input() data!: string;
+}
+```
+
+* Desuscribite de los observables cuando ya no los necesites, usando `takeUntil` o el operador `async` directamente en el HTML.
+
+#### 2. 🐢 Carga innecesaria de módulos
+
+**Qué pasa:**
+Si cargás todos los módulos desde el inicio (eager loading), el usuario va a esperar más para ver algo en pantalla.
+
+**Cómo lo solucionás:**
+
+* Aplicá **lazy loading** en rutas que no se usan de entrada:
+
+```ts
+{
+  path: 'admin',
+  loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+}
+```
+
+* Si querés un balance, podés usar una **estrategia de pre-carga personalizada** para cargar algunos módulos después de la carga inicial, mientras el usuario está inactivo.
+
+### 📋 Listas largas que se renderizan lento
+
+**Qué pasa:**
+Una tabla con miles de filas puede hacer que todo se vuelva pesado, ya que Angular intenta renderizar todos los ítems del DOM.
+
+**Cómo lo solucionás:**
+
+* Usá **Virtual Scroll** del Angular CDK para renderizar solo lo visible:
+
+```html
+<cdk-virtual-scroll-viewport itemSize="50" style="height: 300px;">
+  <div *cdkVirtualFor="let item of items">{{ item }}</div>
+</cdk-virtual-scroll-viewport>
+```
+
+* Si estás trayendo todo desde una API, agregá **paginación en el backend** para evitar cargar miles de elementos de una sola.
+
+### 🖼️ Imágenes pesadas
+
+**Qué pasa:**
+Imágenes grandes o mal optimizadas pueden hacer que la página tarde en cargar, sobre todo en dispositivos móviles.
+
+**Cómo lo solucionás:**
+
+* Usá `loading="lazy"` en todas las etiquetas `<img>`:
+
+```html
+<img src="imagen.jpg" alt="Ejemplo" loading="lazy" />
+```
+
+* Comprimí y redimensioná las imágenes con herramientas como **TinyPNG**, **ImageMagick** o servicios como **Cloudinary**.
+
+### 📝 Formularios lentos
+
+**Qué pasa:**
+Si tenés formularios con muchas validaciones, lógica compleja o campos dinámicos, la app se puede trabar al escribir.
+
+**Cómo lo solucionás:**
+
+* Evitá validaciones complejas innecesarias. Usá funciones simples y validaciones asincrónicas solo si realmente las necesitás.
+
+```ts
+myForm = this.fb.group({
+  email: ['', [Validators.required, Validators.email]],
+});
+```
+
+* Dividí formularios largos en **pasos o secciones** (wizard), para no cargar todo al mismo tiempo.
+
+### 🔁 Llamadas repetidas a la API
+
+**Qué pasa:**
+Si hacés muchas llamadas iguales a la misma API desde distintos lugares, saturás el backend y hacés más lenta tu app.
+
+**Cómo lo solucionás:**
+
+* Implementá cache en los servicios, por ejemplo con `Map` y RxJS:
+
+```ts
+private cache = new Map<string, any>();
+
+getData(url: string): Observable<any> {
+  if (this.cache.has(url)) return of(this.cache.get(url));
+  return this.http.get(url).pipe(tap(data => this.cache.set(url, data)));
+}
+```
+
+* Agrupá múltiples llamadas con `forkJoin` o `combineLatest` para hacer una sola petición conjunta.
+
+#### 📦 Scripts pesados y dependencias innecesarias
+
+**Qué pasa:**
+Agregar muchas librerías sin control aumenta el tamaño del bundle, haciendo más lenta la app.
+
+**Cómo lo solucionás:**
+
+* Limpiá el `package.json`: eliminá lo que no uses.
+* Importá solo los módulos necesarios:
+
+```ts
+import { MatButtonModule } from '@angular/material/button'; // No todo Angular Material
+```
+
+* Asegurate de que el **tree shaking** esté funcionando en tu build.
+
 
 ## ¿Qué es la compilación JIT y AOT en Angular?
 

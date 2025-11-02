@@ -29,8 +29,7 @@ const sidebars: SidebarsConfig = {
           collapsed: true,
           items: [
             'desarrollo-web/angular',
-            'desarrollo-web/angular/clean-code',
-            'desarrollo-web/angular/performance',
+            'desarrollo-web/angular/ejercicios-tecnicos',
           ],
         },
         'desarrollo-web/react',
