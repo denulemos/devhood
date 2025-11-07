@@ -1,6 +1,8 @@
 # 💚 NodeJS
 
-### **¿Qué es Node.js y para qué se utiliza?**
+[Formato README en Github](https://github.com/denulemos/DevDojo/blob/master/NodeJS.md)
+
+### ¿Qué es Node.js y para qué se utiliza?
 
 Node.js es un entorno de ejecución de JavaScript que se ejecuta en el servidor. Fue construido sobre el motor V8 de Google Chrome, lo que le permite ejecutar código JavaScript fuera del navegador. 
 
@@ -14,7 +16,7 @@ Algunas de las ventajas de Node.js incluyen:
 
 ---
 
-### **¿Cuál es la diferencia entre Node.js y el navegador en cuanto a ejecución de JavaScript?**
+### ¿Cuál es la diferencia entre Node.js y el navegador en cuanto a ejecución de JavaScript?
 
 En términos simples, la diferencia principal entre Node.js y el navegador al ejecutar JavaScript es **dónde y cómo se ejecuta el código**:
 
@@ -34,7 +36,7 @@ En resumen, el navegador es para la web y Node.js es para el servidor. Ambos usa
 
 ---
 
-### **¿Qué es el Event Loop en Node.js?**
+### Event Loop en Node.js
 
 
 El **Event Loop** en Node.js es un mecanismo fundamental que permite manejar operaciones asíncronas de manera eficiente. Es el encargado de coordinar la ejecución de tareas, la gestión de eventos y las operaciones no bloqueantes.
@@ -69,7 +71,7 @@ El Event Loop tiene varias fases, cada una con un propósito específico:
 
 ---
 
-### **¿Qué son los módulos en Node.js? ¿Cuál es la diferencia entre CommonJS y ES Modules?**
+### Módulos en Node.js - CommonJS y ES Modules
 
 Node.js soporta dos sistemas de módulos principales:
 
@@ -119,7 +121,7 @@ En general, CommonJS es ideal para proyectos existentes o cuando se necesita com
 
 --- 
 
-### **¿Qué es npm y qué diferencia hay con npx?**
+### NPM y NPX
 
 npm (Node Package Manager) es una herramienta que viene con Node.js y se utiliza para instalar, compartir y gestionar paquetes (bibliotecas o herramientas) de JavaScript. Es como una tienda de aplicaciones, pero para desarrolladores.
 
@@ -142,7 +144,7 @@ En resumen:
 
 --- 
 
-### **¿Qué es nodemon y para qué se utiliza?**
+### Nodemon
 
 Nodemon es una herramienta que se utiliza en el desarrollo con Node.js para facilitar el proceso de reinicio del servidor. Normalmente, cuando haces cambios en tu código, necesitas detener y reiniciar manualmente el servidor para que los cambios se reflejen. Nodemon automatiza este proceso.
 
@@ -166,7 +168,7 @@ Nodemon es una herramienta que se utiliza en el desarrollo con Node.js para faci
 
 ---
 
-### **¿Cómo usar dotenv para manejar variables de entorno?**
+### Variables de entorno - dotenv
 
 Dotenv es una biblioteca que permite cargar variables de entorno desde un archivo `.env` a `process.env` en Node.js. Esto es útil para mantener información sensible (como claves API, contraseñas o configuraciones) fuera del código fuente.
 
@@ -218,9 +220,9 @@ En resumen, dotenv es como una libreta secreta para tus configuraciones, y `proc
 
 ---
 
-### **¿Qué es el Clustering y cuándo lo usarías?**
+### Clustering
 
-Clustering en Node.js es una técnica que permite aprovechar al máximo los procesadores multinúcleo de un servidor. Por defecto, Node.js utiliza un solo hilo para ejecutar el código, lo que significa que solo puede usar un núcleo del procesador. Con clustering, puedes crear múltiples procesos (llamados "workers") que ejecutan tu aplicación en paralelo, utilizando todos los núcleos disponibles.
+Clustering es una técnica que permite aprovechar al máximo los procesadores multinúcleo de un servidor. Por defecto, Node.js utiliza un solo hilo para ejecutar el código, lo que significa que solo puede usar un núcleo del procesador. Con clustering, puedes crear múltiples procesos (llamados "workers") que ejecutan tu aplicación en paralelo, utilizando todos los núcleos disponibles.
 
 - Node.js tiene un módulo llamado `cluster` que permite crear varios procesos hijos (workers) que comparten el mismo puerto del servidor.
 - Cada worker es una copia de tu aplicación, pero se ejecuta de manera independiente.
@@ -275,7 +277,7 @@ En resumen, clustering es como contratar más empleados (workers) para que traba
 
 ---
 
-### **¿Qué es Express.js y por qué es tan popular?**
+## **ExpressJS**
 
 Express.js es un framework minimalista y flexible para Node.js que facilita la creación de aplicaciones web y APIs. Proporciona una serie de características robustas para el desarrollo del lado del servidor, lo que lo convierte en una de las herramientas más populares en el ecosistema de Node.js.
 
@@ -389,9 +391,51 @@ Crear una API REST simple con Express es fácil y directo. Aquí tienes un ejemp
     - `PUT /items/:id` para actualizar un elemento.
     - `DELETE /items/:id` para eliminar un elemento.
 
+### CORS
+
+CORS (Cross-Origin Resource Sharing) es una forma de decirle a los navegadores que está bien compartir recursos (como datos de una API) entre diferentes dominios. Por defecto, los navegadores bloquean solicitudes de un dominio a otro por razones de seguridad. CORS permite que un servidor diga: "Está bien, este dominio puede acceder a mis datos".
+
+**Ejemplo simple:**
+- Tu API está en `https://mi-api.com`.
+- Tu frontend está en `https://mi-frontend.com`.
+- Sin CORS, el navegador bloqueará las solicitudes del frontend a la API.
+
+1. **Instalar el paquete `cors`:**
+    ```bash
+    npm install cors
+    ```
+
+2. **Usarlo en tu servidor:**
+    ```javascript
+    const express = require('express');
+    const cors = require('cors');
+    const app = express();
+
+    // Permitir CORS para todos los dominios
+    app.use(cors());
+
+    app.get('/datos', (req, res) => {
+         res.json({ mensaje: '¡Hola desde la API!' });
+    });
+
+    app.listen(3000, () => {
+         console.log('Servidor corriendo en http://localhost:3000');
+    });
+    ```
+
+3. **Configurar CORS para dominios específicos (opcional):**
+    ```javascript
+    const corsOptions = {
+         origin: 'https://mi-frontend.com', // Solo este dominio puede acceder
+    };
+    app.use(cors(corsOptions));
+    ```
+
+En resumen, CORS es como un portero que decide quién puede entrar a tu API. Con el paquete `cors`, puedes configurarlo fácilmente en Express.
+
 ---
 
-### **¿Qué es un Middleware?**
+## Middleware
 
 Un **middleware** en Express es simplemente una función que se ejecuta durante el ciclo de vida de una solicitud HTTP. Se utiliza para procesar solicitudes y respuestas antes de que lleguen a la ruta final o después de que la ruta haya respondido.
 
@@ -446,13 +490,13 @@ En resumen, los middlewares son como "filtros" o "intermediarios" que ayudan a p
 
 ---
 
-### **💚 Performance**
+## **Performance**
 
 La **performance** de una aplicación Node.js se refiere a su capacidad para manejar solicitudes y operaciones de manera eficiente, minimizando el tiempo de respuesta y el uso de recursos. Dado que Node.js está diseñado para ser asíncrono y no bloqueante, tiene un rendimiento excelente en comparación con otros entornos de ejecución.
 
 Para mejorar la performance de una aplicación Node.js, se pueden aplicar varias estrategias y prácticas recomendadas. A continuación, te detallo algunas de las más importantes:
 
-**1. Uso de Asincronía y Promesas**
+### Uso de Asincronía y Promesas
 Node.js es conocido por su modelo de I/O no bloqueante, lo que significa que las operaciones de entrada/salida (como leer archivos o hacer solicitudes HTTP) no bloquean el hilo principal. Utilizar funciones asíncronas y promesas es clave para aprovechar esta característica.
 - **Callbacks**: Aunque son la forma más básica de manejar la asincronía, pueden llevar a un "callback hell" si no se manejan adecuadamente.
 - **Promesas**: Permiten encadenar operaciones asíncronas de manera más legible y manejan errores de forma más sencilla.
@@ -471,7 +515,7 @@ async function obtenerDatos() {
 }
 ```
 
-**2. Uso de Clústeres**
+### Uso de Clústeres
 El módulo `cluster` de Node.js permite crear múltiples instancias de tu aplicación que pueden ejecutarse en diferentes núcleos del procesador. Esto mejora la capacidad de manejo de solicitudes concurrentes y aprovecha al máximo los recursos del servidor.
 
 ```javascript
@@ -495,7 +539,7 @@ if (cluster.isMaster) {
 }
 ```
 
-**3. Optimización de Consultas a Bases de Datos**
+### Optimización de Consultas a Bases de Datos
 Las consultas a bases de datos pueden ser un cuello de botella en el rendimiento de una aplicación. Aquí hay algunas prácticas para optimizarlas:
 - **Índices**: Asegúrate de que las tablas de tu base de datos tengan índices adecuados para acelerar las consultas.
 - **Consultas eficientes**: Evita consultas complejas y costosas. Utiliza paginación para manejar grandes volúmenes de datos.
@@ -525,7 +569,7 @@ client.get('clave', (err, valor) => {
 });
 ```
 
-**5. Uso de Herramientas de Profiling**
+### Profiling
 Utiliza herramientas de profiling para identificar cuellos de botella en tu aplicación. Node.js ofrece herramientas como `node --inspect` y `clinic.js` que te permiten analizar el rendimiento y detectar problemas.
 - **Node Inspector**: Permite depurar y perfilar aplicaciones Node.js en tiempo real.
 - **Clinic.js**: Proporciona herramientas para analizar el rendimiento, la memoria y los cuellos de botella en aplicaciones Node.js.
@@ -537,7 +581,8 @@ Revisa y optimiza tu código para mejorar el rendimiento. Algunas prácticas inc
 - **Utilizar módulos nativos**: Siempre que sea posible, utiliza módulos nativos de Node.js en lugar de bibliotecas externas, ya que suelen ser más eficientes.
 - **Evitar el uso excesivo de memoria**: Utiliza estructuras de datos eficientes y evita mantener en memoria grandes volúmenes de datos innecesarios.
 
-**7. Uso de Compresión**
+### Compresion
+
 La compresión de respuestas HTTP puede reducir el tamaño de los datos enviados al cliente, mejorando la velocidad de carga y reduciendo el uso del ancho de banda.
 - **Gzip**: Utiliza el middleware `compression` de Express para comprimir las respuestas HTTP.
 
@@ -554,20 +599,20 @@ app.listen(3000, () => {
 });
 ```
 
-**8. Monitoreo y Análisis de Rendimiento**
+### Monitoreo y Análisis de Rendimiento
 Implementa herramientas de monitoreo para analizar el rendimiento de tu aplicación en producción. Esto te permitirá identificar problemas y optimizar el rendimiento en tiempo real.
 - **Herramientas de monitoreo**: Utiliza servicios como New Relic, Datadog o Prometheus para monitorear el rendimiento de tu aplicación y recibir alertas sobre problemas.
 - **Logs de rendimiento**: Implementa un sistema de logging que registre métricas clave, como tiempos de respuesta, uso de memoria y errores, para analizar el rendimiento a lo largo del tiempo.
 
 ---
 
-### **💚 Escalabilidad**
+## **Escalabilidad**
 
 La **escalabilidad** de una aplicación Node.js se refiere a su capacidad para manejar un número creciente de solicitudes o carga de trabajo sin perder rendimiento ni confiabilidad. Dado que Node.js está basado en un modelo de **event loop** de un solo hilo, tiene ciertas limitaciones en cuanto a cómo manejar múltiples solicitudes simultáneas. Sin embargo, se pueden aplicar varias estrategias para mejorar la escalabilidad de una aplicación Node.js y asegurar que pueda manejar más tráfico y usuarios a medida que crece.
 
 A continuación, te detallo algunas de las principales estrategias para hacer que una aplicación Node.js sea escalable:
 
-**1. Uso de Clusters (Escalabilidad Horizontal)**
+### Clusters (Escalabilidad Horizontal)
 
 Aunque Node.js usa un solo hilo para manejar solicitudes, puedes aprovechar todos los núcleos de CPU de tu servidor utilizando el **módulo `cluster`**. Esto permite crear múltiples instancias de tu aplicación Node.js que pueden ejecutarse en diferentes procesos, distribuyendo la carga de trabajo entre varios núcleos de CPU.
 
@@ -597,7 +642,7 @@ Aunque Node.js usa un solo hilo para manejar solicitudes, puedes aprovechar todo
   }
   ```
 
-**2. Balanceo de Carga**
+### Balanceo de Carga - Load Balancer
 
 El **balanceo de carga** se utiliza para distribuir el tráfico entre múltiples instancias de la aplicación en diferentes servidores o máquinas, de modo que ningún servidor se sobrecargue. Esto es especialmente útil para aplicaciones Node.js en entornos de producción distribuidos.
 
@@ -606,7 +651,7 @@ El **balanceo de carga** se utiliza para distribuir el tráfico entre múltiples
 
   - **Load Balancers en la nube**: Servicios como **AWS Elastic Load Balancing** o **Google Cloud Load Balancing** también pueden distribuir las solicitudes entre diferentes servidores.
 
-**3. Desacoplar y Dividir en Microservicios**
+### Microservicios
 
 Una de las mejores formas de escalar una aplicación Node.js es dividirla en **microservicios**. Los microservicios son una arquitectura que descompone la aplicación en servicios pequeños e independientes, cada uno con su propio dominio de negocio y base de datos. Esto permite que diferentes servicios se escalen de forma independiente según la carga.
 
@@ -621,7 +666,7 @@ Una de las mejores formas de escalar una aplicación Node.js es dividirla en **m
   - **Docker**: Permite empaquetar microservicios en contenedores que pueden ser ejecutados en cualquier entorno.
   - **Kubernetes**: Orquestador de contenedores que facilita la gestión y escalado de microservicios.
 
-**4. Cacheo de Respuestas**
+### Cacheo de Respuestas
 
 Una de las técnicas clave para mejorar la escalabilidad de una aplicación Node.js es el **cacheo**. Al almacenar en caché las respuestas de las solicitudes más comunes o de larga duración, puedes reducir significativamente la carga en el servidor y acelerar el tiempo de respuesta.
 
@@ -629,7 +674,7 @@ Una de las técnicas clave para mejorar la escalabilidad de una aplicación Node
 
 - **Cacheo de respuestas HTTP**: Si tu aplicación maneja muchas solicitudes similares, puedes usar herramientas como **Varnish** o configurar **caching HTTP** en el servidor para almacenar respuestas de manera eficiente.
 
-**5. Optimización de Base de Datos**
+### Optimización de Base de Datos
 
 Las aplicaciones Node.js a menudo dependen de bases de datos para almacenar y recuperar información. La escalabilidad de tu aplicación también depende de cómo escalas y optimizas tu base de datos.
 
@@ -639,7 +684,7 @@ Las aplicaciones Node.js a menudo dependen de bases de datos para almacenar y re
 
 - **Índices**: Asegúrate de que tu base de datos esté optimizada con índices para mejorar el rendimiento de las consultas.
 
-**6. Optimización del Event Loop**
+### Event Loop
 
 El **event loop** de Node.js es el mecanismo que maneja todas las solicitudes de entrada y salida de la aplicación. Es importante optimizar el código para evitar bloqueos del event loop, que pueden afectar negativamente el rendimiento y la capacidad de escalado.
 
@@ -647,7 +692,7 @@ El **event loop** de Node.js es el mecanismo que maneja todas las solicitudes de
 
 - **Worker Threads**: En algunas situaciones, podrías necesitar realizar tareas de procesamiento intensivo. Para evitar que el event loop se bloquee, puedes usar **Worker Threads**, que permiten realizar tareas intensivas en segundo plano sin bloquear la ejecución principal.
 
-**7. Escalabilidad en la Nube**
+### Escalabilidad en la Nube
 
 Node.js se integra muy bien con servicios en la **nube** como **AWS**, **Google Cloud** o **Microsoft Azure**, lo que facilita la escalabilidad automática.
 
@@ -667,7 +712,7 @@ La escalabilidad en Node.js se puede lograr mediante diferentes estrategias que 
 
 ---
 
-### **REST vs GraphQL**
+## REST vs GraphQL
 
 | REST | GraphQL |
 | --- | --- |
@@ -678,50 +723,3 @@ La escalabilidad en Node.js se puede lograr mediante diferentes estrategias que 
 | Se recomienda usar REST cuando la seguridad y el catching son una prioridad, ademas si tengo clientes que buscan servicios predecibles | Se recomienda cuando es importante el minimizar la cantidad de solicitudes hechas en el servidor |
 
 ---
-
-### **¿Qué es CORS y cómo lo manejás en una API REST?**
-
-CORS (Cross-Origin Resource Sharing) es una forma de decirle a los navegadores que está bien compartir recursos (como datos de una API) entre diferentes dominios. Por defecto, los navegadores bloquean solicitudes de un dominio a otro por razones de seguridad. CORS permite que un servidor diga: "Está bien, este dominio puede acceder a mis datos".
-
-**Ejemplo simple:**
-- Tu API está en `https://mi-api.com`.
-- Tu frontend está en `https://mi-frontend.com`.
-- Sin CORS, el navegador bloqueará las solicitudes del frontend a la API.
-
-**¿Cómo manejar CORS en una API REST con Express?**
-
-1. **Instalar el paquete `cors`:**
-    ```bash
-    npm install cors
-    ```
-
-2. **Usarlo en tu servidor:**
-    ```javascript
-    const express = require('express');
-    const cors = require('cors');
-    const app = express();
-
-    // Permitir CORS para todos los dominios
-    app.use(cors());
-
-    app.get('/datos', (req, res) => {
-         res.json({ mensaje: '¡Hola desde la API!' });
-    });
-
-    app.listen(3000, () => {
-         console.log('Servidor corriendo en http://localhost:3000');
-    });
-    ```
-
-3. **Configurar CORS para dominios específicos (opcional):**
-    ```javascript
-    const corsOptions = {
-         origin: 'https://mi-frontend.com', // Solo este dominio puede acceder
-    };
-    app.use(cors(corsOptions));
-    ```
-
-En resumen, CORS es como un portero que decide quién puede entrar a tu API. Con el paquete `cors`, puedes configurarlo fácilmente en Express.
-
----
-
