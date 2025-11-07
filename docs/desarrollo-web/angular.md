@@ -1226,7 +1226,7 @@ constructor(@Inject(CONFIG_TOKEN) private config: string) {
 
 ---
 
-## ¿Qué es el Two-Way Data Binding en Angular?
+## Two-Way Data Binding
 
 El Two-Way Data Binding es una forma de vincular datos entre el componente y la vista de manera que si cambia el valor en el HTML, también cambia en el componente, y viceversa. Es como una autopista de doble mano: lo que escribís en el input se refleja en la variable, y si la variable cambia, el input también.
 
@@ -1244,7 +1244,7 @@ Cuando necesitás que el usuario pueda modificar datos y que esos cambios se ref
 
 ---
 
-## ¿Qué es un Pipe en Angular y para qué sirve?
+## Pipes
 
 Un Pipe es una herramienta para transformar datos directamente en el HTML, sin tener que modificar el valor original en el componente. Es como un filtro que le da formato a lo que se muestra.
 
@@ -1260,7 +1260,7 @@ Ejemplo de uso:
 
 ---
 
-## ¿Qué es un Service en Angular y por qué se usa?
+## Services
 
 Un Service es una clase donde ponés lógica que querés compartir entre varios componentes, como llamadas a APIs, manejo de datos, o utilidades. Así evitás repetir código y mantenés tus componentes más limpios.
 
@@ -1277,7 +1277,7 @@ export class ApiService {
 
 ---
 
-## ¿Qué es un Guard en Angular y para qué sirve?
+## Guard
 
 Un Guard es como un portero para tus rutas. Decide si un usuario puede entrar a una página o no (por ejemplo, si está logueado o tiene permisos).
 
@@ -1300,7 +1300,7 @@ Y lo usás en tus rutas:
 
 ---
 
-## ¿Qué es un Resolver en Angular?
+## Resolver
 
 Un Resolver es una clase que se encarga de traer datos antes de que se muestre una ruta. Así, cuando el usuario entra a una página, ya tiene toda la información lista y no ve pantallas vacías o "cargando".
 
@@ -1323,7 +1323,7 @@ Y en la ruta:
 
 ---
 
-## ¿Qué es un Directive en Angular?
+## Directives
 
 Una Directiva es una instrucción que le das a un elemento HTML para que cambie su comportamiento o apariencia. Hay directivas estructurales (como `*ngIf`, `*ngFor`) y de atributo (como `[ngClass]`, `[ngStyle]`).
 
@@ -1340,7 +1340,7 @@ También podés crear tus propias directivas para reutilizar lógica visual.
 
 ---
 
-## ¿Qué es un Decorador en Angular?
+## Decorators
 
 Indica como debe comportarse el componente. Dentro de este decorador, puedes observar el selector del componente (un nombre para el mismo), el template HTML y la hoja de estilos que usará.
 
@@ -1465,7 +1465,7 @@ export class ParentComponent implements AfterViewInit {
 
 ---
 
-## ¿Qué es un Input y un Output en Angular?
+## `Input` y `Output`
 
 - **@Input:** Permite que un componente hijo reciba datos de su componente padre.
 - **@Output:** Permite que un componente hijo le envíe eventos o datos al padre.
@@ -1489,7 +1489,7 @@ enviar() {
 
 ---
 
-## ¿Qué es el Routing en Angular?
+## Routing
 
 Es la configuracion que permite a los usuarios navegar en nuestra aplicacion sin necesidad de recargar la pagina por cada cambio en el caso de los SPA.
 Tambien se encarga de gestionar las URL para facilitar el compartir links y la navegabilidad.
@@ -1546,7 +1546,7 @@ irAAbout() {
 
 ---
 
-## ¿Qué es un módulo compartido (Shared Module) y para qué sirve?
+## Módulo compartido (Shared Module)
 
 Un Shared Module es un módulo donde ponés componentes, pipes y directivas que vas a usar en varios lugares de tu app. Así, evitás importar lo mismo muchas veces y mantenés tu código más organizado.
 
@@ -1564,7 +1564,7 @@ Luego lo importás en otros módulos que lo necesiten.
 
 ---
 
-## ¿Qué diferencias hay entre `ViewChild` y `ContentChild`? ¿Cuándo usarías cada uno?
+## `ViewChild` vs `ContentChild`
 
 `ViewChild` y `ContentChild` son dos decoradores en Angular que se utilizan para acceder a elementos del DOM o componentes hijos, pero tienen propósitos diferentes.
 

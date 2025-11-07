@@ -5,7 +5,7 @@ sidebar_position: 3
 
 [Formato README en Github](https://github.com/denulemos/DevDojo/blob/master/react.md)
 
-## ¿Cuál es la diferencia entre una librería y un framework?
+## Libreria vs Framework
 
 Imagina que estás cocinando:
 
@@ -26,7 +26,7 @@ Por eso, dos proyectos hechos con React pueden ser muy diferentes entre sí, per
 
 ---
 
-## ¿Para qué sirve el comando `eject` en React?
+## `eject` en React
 
 Cuando creás una app con `create-react-app`, toda la configuración complicada (Webpack, Babel, etc.) está "escondida" para que no tengas que preocuparte. Pero si algún día necesitás cambiar algo avanzado (por ejemplo, agregar un plugin raro), podés usar el comando:
 
@@ -38,7 +38,7 @@ Esto "destapa" toda la configuración y la pone en tu proyecto para que la pueda
 
 ---
 
-## ¿Cómo funcionan las claves (keys) en las listas de React? ¿Por qué son importantes?
+## Claves (keys) en las listas
 
 Las **claves (keys)** en React son atributos especiales que se utilizan para identificar de manera única los elementos en una lista. Son importantes porque ayudan a React a identificar qué elementos han cambiado, se han agregado o se han eliminado, lo que mejora el rendimiento y la eficiencia del proceso de reconciliación.
 Las claves deben ser únicas entre los elementos hermanos, pero no necesitan ser únicas en toda la aplicación. Generalmente, se recomienda usar un identificador único de los datos (como un ID) como clave.
@@ -61,7 +61,7 @@ No se recomienda usar el index del elemento en un array como identificador, ya q
 
 ---
 
-## ¿Qué es un Fragment en React y para qué se utiliza?
+## Fragment `<>`
 
 Un **Fragment** en React es un componente especial que permite agrupar varios elementos sin añadir nodos adicionales al DOM. Es útil cuando necesitas devolver múltiples elementos desde un componente sin envolverlos en un elemento contenedor como un `<div>`.
 
@@ -105,7 +105,7 @@ export default MyList;
 
 ---
 
-## ¿Qué es el modo estricto de React (`React.StrictMode`) y para qué sirve?
+## Modo estricto de React (`React.StrictMode`)
 
 React.StrictMode es una herramienta de desarrollo que React proporciona para identificar posibles problemas en una aplicación. Es un componente que no afecta el comportamiento de la aplicación en producción, pero ayuda a detectar errores y advertencias en el desarrollo.
 
@@ -176,7 +176,7 @@ Se usan mucho con frameworks como Next.js para que tu app sea más rápida y efi
 
 ---
 
-## Nombrar distintas herramientas de **Testing** para React
+## **Testing** para React
 
 
 - **Jest**: Framework de pruebas por defecto para aplicaciones React creado por Facebook. Soporta pruebas unitarias, de integración y de snapshot.
@@ -192,7 +192,7 @@ Se usan mucho con frameworks como Next.js para que tu app sea más rápida y efi
 
 ---
 
-## ¿Qué es el Virtual DOM?
+## Virtual DOM
 
 Para que React pueda efectuar esta suerte de “recarga parcial por pedazos” de una página, debe usar el Virtual DOM, que es una representación del DOM real.
 
@@ -211,7 +211,7 @@ Más arriba la jerarquía, más refrescos habrá. Un componente hijo, idealmente
 
 ---
 
-## ¿Qué son las Ref en React?
+## Ref
 
 Las **Ref** en React sirven para acceder directamente a un elemento del DOM (por ejemplo, un `<div>`, un `<input>`, etc.) desde tu código JavaScript, sin tener que pasar por el sistema de props o estado de React.
 
@@ -249,7 +249,7 @@ Las Ref son como un "puente" para manipular directamente elementos del DOM desde
 
 ---
 
-## ¿Qué es React Fiber?
+## React Fiber
 
 La arquitectura de React hizo que fuera muy facil trabajar no solo en web si no tambien en mobile (React Native) y en hasta aplicaciones de Realidad Virtual. Asi los dev de React decidieron separar su algoritmo de reconciliacion (el que compara los cambios entre DOM y VDOM) y el lienzo donde esos cambios se muestran (Web, Mobile, etc..)
 
@@ -278,99 +278,6 @@ Los componentes de funcion son mas faciles de leer, escribir y testear, y son ma
 | Manejaba el estado con `this.state` | Maneja el estado con `useState` |
 | Manejaba el contexto con `this.context` | Maneja el contexto con `useContext` |
 
-
-
----
-
-## ¿Cómo hacer que tu app React mas performante?
-
-#### 1. **No hagas que todo se vuelva a dibujar todo el tiempo**
-
-- **¿Por qué?** Si cada vez que cambiás algo, toda la app se vuelve a dibujar, se pone lenta.
-- **¿Cómo lo evito?** Usá `useMemo` para guardar valores calculados y `useCallback` para guardar funciones. Así, React no recalcula ni recrea cosas que no cambiaron.
-
-```jsx
-import React, { useMemo, useCallback } from 'react';
-
-const Componente = ({ lista }) => {
-  // ¡OJO! Usá [...lista].sort() para no modificar la lista original
-  const listaOrdenada = useMemo(() => [...lista].sort(), [lista]);
-  const manejarClick = useCallback(() => console.log('Clicked'), []);
-  return <button onClick={manejarClick}>Ordenar</button>;
-};
-```
-
-#### 2. **No cambies los objetos o arrays directamente**
-
-- Siempre usá funciones como `setState` o `useReducer` para cambiar el estado. Si cambiás un array u objeto "a mano", React no se entera y no actualiza bien la pantalla.
-
-#### 3. **Dividí tu app en componentes chiquitos**
-
-- Es más fácil de entender y solo se actualizan las partes que cambian.
-
-#### 4. **Usá `key` cuando hacés listas**
-
-- Cuando hacés una lista con `.map()`, poné una `key` única en cada elemento. Así React sabe cuál es cuál y no se confunde.
-
-```jsx
-{items.map(item => <li key={item.id}>{item.nombre}</li>)}
-```
-
-#### 5. **No uses contextos para todo**
-
-- El Context de React es útil, pero si lo usás para todo, cada cambio hace que toda la app se vuelva a dibujar. Usalo solo para datos realmente globales (como el usuario logueado o el tema de la app).
-
-#### 6. **Listas grandes: no muestres todo junto**
-
-- Si tenés una lista gigante (¡mil elementos!), usá librerías como **react-window** o **react-virtualized**. Solo muestran lo que el usuario ve en pantalla, no todo junto.
-
-```jsx
-import { FixedSizeList as List } from 'react-window';
-
-const Row = ({ index, style }) => (
-  <div style={style}>Fila {index}</div>
-);
-
-const App = () => (
-  <List height={150} itemCount={1000} itemSize={35} width={300}>
-    {Row}
-  </List>
-);
-```
-
-#### 7. **Cargá solo lo necesario (carga bajo demanda)**
-
-- Usá `React.lazy` y `Suspense` para cargar componentes solo cuando se necesitan. Así la app arranca más rápido.
-
-#### 8. **Dividí el código en partes más chicas**
-
-- Herramientas como **Webpack** pueden dividir tu app en archivos más chicos. Así el navegador baja solo lo que necesita.
-
-#### 9. **No toques el DOM a mano**
-
-- Si cambiás cosas del DOM directamente (con `document.getElementById`, etc.), React se puede confundir. Dejá que React maneje todo.
-
-#### 10. **No pongas estilos inline todo el tiempo**
-
-- Mejor usá `className` o librerías como **styled-components**. Los estilos inline pueden hacer que React vuelva a dibujar más de la cuenta.
-
-#### 11. **Renderizado en el servidor (SSR)**
-
-- Si querés que la página cargue rápido desde el principio, usá frameworks como **Next.js** que hacen parte del trabajo en el servidor.
-
-#### 12. **Imágenes y recursos: hacelos livianos**
-
-- Usá imágenes comprimidas y formatos modernos como **WebP**.
-- Cargá imágenes solo cuando se ven en pantalla (lazy loading).
-
-#### 13. **Usá las herramientas de React**
-
-- **React DevTools** y **React Profiler** te muestran qué partes de la app se están volviendo a dibujar y por qué. Así podés encontrar los problemas de performance.
-
-**En resumen:**  
-No hagas que React trabaje de más. Mostrá solo lo necesario, dividí tu app en partes chicas, y usá las herramientas que te da React para que todo ande rápido y bien.
-
-
 ---
 
 ## **Ciclos de vida y Hooks**
@@ -387,13 +294,13 @@ Hoy en día, en componentes funcionales, estos ciclos de vida se gestionan princ
 
 ---
 
-### ¿Qué son los custom hooks? ¿Cómo los crearías y para qué sirven?
+### Custom hooks
 
 Los **custom hooks** son funciones en React que permiten encapsular y reutilizar lógica relacionada con los hooks nativos de React, como `useState`, `useEffect`, `useContext`, entre otros. Sirven para extraer lógica repetitiva o compleja de los componentes, haciéndolos más limpios y fáciles de mantener.
 
 Su nombre debe comenzar con "use" y debe ser llamado dentro de un componente funcional o de otro hook.
 
-#### Ejemplo básico: Hook para manejar el estado de un formulario
+Ejemplo básico: Hook para manejar el estado de un formulario
 
 ```jsx
 import { useState } from 'react';
@@ -1906,8 +1813,86 @@ Usa Context API o Redux para manejar datos sensibles de manera segura y evitar p
 
 ## **Performance** 
 
-### ¿Qué son las "re-renderizaciones innecesarias" y cómo las evitarías?
+### No hagas que todo se vuelva a dibujar todo el tiempo
 
+- **¿Por qué?** Si cada vez que cambiás algo, toda la app se vuelve a dibujar, se pone lenta.
+- **¿Cómo lo evito?** Usá `useMemo` para guardar valores calculados y `useCallback` para guardar funciones. Así, React no recalcula ni recrea cosas que no cambiaron.
+
+```jsx
+import React, { useMemo, useCallback } from 'react';
+
+const Componente = ({ lista }) => {
+  // ¡OJO! Usá [...lista].sort() para no modificar la lista original
+  const listaOrdenada = useMemo(() => [...lista].sort(), [lista]);
+  const manejarClick = useCallback(() => console.log('Clicked'), []);
+  return <button onClick={manejarClick}>Ordenar</button>;
+};
+```
+
+### No cambies los objetos o arrays directamente
+
+Siempre usá funciones como `setState` o `useReducer` para cambiar el estado. Si cambiás un array u objeto "a mano", React no se entera y no actualiza bien la pantalla.
+
+### Listas grandes: no muestres todo junto
+
+Si tenés una lista gigante (¡mil elementos!), usá librerías como **react-window** o **react-virtualized**. Solo muestran lo que el usuario ve en pantalla, no todo junto.
+
+```jsx
+import { FixedSizeList as List } from 'react-window';
+
+const Row = ({ index, style }) => (
+  <div style={style}>Fila {index}</div>
+);
+
+const App = () => (
+  <List height={150} itemCount={1000} itemSize={35} width={300}>
+    {Row}
+  </List>
+);
+```
+
+### Lazy Loading
+
+Usá `React.lazy` y `Suspense` para cargar componentes solo cuando se necesitan. Así la app arranca más rápido.
+
+### Dividí el código en partes más chicas
+
+Herramientas como **Webpack** pueden dividir tu app en archivos más chicos. Así el navegador baja solo lo que necesita.
+
+### No toques el DOM a mano
+
+Si cambiás cosas del DOM directamente (con `document.getElementById`, etc.), React se puede confundir. Dejá que React maneje todo.
+
+### No pongas estilos inline todo el tiempo
+
+Mejor usá `className` o librerías como **styled-components**. Los estilos inline pueden hacer que React vuelva a dibujar más de la cuenta.
+
+### Renderizado en el servidor (SSR)
+
+Si querés que la página cargue rápido desde el principio, usá frameworks como **Next.js** que hacen parte del trabajo en el servidor.
+
+### Imágenes y recursos livianos
+
+- Usá imágenes comprimidas y formatos modernos como **WebP**.
+- Cargá imágenes solo cuando se ven en pantalla (lazy loading).
+
+### No uses contextos para todo
+
+El Context de React es útil, pero si lo usás para todo, cada cambio hace que toda la app se vuelva a dibujar. Usalo solo para datos realmente globales (como el usuario logueado o el tema de la app).
+
+### Usá `key` cuando hacés listas
+
+Cuando hacés una lista con `.map()`, poné una `key` única en cada elemento. Así React sabe cuál es cuál y no se confunde.
+
+```jsx
+{items.map(item => <li key={item.id}>{item.nombre}</li>)}
+```
+
+### Dividí tu app en componentes chiquitos
+
+Es más fácil de entender y solo se actualizan las partes que cambian.
+
+### Re-renderizaciones innecesarias
 
 Las **re-renderizaciones innecesarias** ocurren cuando un componente de React se vuelve a renderizar sin que haya cambios en las props o el estado que afecten su salida visual. Esto puede impactar negativamente el rendimiento de la aplicación, especialmente en componentes complejos o listas grandes.
 

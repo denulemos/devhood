@@ -23,7 +23,7 @@ Ejemplo:
 
 ---
 
-### Vínculos Relativos en HTML
+### Vínculos Relativos
 
 
 Los vínculos relativos son aquellos que permiten interconectar los archivos de nuestro sitio (internos, dentro de nuestro sitio o servidor).
@@ -48,7 +48,7 @@ Si mi archivo contacto se encontrase dentro de una carpeta la ruta a marcar ser�
 
 ---
 
-### Vínculos Absolutos en HTML
+### Vínculos Absolutos
 
 Es la URL que dirige a un recurso en la web, por ejemplo, si quiero ir a google.com desde mi archivo index.html, lo haré de la siguiente forma:
 
@@ -61,7 +61,7 @@ Es la URL que dirige a un recurso en la web, por ejemplo, si quiero ir a google.
 
 ---
 
-### ¿Para qué es el Doctype?
+### `DOCTYPE`
 
 
 El doctype es una declaración que se utiliza en un documento HTML para informar al navegador web sobre la versión de HTML en la que está escrito el documento. El doctype debe ser la primera línea de un documento HTML y se utiliza para garantizar que el navegador web interprete el documento correctamente.
@@ -72,7 +72,7 @@ El doctype es una declaración que se utiliza en un documento HTML para informar
 
 ---
 
-### Atributo placeholder para campos
+### Atributo `placeholder` para campos
 
 El atributo placeholder me permite guiar al usuario sobre lo que tiene que colocar dentro de nuestro campo. Por ejemplo:
 
@@ -101,15 +101,6 @@ Es el uso de etiquetas introducidas en HTML5 en vez de divs y span para la divis
 
 Esto a nivel de renderizado no cambia nada, pero sí hace que mi código sea mucho más accesible. Los motores de búsqueda pueden entender mejor el contenido de mi página, y los lectores de pantalla también.
 
-
----
-
-### Qué son los atributos de los elementos HTML?
-
-
-Los atributos HTML son palabras especiales utilizadas dentro de la etiqueta de apertura de un elemento para controlar el comportamiento del elemento. El atributo src en un elemento img especifica la URL de la imagen (dónde se encuentra la imagen).
-
-`<img src="linkaimagen.com/fcc_secondary.svg">`
 
 ---
 
@@ -146,7 +137,7 @@ con nuestro HTML (XML por ejemplo) no son tan permisivas y nunca viene mal hacer
 
 ---
 
-### Qué son los mapas de imagen?
+### Mapas de Imagen
 
 
 Aunque el uso de los mapas de imagen se ha reducido drásticamente en los últimos años, aún se utilizan en algunos sitios especializados. Muchas agencias de viaje y sitios relacionados utilizan mapas geográficos para
@@ -178,7 +169,7 @@ https://www.image-maps.com/
 
 ---
 
-### Qué es la etiqueta DataList?
+### `<datalist>`
 
 Se usa para proveer con un autocomplete a algunos elementos
 
@@ -194,7 +185,7 @@ Se usa para proveer con un autocomplete a algunos elementos
 
 ---
 
-### Cuál es la diferencia entre `div` y `span`?
+### `div` vs `span`
 
 La etiqueta span trabaja como contenedor de línea, no se puede ampliar para ocupar un párrafo, debe usarse para edición de frases en párrafos, y div trabaja como contenedor de bloque, y puede expandirse.
 
@@ -202,13 +193,13 @@ La etiqueta span trabaja como contenedor de línea, no se puede ampliar para ocu
 
 ---
 
-### ¿Qué es el atributo `alt` en imágenes?
+### `alt`
 
 El atributo `alt` proporciona un texto alternativo que se muestra si la imagen no carga. También ayuda a personas con discapacidad visual.
 
 ---
 
-### ¿Qué es una lista en HTML?
+### Listas `<ul>` `<ol>`
 
 Hay dos tipos principales de listas:
 - `<ul>`: lista desordenada (con viñetas).
@@ -229,7 +220,7 @@ Usa la etiqueta `<br>` para hacer un salto de línea dentro de un texto.
 
 ---
 
-### ¿Qué es un comentario en HTML?
+### Comentarios
 
 Un comentario es texto que no se muestra en la página. Se escribe así:
 
@@ -239,7 +230,7 @@ Un comentario es texto que no se muestra en la página. Se escribe así:
 
 ---
 
-### ¿Para qué sirve la etiqueta `<input>`?
+### `<input>`
 
 La etiqueta `<input>` se usa para crear campos donde el usuario puede escribir datos, como texto, contraseñas o seleccionar archivos.
 
