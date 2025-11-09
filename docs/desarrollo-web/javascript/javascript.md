@@ -94,9 +94,7 @@ O usando lodash, `_.isEqual(obj1, obj2)`.
 
 ---
 
-### Qué es el namespacing?
-
-[Volver al indice](#alg-base-2)
+### Namespacing
 
 Namespacing se utiliza para agrupar funciones, variables, etc con un nombre único.  Esto mejora la modularidad en codificación y permite la reutilización del código.
 
@@ -115,7 +113,7 @@ console.log(myNamespace.myVariable); // Hello, World!
 
 ---
 
-### Cual es la diferencia entre `setTimeout()` y `setInterval()`?
+### `setTimeout()` vs `setInterval()`
 
 
 - `SetTimeout` nos permite ejecutar una funcion una vez despues del intervalo de tiempo
@@ -135,7 +133,7 @@ setTimeout(() => { clearInterval(timerId); alert('stop'); }, 5000);
 
 ---
 
-### Diferencia entre let, var y const
+### `let`, `var` y `const`
 
 La diferencia es el alcance de cada uno.
 
@@ -241,7 +239,7 @@ editInPlace();
 
 ---
 
-### Cómo se pueden crear objetos genéricos?
+### Generics
 
 Podes crear objetos genéricos en JavaScript usando funciones constructoras, la sintaxis de objetos literales o clases. Por ejemplo, usando un objeto literal:
 
@@ -295,7 +293,7 @@ persona2.saludar(); // Hola, soy Luis
 
 ---
 
-### Que es el Scope en Javascript?
+### Scope
 
 Es el contexto actual de ejecución.
 
@@ -380,7 +378,7 @@ Number.isNaN('denu') // false porque no convertirá la cadena a numero
 
 ---
 
-### Diferencia entre class y function
+### `class` vs `function`
 
 class tiene un alcance comprendido por llaves, al igual que las variables let. function es local a la funcion donde fue definida, no podemos usar una clase o funcion constructora por fuera del alcance en donde se encuentra.
 
@@ -419,8 +417,7 @@ console.assert( typeof  C === 'function' );
 
 ---
 
-### Concepto Truthy and Falsy
-
+### Truthy and Falsy
 
 En JavaScript, un valor se considera "falsy" si se convierte en `false` cuando se evalúa en un contexto booleano.
 
@@ -443,7 +440,7 @@ Boolean(function(){}); //Cualquier función es verdadera también
 
 ---
 
-### Variable Hoisting
+### Hoisting
 
 
 Es un mecanismo de JS en el que las variables y declaraciones de funciones se mueven a la parte superior de su ambito antes de la ejecucion del codigo.
@@ -463,7 +460,7 @@ Es el usar las variables antes de que sean declaradas.
 
 ---
 
-### Diferencia entre primitivo y objeto
+### Primitivo vs Objeto
 
 - Los primitivos se pasan por valor, los objetos se pasan por referencia
 - Los primitivos se copian por valor y los objetos se copian por referencia
@@ -508,7 +505,7 @@ console.log(clone); // { a: 1, b: 2, foo: 'foo' }
 
 ---
 
-### ¿Qué es una funcion Declarativa y una Expresiva?
+### Declarativa vs Expresiva
 
 
 En las **Funciones Declarativas** usamos la palabra reservada `Function` para poder declararla
@@ -535,7 +532,7 @@ A las funciones declarativas se les aplica hoisting, a la otra no, hoisting se a
 
 ---
 
-### Event Loop (Macro, Micro tasks, Callback Queue)
+### Event Loop
 
 El Event Loop es un bucle que se encarga de manejar los eventos y las operaciones asincronas en Javascript.
 
@@ -593,7 +590,7 @@ console.log('Fin');
 
 ---
 
-### Como funciona `setTimeout`?
+### `setTimeout`
 
 `setTimeout` es una funcion que permite ejecutar una funcion o un bloque de codigo despues de un tiempo determinado. Se utiliza para programar la ejecucion de una tarea en el futuro.
 
@@ -611,7 +608,7 @@ En este ejemplo, la funcion dentro de `setTimeout` se ejecutara despues de 2 seg
 
 ---
 
-### Diferencia entre Map y Weakmap
+### `Map` vs `Weakmap`
 
 
 Son casi iguales, son la clasica estructura de datos de diccionario, su diferencia es que se puede acceder a los clave-valores de un Map usando .values o .keys, en un Weakmap no se puede hacer eso.
@@ -644,7 +641,7 @@ Weakmap, ademas, solo admite objetos como clave, estos estan debilmente referenc
 
 ---
 
-### Diferencia entre `for in` y `for of`
+### `for in` vs `for of`
 
 
 - For in toma los indices de los elementos que estan siendo recorridos
@@ -669,7 +666,7 @@ for (const digit of digits) {
 
 ---
 
-### Diferencia entre foreach, map y reduce
+### `forEach`, `map` y `reduce`
 
 - **Foreach** itera por cada uno. Ejecuta la función que se le pasa por parámetro para cada elemento del array. Este método no devuelve nada, por lo tanto, si intentamos guardar su ejecución en una variable lo que ocurrirá es que esa variable tomará el valor de undefined.
 
@@ -708,18 +705,6 @@ var total = myArray.reduce((accumulator, number) => {
 total;
 // Prints 60
 ```
----
-
-### Nombres de Variables
-
-Cuando vayamos a dar un nombre a una variable deberemos tener en cuenta una serie de normas. Es decir, no podemos poner el nombre que nos dé la gana a una variable.
-
-Es recomendable que los nombres de los identificadores sean legibles y no acrónimos que no podamos leer. De tal manera que a la hora de verlos se auto-documenten por sí mismos. Además estos identificadores nunca podrán coincidir con las palabras reservadas ni comenzar con un número.
-
-Algunas reglas no escritas, pero que se han asumido *por convención* son:
-
-* Los identificadores siempre se escriben en minúsculas. (pe. nombre). Y si son dos o más palabras, el inicio de cada siguiente palabra se escriba en mayúsculas (pe. nombrePersona)
-* Si el identificador implica que sea una constante (es decir que hayamos utilizado los modificadores *final static*), dicho nombre se suele escribir en mayúsculas (pe. LETRA). Y si la constante está compuesta de dos palabras, estas se separan con un subrayado (pe. LETRA_PI).
 
 ---
 
@@ -796,7 +781,7 @@ console.log(startX, startY); // 5, 6
 
 ---
 
-### ¿Cómo puedes incrustar variables o expresiones dentro de una string?
+### Template Literals
 
 Con **template literals**:
 
@@ -817,7 +802,7 @@ console.log(greeting); // prints
 
 Se usa otro tipo de “comilla” cuando se quiere invocar al String (`) y no es necesario poner /n para que se haga un salto de línea en el texto de salida
 
-### ¿Para qué se utiliza export default en los módulos ES6 y cómo se importa?
+### `export default` - Módulos ES6
 
 Lo mismo que el anterior, sí queremos exportar una funcion, cuando la declaramos, la exportamos. Se usa cuando quiero exportar solo un valor o funcion, solo puedo elegir un valor que tenga esta propiedad de exportacion, tampoco se puede usar con const, var o let.
 
@@ -834,7 +819,7 @@ import add from "math_functions";
 add(5,4); //Devuelve el resultado de acuerdo al metodo exportado anteriormente
 ```
 
-### Diferencia entre import y require
+### `import` vs `require`
 
 - `Require`: Se usa para importar las funciones y el codigo en un archivo externo. Esto posee un problema, el cual es que este codigo puede ser muy largo y solo necesito una parte del codigo.
 - `Import`: Herramienta de ES6 para importar solo los componentes que necesitamos de un archivo.
@@ -843,7 +828,7 @@ add(5,4); //Devuelve el resultado de acuerdo al metodo exportado anteriormente
 import { countItems } from "math_array_functions"
 ```
 
-### ¿Cómo puedes hacer que un objeto en JavaScript sea inmutable? (`Object.freeze`)
+### `Object.freeze` - Inmutabilidad
 
 Con `Object.freeze` se puede hacer que un objeto sea inmutable. Es una funcion que evita que puedas modificar propiedades de un objeto o una variable
 
@@ -861,7 +846,7 @@ console.log(obj);
 
 Cuando intento modificar algo, no tira error, simplemente lo ignora.
 
-### ¿Qué es la destructuración y cómo se utiliza?
+### Destructuración
 
 
 La destructuración es una expresión de JavaScript que permite desempaquetar valores de arreglos o propiedades de objetos en distintas variables.
@@ -880,7 +865,7 @@ Esto no ahorra tener que crear dos variables distintas en dos lineas distintas y
 
 ---
 
-### ¿Cómo se diferencia un Spread Operator de un Rest Operator?
+### Spread Operator vs Rest Operator
 
 El Spread Operator (...) y el Rest Operator (...) tienen la misma sintaxis, pero se usan en contextos diferentes y tienen propósitos distintos. Aquí te explico sus diferencias y cómo se usan:
 
@@ -1153,7 +1138,7 @@ Ninguno de los `weak` es enumerable, es decir, no se pueden iterar sobre ellos.
 
 ---
 
-### Parametros por valor y por referencia en Javascript
+### Parametros por valor y por referencia
 
 En Javascript podemos pasar como parametro valores que pueden ser por valor en si mismo o por referencia, es decir, pasamos el puntero de memoria que apunta a la direccion de memoria donde se encuentra el valor.
 
@@ -1196,7 +1181,7 @@ function modificarArray(array) {
 
 ---
 
-### Prototype Javascript
+### Prototype
 
 `Prototype` permite que objetos y funciones en Javascript compartan propiedades y metodos entre si.
 
@@ -1261,7 +1246,7 @@ En resumen, prototype es la base del funcionamiento de objetos y de la herencia 
 
 ---
 
-### Qué es un "array-like" en Javascript?
+### `array-like`
 
 Es un tipo de dato similar a un Array pero que no posee todas las funciones heredadas de Prototype de un Array.
 
@@ -1299,7 +1284,7 @@ console.log(array); // Imprime: ['a', 'b', 'c']
 
 ---
 
-### Funciones array
+### Arrays
 
 ```jsx
 // Agrega al final
@@ -1382,26 +1367,7 @@ splice(indice, cantidad elementos a eliminar, agrego, agrego);
 
 ---
 
-### ¿Cómo funcionan los arrays en JavaScript internamente?
-
-Los arrays en JavaScript son objetos especiales que permiten almacenar múltiples elementos en una sola variable. A diferencia de otros lenguajes de programación, los arrays en JavaScript no tienen un tamaño fijo y pueden contener elementos de diferentes tipos.
-
-Internamente, los arrays en JavaScript se implementan como objetos con propiedades indexadas. Cada elemento del array se almacena en una propiedad con un índice numérico. Por ejemplo, el array [1, 2, 3] se representa internamente como un objeto con las siguientes propiedades:
-
-```javascript
-{
-  0: 1,
-  1: 2,
-  2: 3,
-  length: 3
-}
-```
-
-Por eso existe el `array-like` en Javascript
-
----
-
-### Para que sirve `event.preventDefault()`?
+### `event.preventDefault()`
 
 Los botones de los form en HTML por defecto hacen un submit, lo que puede llevar a que se recargue la pagina. Para evitar esto, se usa `event.preventDefault()` para evitar que se ejecute el comportamiento por defecto del evento.
 
@@ -1417,7 +1383,7 @@ U otro ejemplo es para evitar que el resto de eventos que se ejecutarian por def
 
 ---
 
-### ¿Cuál es la diferencia entre un Set y un Array en JavaScript?
+### Set vs Array
 
 | Set | Array |
 | --- | ----- |
@@ -1451,7 +1417,7 @@ const myPromise = new Promise((resolve, reject) => {
 
 ---
 
-### ¿Qué es un `Promise.all` y cuándo usarlo?
+### `Promise.all`
 
 Promise.all es una funcion que recibe un array de promesas y devuelve una nueva promesa que se resuelve cuando todas las promesas del array se han resuelto o cuando el array de promesas esta vacio.
 
@@ -1492,10 +1458,9 @@ myPromise.then((resolvedValue) => {
 
 ---
 
-### ¿Cómo funcionan `Promise.allSettled`, `Promise.race` y `Promise.any`?
+### `Promise.allSettled`
 
-
-- **Promise.allSettled:** Devuelve una promesa que se resuelve después de que todas las promesas del iterable se hayan resuelto o rechazado, con un array de objetos que describen el resultado de cada promesa.
+Devuelve una promesa que se resuelve después de que todas las promesas del iterable se hayan resuelto o rechazado, con un array de objetos que describen el resultado de cada promesa.
 
 ```jsx
 const promise1 = Promise.resolve(3);
@@ -1506,7 +1471,9 @@ Promise.allSettled(promises).
   then((results) => results.forEach((result) => console.log(result.status))); // "fulfilled", "rejected"
 ```
 
-- **Promise.race**: Devuelve una promesa que se resuelve o rechaza tan pronto como una de las promesas del iterable se resuelve o se rechaza, con el valor o la razón de esa promesa.
+### `Promise.race`
+
+Devuelve una promesa que se resuelve o rechaza tan pronto como una de las promesas del iterable se resuelve o se rechaza, con el valor o la razón de esa promesa.
 
 ```jsx
 const promise1 = new Promise((resolve, reject) => setTimeout(resolve, 500, 'one'));
@@ -1517,7 +1484,11 @@ Promise.race([promise1, promise2]).then((value) => {
 });
 ```
 
--**Promise.any**: Devuelve una promesa que se resuelve tan pronto como una de las promesas del iterable se resuelve, con el valor de esa promesa.
+---
+
+### `Promise.any`
+
+Devuelve una promesa que se resuelve tan pronto como una de las promesas del iterable se resuelve, con el valor de esa promesa.
 
 ```jsx
 const promise1 = new Promise((resolve, reject) => setTimeout(reject, 500, 'one'));
@@ -1625,7 +1596,7 @@ doSomething(function(result) {
 
 ---
 
-### Comparacion entre Promises, Callbacks y Async-await
+### Promises, Callbacks y Async-await
 
 - **Callbacks:** Es una funcion que se pasa como argumento a otra funcion y se invoca dentro de la funcion externa para completar alguna accion. Se usa para manejar operaciones asincronicas.
 - **Promises:** Son una buena forma de manejar operaciones asincronicas. Puede tener 3 estados, `Pending`, `Fulfilled` y `Rejected`. Son utiles cuando hay que manejar mas de una operacion asincronica una despues de la otra, para eso se puede usar **Promise Chaining** usando then() y catch() para el manejo de cada una.

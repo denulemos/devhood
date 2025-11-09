@@ -1010,9 +1010,6 @@ ngAfterViewInit() {
 }
 ```
 
----
-
-## **¿Qué problemas de rendimiento pueden existir en Angular y cómo se solucionan?**
 
 ### ⚠️ Renderizado excesivo (detección de cambios ineficiente)
 

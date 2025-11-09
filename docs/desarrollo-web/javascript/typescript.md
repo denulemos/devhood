@@ -17,42 +17,6 @@ Es mantenido por Microsoft
 * Mejora el intellisense
 * Nos permite la **inyección de dependencias**
 
----
-
-### TSConfig.json
-
-Es el archivo de configuración de TypeScript, en el se definen las reglas de compilación de TypeScript.
-
-Mediante estas configuraciones se **deberia** buscar que Typescript sea lo mas estricto posible.
-
-```json
-{
- "compilerOptions": {
-  "target": "es5", // A que versión de JS se compilará
-  "module": "commonjs", // Sistema de modulos
-  "strict": true, // Habilita todas las opciones estrictas
-  "noImplicitAny": true, // No permite any
-  "esModuleInterop": true, // Permite importar modulos de ES6
-  "skipLibCheck": true, // No revisa las librerias
-  "forceConsistentCasingInFileNames": true, // Obliga a que los nombres de archivos sean consistentes
- }
-}
-```
-
----
-
-### Watch Mode
-
-Typescript al ejecutarse es traducido a Javascript. Para que Typescript esté pendiente de los cambios en los archivos y los compile automáticamente, se puede usar el siguiente comando
-
-```bash
-tsc --watch
-```
-
----
-
-### Cuáles son sus características superadoras?
-
 Su tipado estricto ayuda a saber como funcionan las cosas, por ejemplo, en este código Javascript
 
 ```jsx
@@ -91,7 +55,40 @@ interface Producto {
 
 ---
 
-### Cómo declaro una variable en Typescript?
+### TSConfig.json
+
+Es el archivo de configuración de TypeScript, en el se definen las reglas de compilación de TypeScript.
+
+Mediante estas configuraciones se **deberia** buscar que Typescript sea lo mas estricto posible.
+
+```json
+{
+ "compilerOptions": {
+  "target": "es5", // A que versión de JS se compilará
+  "module": "commonjs", // Sistema de modulos
+  "strict": true, // Habilita todas las opciones estrictas
+  "noImplicitAny": true, // No permite any
+  "esModuleInterop": true, // Permite importar modulos de ES6
+  "skipLibCheck": true, // No revisa las librerias
+  "forceConsistentCasingInFileNames": true, // Obliga a que los nombres de archivos sean consistentes
+ }
+}
+```
+
+---
+
+### Watch Mode
+
+Typescript al ejecutarse es traducido a Javascript. Para que Typescript esté pendiente de los cambios en los archivos y los compile automáticamente, se puede usar el siguiente comando
+
+```bash
+tsc --watch
+```
+
+
+---
+
+### Variables
 
 Por defecto, implicitamente Typescript asigna un tipo a las variables, pero se puede asignar un tipo explicito. `any` deberia evitarse a toda costa, a menos que sea un elemento reutilizable.
 
@@ -104,6 +101,27 @@ let variable: number | string = 95;
 variable = 'Denu'
 
 let arrayVariable: (boolean | string | number)[] = ['Denu', 22, false]
+```
+
+---
+
+### Objetos
+
+```tsx
+interface Personaje {
+ nombre: string;
+ edad: number;
+ habilidades: string[];
+ nacionalidad?: string; // opcional
+}
+
+const personaje: Personaje = {
+ nombre: 'Denu',
+ edad: 24,
+ habilidades: ['volar', 'comer']
+}
+
+personaje.nacionalidad = 'Costa Rica';
 ```
 
 ---
@@ -132,7 +150,7 @@ let tuplaRest: [string, ...number[]] = ['Denu', 1, 2, 3];
 ---
 
 
-### Tipo de dato `Never`
+### `Never`
 
 Es un tipo de dato que representa un valor que nunca ocurre. Se utiliza principalmente para funciones que lanzan excepciones o que nunca terminan de ejecutarse.
 
@@ -159,7 +177,7 @@ arreglo.push(1); // Error - Array no acepta number dentro de su tipo never[]
 
 ---
 
-### Tipo de dato `Any`
+### `Any`
 
 Es un tipo de dato que puede ser cualquier cosa, es decir, que no tiene un tipo de dato específico. Se debe evitar su uso en la medida de lo posible, ya que puede llevar a errores en tiempo de ejecución y dificultar el mantenimiento del código.
 
@@ -179,7 +197,7 @@ variable = true;
 
 ---
 
-### ¿Qué son los **generics** y cómo se implementan en TypeScript? 
+### Generics
 
 
 Los generics son una característica de TypeScript que permite crear componentes, funciones y clases que pueden trabajar con una variedad de tipos de datos. Los generics permiten escribir código que es reutilizable y flexible, ya que no está limitado a un solo tipo de datos.
@@ -196,41 +214,6 @@ const array2 = makeArray<string>('hello'); // array2 es de tipo string[]
 ```
 
 Es ideal para reemplazar el uso de any. Por ejemplo, si se usa any, se pierde la información del tipo de datos que se está utilizando, lo que puede llevar a errores en tiempo de ejecución. Con generics, se puede especificar el tipo de datos que se espera y TypeScript se encargará de verificar que se cumpla en tiempo de compilación.
-
----
-
-### Cómo declaro un objeto en Typescript?
-
-```tsx
-interface Personaje {
- nombre: string;
- edad: number;
- habilidades: string[];
- nacionalidad?: string; // opcional
-}
-
-const personaje: Personaje = {
- nombre: 'Denu',
- edad: 24,
- habilidades: ['volar', 'comer']
-}
-
-personaje.nacionalidad = 'Costa Rica';
-```
-
----
-
-### Cómo declaro una función en Typescript?
-
-```tsx
-function sumar (a: number, b:number) : number {
- return a + b;
-}
-
-const sumar = (a?: number, b: number = 2) : number => {
- return a + b;
-}
-```
 
 ---
 
@@ -280,7 +263,7 @@ interface MyInterface {
 ---
 
 
-### ¿Qué son los tipos Union e Intersection y cuándo se utilizan?
+### Union e Intersection
 
 **Union Types:**
 
@@ -300,8 +283,6 @@ type User = { name: string; age: number };
 type Admin = User & { role: 'admin' };
 ```
 
-**Cuándo se utilizan:**
-
 - **Union Types:** Se utilizan cuando un valor puede ser de varios tipos diferentes en un contexto determinado. Por ejemplo, cuando un valor puede ser una cadena o un número, se puede utilizar un tipo de unión para representar esta posibilidad.
 
 - **Intersection Types:** Se utilizan cuando se desea combinar varios tipos en uno solo para crear un nuevo tipo que tenga todas las propiedades y métodos de los tipos combinados. Por ejemplo, cuando se desea crear un nuevo tipo que tenga todas las propiedades de dos tipos existentes, se puede utilizar un tipo de intersección para lograr esto.
@@ -309,7 +290,7 @@ type Admin = User & { role: 'admin' };
 ---
 
 
-### ¿Qué son los Utility Types como Partial, Pick, y Omit, y en qué casos son útiles?
+### Partial, Pick, y Omit
 
 Los Utility Types en TypeScript son tipos predefinidos que permiten realizar transformaciones y operaciones comunes en tipos de datos existentes. Estos tipos proporcionan funcionalidades útiles para trabajar con tipos de datos de una manera más flexible y reutilizable. Algunos de los Utility Types más comunes en TypeScript son `Partial`, `Pick`, y `Omit`.
 
@@ -362,7 +343,7 @@ const personWithoutAddress: PersonWithoutAddress = { name: 'Alice', age: 30 }; /
 
 ---
 
-### ¿Cómo funcionan los decoradores en TypeScript y en qué casos son útiles?
+### Decoradores
 
 Para usar decoradores, debes habilitar la opción experimentalDecorators en el archivo tsconfig.json:
 
@@ -499,7 +480,7 @@ class UserService {
 
 ---
 
-### ¿Qué son los Conditional Types y cómo permiten lógica avanzada en los tipos?
+### Conditional Types
 
 Los Conditional Types en TypeScript son una característica avanzada que permite definir tipos condicionales basados en una condición booleana. Esto permite crear tipos que se comportan de manera diferente según una condición dada. Los Conditional Types se definen utilizando la palabra clave `extends` y la sintaxis de los tipos condicionales.
 
@@ -550,7 +531,7 @@ sumar(1, 2, 3, 4, 5, 6, 7, 8, 9, 10); // 55
 ---
 
 
-### Cómo creo una clase en TypeScript?
+### Clases
 
 
 ```tsx
@@ -575,7 +556,7 @@ class Person {
 
 ---
 
-### Herencia en Typescript
+### Herencia
 
 La herencia en TypeScript se logra mediante la palabra clave `extends`. Una clase puede heredar propiedades y métodos de otra clase utilizando la herencia. Aquí tienes un ejemplo de cómo se ve la herencia en TypeScript:
 
@@ -594,7 +575,7 @@ const beer = new Beer('Imperial', 1000, 5);
 
 ---
 
-### Interfaces en Typescript
+### Interfaces
 
 Nos permite categorizar objetos, es decir, que un objeto tenga un comportamiento ya esperado. Es un contrato.
 
@@ -621,7 +602,7 @@ class Beer extends Drink implements Product {
 
 ---
 
-### Cual es la diferencia entre el uso de types e interfaces?
+### Types vs Interfaces
 
 Ambos se utilizan para definir tipos en TypeScript, pero tienen algunas diferencias clave en su comportamiento y uso:
 
@@ -689,7 +670,7 @@ type Status = 'active' | 'inactive';
 ---
 
 
-### ¿Cómo funcionan los Mapped Types y cómo se aplican en proyectos complejos?
+### Mapped Types
 
 Mapped Types en TypeScript son una forma de transformar tipos existentes en nuevos tipos utilizando un mecanismo de mapeo. Este es un concepto muy poderoso que te permite crear tipos dinámicamente basados en otros. Los Mapped Types se definen utilizando la sintaxis de los tipos indexados y la palabra clave `in`.
 
@@ -710,3 +691,42 @@ const partialPerson: PartialPerson = {}; // Todas las propiedades son opcionales
 ```
 
 En proyectos complejos, los Mapped Types pueden ser muy útiles para crear tipos dinámicamente basados en otros tipos existentes. Por ejemplo, puedes utilizar Mapped Types para crear tipos que transforman propiedades
+
+---
+
+### Typeguards (`typeof` e `instanceof`)
+
+Un type guard (o guardián de tipo) es una forma de decirle a TypeScript:
+
+“Tranquilo, yo sé qué tipo de dato tengo acá”.
+
+Sirve para que TypeScript entienda qué tipo exacto tiene una variable en un momento dado, especialmente cuando puede ser más de uno (por ejemplo, string | number)
+
+```typescript
+// Con typeof
+
+function imprimirDoble(valor: string | number) {
+  if (typeof valor === "number") {
+    console.log(valor * 2);
+  } else {
+    console.log(valor.repeat(2));
+  }
+}
+
+// Con instanceof
+
+class Perro { ladrar() {} }
+class Gato { maullar() {} }
+
+function hacerSonido(animal: Perro | Gato) {
+  if (animal instanceof Perro) {
+    animal.ladrar(); // 🐶
+  } else {
+    animal.maullar(); // 🐱
+  }
+}
+
+```
+
+---
+
