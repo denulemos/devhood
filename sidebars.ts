@@ -66,6 +66,7 @@ const sidebars: SidebarsConfig = {
       collapsed: true,
       items: [
         'desarrollo-web/backend/poo',
+        'performance',
       ],
     },
     {
