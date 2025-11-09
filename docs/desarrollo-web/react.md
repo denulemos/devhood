@@ -507,7 +507,7 @@ Esto es porque el useEffect esta hecho para devolver una funcion de clean up, y 
 
 En el caso de que el useEffect en si mismo sea asincrono, el codigo funcionara, pero habra un error en la consola.
 
-![useeffect error](https://blog.logrocket.com/useeffect-react-hook-complete-guide/)
+![useeffect error](https://blog.logrocket.com/wp-content/uploads/2020/11/async-await-produces-runtime-error.png)
 
 ---
 

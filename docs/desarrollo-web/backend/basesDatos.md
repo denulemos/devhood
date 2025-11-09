@@ -1,12 +1,12 @@
 # 🗄️ Bases de Datos
 
-### Que es la programacion declarativa?
+### Programacion declarativa?
 
 La programacion declarativa se concentra en que cosas hay que hacer y no necesariamente en como hacerlas. Un ejemplo es SQL, donde se le dice a la base de datos que datos queremos, pero no como obtenerlos.
 
 ---
 
-### Cuáles son los elementos de una base de datos?
+### Elementos de una base de datos
 
 - **Tablas**: Contienen la información
 - **Vistas**: Parecidas a la tabla, son para consultas, más rápidas
@@ -18,7 +18,7 @@ La programacion declarativa se concentra en que cosas hay que hacer y no necesar
 
 ---
 
-### Cuales son los elementos de Data Control Language? (DCL)
+### Elementos de Data Control Language (DCL)
 
 - **GRANT**: Da permisos a un usuario
 - **REVOKE**: Quita permisos a un usuario

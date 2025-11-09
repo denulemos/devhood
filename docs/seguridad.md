@@ -5,7 +5,7 @@ title: 🔒 Seguridad
 
 [Formato README en Github](https://github.com/denulemos/DevDojo/blob/master/Seguridad.md)
 
-### ¿Cuáles son las ciberamenazas actuales?
+### Ciberamenazas actuales
 
 | Nombre | Descripcion |
 | --- | --- |
@@ -49,7 +49,7 @@ title: 🔒 Seguridad
 
 ---
 
-### ¿Cuáles son algunas modalidades comunes de ataques?
+### Modalidades comunes de ataques
 
 - **Black Box (Blind):** Security Tester, no cuenta con info sobre el objetivo
 - **Double Black Box (Double Blind):** El cliente no sabe nada sobre el test que hará, cómo ni cuándo
@@ -59,7 +59,7 @@ title: 🔒 Seguridad
 
 ---
 
-### ¿Cuáles son las etapas en un proceso de hacking?
+### Etapas en un proceso de hacking
 
 (Exploración de un sistema, Explotación de las vulnerabilidades, Corrupción del Sistema, Búsqueda de Vulnerabilidades y Eliminación de pruebas)
 
@@ -71,7 +71,7 @@ title: 🔒 Seguridad
 
 ---
 
-### ¿Qué son los ataques internos?
+### Ataques internos
 
 Muchos ataques son desde dentro de la misma organización, se infiltran o hablan con empleados para obtener información sobre la víctima/empresa
 
@@ -85,7 +85,7 @@ Pueden infiltrar un pendrive con una etiqueta engañosa para que sea usado por a
 
 ---
 
-### ¿Qué tipos de Ingenierías sociales existen?
+### Tipos de Ingenierías sociales
 
 - **Human Based:** La interacción de persona a persona, de forma remota o por llamada telefónica
     - **Impersonalización:** Ganar acceso físico simulando ser un usuario válido
@@ -102,7 +102,7 @@ Pueden infiltrar un pendrive con una etiqueta engañosa para que sea usado por a
 
 ---
 
-### ¿Qué es la triada CIA?
+### Triada CIA
 
 **Confidencialidad:** Solo accede a la info gente autorizada
 
@@ -118,7 +118,7 @@ Pueden infiltrar un pendrive con una etiqueta engañosa para que sea usado por a
 
 ---
 
-### IDS (Intrusion Detection System)
+### Intrusion Detection System
 
 - Es un sistema de detección de intrusiones es un componente que inspecciona los datos de una red o equipo en busca de elementos sospechosos
 - Recopilar info para analizar y correlacionar
@@ -128,7 +128,7 @@ Pueden infiltrar un pendrive con una etiqueta engañosa para que sea usado por a
 
 ---
 
-### Indicadores de una intrusión
+### Indicadores de intrusión
 
 - Modificación de software y archivos de configuración.
 - Bajo rendimiento inusual en el sistema.
@@ -153,7 +153,7 @@ Si el IDS Detecta algún tipo de ataque toma las siguientes medidas:
 
 ---
 
-### Tipos de IDS
+### Tipos de Intrusion Detection System (IDS)
 
 - **NIDS (Network IDS)**: Elemento de red que inspecciona el tráfico de la misma.
 - **HIDS (Host IDS)**: Software que inspecciona los eventos dentro del marco de un sistema operativo.
@@ -162,7 +162,7 @@ Si el IDS Detecta algún tipo de ataque toma las siguientes medidas:
 
 ---
 
-### ¿Qué es un Firewall?
+### Firewall
 
 - Un Firewall divide una red segura de una red insegura, normalmente una privada de una publica
 - Su función principal es examinar los paquetes en busca de coincidencia con las reglas definidas.
@@ -198,7 +198,7 @@ El firewall **NO** protege conexiones que NO pasen por el Firewall, no protege c
 
 ---
 
-### Que es la Criptografia?
+### Criptografía
 
 - Técnica que protege documentos y datos
 - Uso de cifras/códigos para ocultar cierta información para que sea decodificada por quien pueda (y deba) hacerlo
@@ -209,7 +209,7 @@ El firewall **NO** protege conexiones que NO pasen por el Firewall, no protege c
 
 ---
 
-### Que es una funcion Hash?
+### Función Hash
 
 Una función hash es un algoritmo que toma una entrada (como un texto o archivo) y genera una cadena alfanumérica de longitud fija, llamada hash, que representa un resumen único de esa información. Es prácticamente imposible obtener la entrada original a partir del hash (es unidireccional).
 
@@ -225,7 +225,7 @@ Ejemplos de algoritmos hash: MD5, SHA-1, SHA-256.
 
 ---
 
-### Cuáles son los requisitos de un Cripto sistema?
+### Requisitos de un Cripto sistema
 
 - Integridad, confidencialidad y no repudio
 - El algoritmo debe ser rápido y fiable, no debe haber retardo entre el cifrado y descifrado
@@ -234,7 +234,7 @@ Ejemplos de algoritmos hash: MD5, SHA-1, SHA-256.
 
 ---
 
-### Como funciona el Crifrado Simetrico?
+### Cifrado Simétrico
 
 Se descifra con una misma clave (Clave secreta), el emisor se lo tiene que "pasar" al receptor, lo cual significa una vulnerabilidad porque si son poco cuidadosos, cualquiera podría obtener esa clave y obtener la información privada. Es un proceso rápido. Que la clave sea muy segura es muy importante. También se le dice de clave privada porque es una sola clave. Con este sistema de clave pública se hizo SSH luego, que es una manera de establecer una comunicación segura entre páginas webs (servidores) y clientes.
 
@@ -247,7 +247,7 @@ Las debilidades del Cifrado simetrico son..
 
 ---
 
-### Como funciona el Crifrado Asimetrico?
+### Cifrado Asimétrico
 
 - También se le dice de **clave pública**.
 - Hay 2 claves, una para cifrar y otra para descifrar.
@@ -258,13 +258,13 @@ Las debilidades del Cifrado simetrico son..
 
 ---
 
-### ¿Qué es un ataque de fuerza bruta?
+### Ataque de fuerza bruta
 
 Un ataque de fuerza bruta es cuando un atacante prueba todas las combinaciones posibles de contraseñas o claves hasta encontrar la correcta. Es como si intentaras abrir una cerradura probando todas las llaves que existen, una por una, hasta que alguna funcione. Es un método lento, pero puede funcionar si la contraseña es corta o fácil de adivinar. Por eso es importante usar contraseñas largas y complejas.
 
 ---
 
-### ¿Qué es el phishing y cómo prevenirlo?
+### Phishing y como prevenirlo
 
 El **phishing** es una técnica de engaño donde un atacante se hace pasar por una persona o empresa de confianza (por ejemplo, tu banco o una red social) para robarte información personal, como contraseñas, números de tarjeta o datos bancarios. Normalmente, lo hacen enviando correos electrónicos, mensajes o creando páginas web falsas que parecen reales.
 
@@ -277,7 +277,7 @@ El **phishing** es una técnica de engaño donde un atacante se hace pasar por u
 
 ---
 
-### ¿Cuáles son las mejores prácticas de seguridad en desarrollo web?
+### Mejores prácticas de seguridad en desarrollo web
 
 - **Revisá y limpiá todo lo que el usuario escribe:** No te fíes de los datos que llegan de formularios o entradas. Siempre verificá y limpiá esa info para evitar problemas como inyección de código o scripts maliciosos.
 - **Usá HTTPS:** Así la información viaja segura y cifrada entre el usuario y tu sitio, evitando que alguien la intercepte.
@@ -291,7 +291,7 @@ El **phishing** es una técnica de engaño donde un atacante se hace pasar por u
 
 ---
 
-### ¿Qué es OWASP y por qué es importante?
+### OWASP Top 10
 
 OWASP (Open Web Application Security Project) es una organización sin fines de lucro que se dedica a mejorar la seguridad del software. Proveen recursos, herramientas y guías para ayudar a desarrolladores y empresas a crear aplicaciones web más seguras.
 
