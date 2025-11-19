@@ -193,15 +193,11 @@ Reactive Extensions for Javascript (RxJS) es una libreria que nos permite trabaj
 
 En parte su uso podria ser reemplazado con Angular Signals en Angular 16, pero RxJS sigue siendo una herramienta muy poderosa para manejar flujos de datos asincronos.
 
-### ¿Qué es un Observable en RxJS y cómo difiere de una Promesa en JavaScript?
-
-RxJS (Reactive Extensions for JS) es una libreria que nos permite trabajar con programacion reactiva en Javascript, y la misma posee `Observables` que es un objeto que reprssenta una coleccion de valores o eventos que se emiten a lo largo del tiempo.
-
-Las Promises solo pueden manejar un valor o evento, los Observables pueden manejar varias de manera sincronica e asincronica, por eso es ideal para el manejo de solicitudes HTTP. 
+### ¿Qué es un Observable?
 
 Los observables pueden ser modificados mediante el uso de otras tools de RxJS como `map` (transforma los valores), `filter` (filtra los valores), `reduce` (reduce los valores), `merge` (combina los valores de varios observables), `concat` (combina los valores de varios observables en orden), `forkJoin` (combina los valores de varios observables y devuelve un solo valor), `switchMap` (cancela la subscripcion anterior y se suscribe a la nueva), `debounceTime` (espera un tiempo antes de emitir un valor), `distinctUntilChanged` (emite un valor solo si es diferente al anterior), `catchError` (captura un error y lo maneja), `retry` (reintenta la operacion si falla), entre otros.
 
-Sin embargo los observables por si mismos no hacen nada, precisan que algo este **subscripto** a ellos para que hagan algo, es por eso que es importante desubscribirse de ellos en el estado unmounted de la aplicacion. 
+Sin embargo los observables por si mismos no hacen nada, precisan que algo este **subscripto** a ellos para que hagan algo, similar al funcionamiento de un newsletter de email, si no nos suscribimos, no recibimos ningun email, y no sabemos cuantos email y cuando recibiremos esos emails, es por eso que es importante desubscribirse de ellos en el estado unmounted de la aplicacion, para no llenar nuestras casillas de correo de Spam
 
 ```javascript
 import { Observable } from 'rxjs';
@@ -222,11 +218,65 @@ observable.subscribe({
 });
 ```
 
+Ejemplo mas basico
+
+```javascript
+let observable = Observable.create((observer) => {
+  observer.next("Hello World!");
+});
+observable.subscribe(function logMessage(message) {
+  console.log(message);
+});
+```
+
+### Next, Error y Complete - Return de los Observables
+
+Se pueden disparar valores del tipo: 
+- `next`
+- `error` que detiene la ejecucion y se interpreta como una excepcion
+- `complete`, que tambien detiene la ejecucion y no devuelve ningun valor. 
+
+Esto puede ser explicado con el siguiente codigo:
+
+```javascript
+let observable = Observable.create((observer: any) => {
+  observer.next("I am number 1"); // Impreso en consola
+  observer.next("I am number 2"); // Impreso en consola
+  observer.error("I am number 3"); // Impreso en consola FIN EJECUCION
+  observer.complete("I am number 4"); // No impreso, hubiera detenido la ejecucion tambien
+  observer.next("I am number 5");
+});
+
+observable.subscribe(function logMessage(message: any) {
+  console.log(message);
+});
+```
+
+### Observable vs Promises
+
+Las Promises solo pueden manejar un valor o evento, los Observables pueden manejar varias de manera sincronica e asincronica, por eso es ideal para el manejo de solicitudes HTTP. 
+
 | Promises | Observables |
 | --- | --- |
 | Solo pueden emitir un valor o un error | Pueden emitir multiples valores a lo largo del tiempo siempre y cuando la subscripcion este activa |
 | Apenas se crea la Promise, la misma es ejecutad, se le dice `Eager` | No hace nada hasta que alguien este observandolo, es por eso que se le dice `lazy`, porque por si mismo no hace nada |
 | La promesa no se puede cancelar | Se puede cancelar la subscripcion a un observable |
+
+### Subjects
+
+Es un tipo especial de Observable que permite que un mismo valor sea enviado a varios Observers, en general se envia un valor o flow de data distinto a cada observer ya que los Observables comunes son unicast (valor de uno a uno). 
+
+Subjects son multicast, un mismo resultado es mandado a varios al mismo tiempo. 
+
+![multicast](https://miro.medium.com/v2/resize:fit:1400/0*T1tftHIsMCcvhn7h)
+
+Se deberian usar cuando:
+
+- Tengo varios Suscribers y estoy interesado en que reciban la misma informacion todos al mismo tiempo
+- Solo quiero escuchar al evento y no quiero pasar ningun tipo de valor. 
+- `BehaviourSubject` cuando solo preciso el ultimo valor
+- `ReplaySubject` cuando quiero realizar una especie de caching y obtener solo valores anteriores. 
+
 
 ### Porque es importante desuscribirnos de los Observables?
 
